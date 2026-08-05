@@ -336,6 +336,7 @@ tbody tr[data-clickable]:hover{background:#eef2ff}
 
     <div class="tabs">
       <button class="tb on" data-t="inv">🧾 Invoices</button>
+      <button class="tb" data-t="ordered">🛒 Items ordered</button>
       <button class="tb" data-t="items">📦 Inventory Items</button>
       <button class="tb" data-t="lots">🗂 Stock Lots</button>
     </div>
@@ -346,6 +347,18 @@ tbody tr[data-clickable]:hover{background:#eef2ff}
         <tbody id="dInvTbl"><tr class="empty"><td colspan="7">—</td></tr></tbody>
       </table></div>
       <div style="margin-top:10px;text-align:right"><a class="btn b-gho b-sm" href="invoices.html">Open all invoices →</a></div>
+    </div>
+
+    <div class="tp" id="tp-ordered">
+      <div class="tw"><table>
+        <thead><tr>
+          <th>Item</th><th class="num">Total qty</th><th>Unit</th>
+          <th class="num">Total spend</th><th class="num">Avg price</th>
+          <th class="num">Invoices</th><th class="num">On hand</th>
+        </tr></thead>
+        <tbody id="dOrderedTbl"><tr class="empty"><td colspan="7">—</td></tr></tbody>
+      </table></div>
+      <div style="margin-top:10px;text-align:right"><a class="btn b-gho b-sm" href="inventory.html">Open Inventory →</a></div>
     </div>
 
     <div class="tp" id="tp-items">
@@ -416,17 +429,19 @@ function notify(msg, type='ok'){const n=$('notif');n.textContent=(type==='ok'?'�
 function statusBadge(s){const c={paid:'b-paid',unpaid:'b-unpaid',partial:'b-partial',overdue:'b-overdue',cancelled:'b-cancel'}[s]||'b-cancel';return `<span class="bdg ${c}">${s||'—'}</span>`}
 function lotStatus(l){const q=Number(l.available_qty||0),m=Number(l.min_stock||l.reorder_point||0);const d=l.expiry_date?Math.round((new Date(l.expiry_date)-Date.now())/86400000):null;if(q<=0)return{cls:'b-out',lbl:'Out'};if(d!==null&&d<0)return{cls:'b-out',lbl:'Expired'};if(m>0&&q<=m)return{cls:'b-low',lbl:'Low'};return{cls:'b-lot',lbl:'OK'}}
 
-let suppliers=[], invoices=[], items=[], lots=[]
+let suppliers=[], invoices=[], items=[], lots=[], invLines=[]
 
 async function load(){
-  const [sr, ir, itR, lr] = await Promise.all([
+  const [sr, ir, itR, lr, ilR] = await Promise.all([
     sb.from('suppliers').select('*').order('name'),
     sb.from('invoices').select('*'),
     sb.from('inventory_items').select('id,name,item_name,category,category_name,preferred_supplier_id,supplier_id,unit_of_measure,unit,min_qty,min_stock,auto_requisition_enabled'),
     sb.from('inventory_lots').select('id,supplier_id,item_id,lot_no,lot_number,available_qty,unit_cost,purchase_date,received_at,expiry_date,min_stock,reorder_point'),
+    sb.from('invoice_lines').select('id,invoice_id,item_id,item_name,quantity,unit,unit_price,line_total,lot_id'),
   ])
   suppliers = sr.data || []
   invoices  = ir.data || []
+  invLines  = ilR.data || []
   items     = itR.data || []
   lots      = lr.data || []
 
@@ -563,6 +578,36 @@ window.openDetail = (id) => {
       <td>${statusBadge(i.status)}</td>
     </tr>`
   }).join('') : '<tr class="empty"><td colspan="7">No invoices for this supplier — click 🎲 Seed demo invoices at the top.</td></tr>'
+
+
+  // Items ordered — aggregate invoice_lines belonging to this supplier's invoices.
+  const supInvoiceIds = new Set(sInv.map(i => i.id))
+  const supLines = invLines.filter(l => supInvoiceIds.has(l.invoice_id))
+  const agg = new Map()   // key: item_id (or item_name)
+  supLines.forEach(l => {
+    const k = l.item_id || l.item_name || '—'
+    const r = agg.get(k) || { key: k, item_id: l.item_id, name: l.item_name || '—',
+                              unit: l.unit || '', qty: 0, spend: 0, invSet: new Set() }
+    r.qty   += Number(l.quantity || 0)
+    r.spend += Number(l.line_total || (Number(l.quantity||0) * Number(l.unit_price||0)))
+    r.invSet.add(l.invoice_id)
+    if (!r.name && l.item_id) {
+      const it = items.find(x => x.id === l.item_id); if (it) r.name = it.item_name || it.name || '—'
+    }
+    agg.set(k, r)
+  })
+  const orderedRows = [...agg.values()].sort((a,b) => b.spend - a.spend)
+  const onHandMap = {}
+  sLots.forEach(l => { onHandMap[l.item_id] = (onHandMap[l.item_id]||0) + Number(l.available_qty||0) })
+  $('dOrderedTbl').innerHTML = orderedRows.length ? orderedRows.map(r => `<tr data-clickable onclick="location.href='inventory.html'">
+    <td><strong>${esc(r.name)}</strong></td>
+    <td class="num">${r.qty.toLocaleString()}</td>
+    <td class="mono">${esc(r.unit)}</td>
+    <td class="num">€${money(r.spend)}</td>
+    <td class="num">€${money(r.qty ? r.spend/r.qty : 0)}</td>
+    <td class="num">${r.invSet.size}</td>
+    <td class="num">${(onHandMap[r.item_id] ?? 0).toLocaleString()}</td>
+  </tr>`).join('') : '<tr class="empty"><td colspan="7">No line items yet — click 🎲 Seed demo invoices at the top.</td></tr>'
 
   const itemStockMap = {}
   sLots.forEach(l => { itemStockMap[l.item_id] = (itemStockMap[l.item_id]||0) + Number(l.available_qty||0) })
