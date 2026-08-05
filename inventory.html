@@ -76,12 +76,62 @@
     .ai{padding:11px 14px;border-radius:10px;margin-bottom:8px;font-size:13px;line-height:1.5}
     .ai-r{background:var(--red-50);border:1px solid var(--red-100)}.ai-a{background:var(--amber-50);border:1px solid var(--amber-100)}
     @media(max-width:1100px){.kpig{grid-template-columns:repeat(3,1fr)}.g2,.g2e{grid-template-columns:1fr}.fg,.fg3{grid-template-columns:1fr}.sidebar{display:none}.wrap{margin-left:0}}
-  </style>
+  
+/* ─── Mobile nav (visible < 901px) ─────────────────────────────── */
+.mnav{display:none}
+@media(max-width:900px){
+  .mnav{
+    display:flex;align-items:center;gap:10px;
+    position:sticky;top:0;z-index:150;
+    background:#fff;border-bottom:1px solid #e6ebf2;
+    padding:10px 14px;
+  }
+  .mnav-logo{height:32px;display:block;flex-shrink:0}
+  .mnav-scroll{
+    display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;
+    scrollbar-width:none;flex:1
+  }
+  .mnav-scroll::-webkit-scrollbar{display:none}
+  .mnav-pill{
+    display:inline-flex;align-items:center;gap:5px;padding:7px 12px;
+    border:1px solid #d4dbe6;border-radius:999px;background:#fff;color:#64748b;
+    font:600 12px/1 'DM Sans',sans-serif;text-decoration:none;white-space:nowrap;
+    transition:all .12s
+  }
+  .mnav-pill:active{transform:scale(.96)}
+  .mnav-pill.on{background:#3b5fe2;color:#fff;border-color:#3b5fe2}
+  .mnav-out{
+    flex-shrink:0;padding:7px 10px;border:1px solid #fecaca;border-radius:999px;
+    background:#fff;color:#dc2626;font:700 12px/1 'DM Sans',sans-serif;
+    text-decoration:none;cursor:pointer
+  }
+  /* Tighten body padding on mobile so tables fit */
+  .body{padding-left:14px !important;padding-right:14px !important}
+  .topbar{padding-left:14px !important;padding-right:14px !important}
+  /* Force any table container to scroll horizontally inside its card */
+  .tw,.card,.mo{max-width:100%}
+  /* KPI tiles: 2-up on phones instead of 1-up so it stays compact */
+  .kpig{grid-template-columns:repeat(2,1fr) !important;gap:10px !important}
+  .kpi{padding:14px !important}
+  .kpi-val{font-size:20px !important}
+  /* Charts a bit shorter on mobile */
+  .chart-wrap{height:200px !important}
+  /* Any two-column dashboard row collapses to one */
+  .r-2-1,.r-1-1,.r-3-2,.g2,.g2e{grid-template-columns:1fr !important}
+  .row{grid-template-columns:1fr !important}
+}
+@media(max-width:520px){
+  .kpig{grid-template-columns:1fr !important}
+}
+
+</style>
 <script>const PAGE_KEY='inventory'</script>
 <script src="access.js"></script>
 <script src="lang.js"></script>
 </head>
 <body>
+<div class="mnav" id="mobileNav"><a href="index.html"><img class="mnav-logo" src="nn-logo.svg" alt="NN"/></a><nav class="mnav-scroll"><a class="mnav-pill" href="index.html" title="Home"><span>🏠</span><span>Home</span></a><a class="mnav-pill on" href="inventory.html" title="Inventory"><span>📦</span><span>Inventory</span></a><a class="mnav-pill" href="suppliers.html" title="Suppliers"><span>🏭</span><span>Suppliers</span></a><a class="mnav-pill" href="invoices.html" title="Invoices"><span>🧾</span><span>Invoices</span></a><a class="mnav-pill" href="employees.html" title="Employees"><span>👥</span><span>Employees</span></a><a class="mnav-pill" href="roles.html" title="Roles"><span>🛡️</span><span>Roles</span></a><a class="mnav-pill" href="audit_log.html" title="Audit"><span>📜</span><span>Audit</span></a></nav><a class="mnav-out" href="#" onclick="window.signOut&&window.signOut();return false;" title="Sign out">🚪</a></div>
+
 <aside class="sidebar">
   <div class="sb-brand" style="flex-direction:column;align-items:flex-start;gap:6px">
     <a href="index.html" style="display:block;width:100%;text-decoration:none">
