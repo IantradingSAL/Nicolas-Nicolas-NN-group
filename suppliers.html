@@ -338,6 +338,7 @@ tbody tr[data-clickable]:hover{background:#eef2ff}
       <button class="tb on" data-t="inv">🧾 Invoices</button>
       <button class="tb" data-t="ordered">🛒 Items ordered</button>
       <button class="tb" data-t="items">📦 Inventory Items</button>
+      <button class="tb" data-t="history">📅 Order history</button>
       <button class="tb" data-t="lots">🗂 Stock Lots</button>
     </div>
 
@@ -367,6 +368,19 @@ tbody tr[data-clickable]:hover{background:#eef2ff}
         <tbody id="dItemsTbl"><tr class="empty"><td colspan="6">—</td></tr></tbody>
       </table></div>
       <div style="margin-top:10px;text-align:right"><a class="btn b-gho b-sm" href="inventory.html">Open Inventory →</a></div>
+    </div>
+
+    <div class="tp" id="tp-history">
+      <div class="tw"><table>
+        <thead><tr>
+          <th>Date</th><th>Invoice #</th><th>Item</th>
+          <th class="num">Qty</th><th>Unit</th>
+          <th class="num">Unit €</th><th class="num">Line total</th>
+          <th>Status</th>
+        </tr></thead>
+        <tbody id="dHistTbl"><tr class="empty"><td colspan="8">—</td></tr></tbody>
+      </table></div>
+      <div style="margin-top:10px;text-align:right"><a class="btn b-gho b-sm" href="invoices.html">Open all invoices →</a></div>
     </div>
 
     <div class="tp" id="tp-lots">
@@ -446,6 +460,18 @@ async function load(){
   lots      = lr.data || []
 
   renderKpis(); renderBars(); renderGrid()
+}
+
+
+function topOrderedItems(supplierId, limit=3){
+  const supInvIds = new Set(invoices.filter(i=>i.supplier_id===supplierId).map(i=>i.id))
+  const agg = new Map()
+  invLines.forEach(l => {
+    if (!supInvIds.has(l.invoice_id)) return
+    const name = l.item_name || '—'
+    agg.set(name, (agg.get(name)||0) + Number(l.quantity||0))
+  })
+  return [...agg.entries()].sort((a,b)=>b[1]-a[1]).slice(0, limit).map(e => e[0])
 }
 
 const spendFor = s => invoices.filter(i=>i.supplier_id===s.id).reduce((a,i)=>a+Number(i.amount||0),0)
@@ -540,6 +566,13 @@ function renderGrid(){
         ${s.email        ? `✉️ ${esc(s.email)}<br/>`:''}
         ${s.phone        ? `📞 ${esc(s.phone)}`:''}
       </div>
+      ${(function(){
+        const top = topOrderedItems(s.id, 3)
+        if (!top.length) return ''
+        return `<div style="margin-top:10px;font-size:11.5px;color:var(--mu);line-height:1.4">
+          <span style="font-weight:700;color:var(--txt)">Ordered:</span> ${top.map(n=>esc(n)).join(' · ')}
+        </div>`
+      })()}
       <div class="sc-actions" onclick="event.stopPropagation()">
         <button class="btn b-gho b-sm" onclick="window.editSupplier('${s.id}')">✏️ Edit</button>
         <button class="btn b-gho b-sm" onclick="window.openDetail('${s.id}')">📊 Details</button>
