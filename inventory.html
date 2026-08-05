@@ -1,262 +1,1467 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Nicolas Nicolas Group — Inventory</title>
-<link rel="icon" type="image/svg+xml" href="nn-logo.svg"/>
-<script type="module" src="auth_guard.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet"/>
-<style>
-:root{--bg:#f5f5f4;--card:#fff;--bdr:#e5e7eb;--txt:#111;--mu:#6b7280;--dim:#a1a1aa;
-  --ink:#111;--graphite:#3a3a3a;--steel:#6b7280;--silver:#a1a1aa;
-  --green:#16a34a;--g50:#f0fdf4;--red:#dc2626;--r50:#fef2f2;--amber:#d97706;--a50:#fffbeb;
-  --f:'DM Sans',sans-serif;--mono:'JetBrains Mono',monospace;
-  --sh:0 1px 3px rgba(0,0,0,.07),0 0 0 1px rgba(0,0,0,.04);
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--f);background:var(--bg);color:var(--txt);min-height:100vh}
-.topbar{background:#fff;border-bottom:1px solid var(--bdr);padding:16px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
-.brand{display:flex;align-items:center;gap:14px}
-.brand img{height:56px;display:block}
-.top-actions{display:flex;gap:8px}
-.tb-btn{font:600 12px/1 var(--f);color:var(--ink);padding:8px 14px;border:1px solid #d4d4d8;border-radius:999px;background:#fff;text-decoration:none;transition:all .12s}
-.tb-btn:hover{border-color:var(--graphite)}
-.wrap{max-width:1100px;margin:0 auto;padding:28px 20px}
-.hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
-.hdr h1{font-size:22px;font-weight:800}
-.hdr .sub{font-size:13px;color:var(--mu);margin-top:2px}
-.btn{padding:10px 18px;background:var(--ink);color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .12s}
-.btn:hover{background:var(--graphite)}
-.btn-ghost{background:transparent;color:var(--ink);border:1.5px solid #d4d4d8}
-.btn-sm{padding:6px 12px;font-size:12px}
-.btn-red{background:var(--red)}
-.btn-red:hover{background:#b91c1c}
-.card{background:var(--card);border:1px solid var(--bdr);border-radius:16px;padding:22px;box-shadow:var(--sh)}
-.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;align-items:center}
-.srch{flex:1;min-width:200px;padding:9px 14px;border:1.5px solid var(--bdr);border-radius:9px;font-family:var(--f);font-size:13px;background:#fff;outline:none}
-.srch:focus{border-color:var(--graphite)}
-.tw{overflow-x:auto;border-radius:12px;border:1px solid var(--bdr)}
-table{width:100%;border-collapse:collapse}
-thead th{padding:11px 14px;font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.5px;background:#fafafa;border-bottom:1px solid var(--bdr);text-align:left}
-tbody td{padding:12px 14px;font-size:13px;border-bottom:1px solid var(--bdr)}
-tbody tr:last-child td{border:none}
-tbody tr:hover{background:#fafafa}
-.mono{font-family:var(--mono);font-size:12px}
-.badge{display:inline-flex;padding:3px 9px;border-radius:999px;font-size:10px;font-weight:700}
-.b-ok{background:var(--g50);color:var(--green)}
-.b-low{background:var(--a50);color:var(--amber)}
-.b-out{background:var(--r50);color:var(--red)}
-.empty{text-align:center;padding:60px 20px;color:var(--mu)}
-/* modal */
-.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:100;align-items:center;justify-content:center;padding:20px}
-.overlay.on{display:flex}
-.mo{background:var(--card);border-radius:16px;padding:28px;width:min(520px,95vw);max-height:90vh;overflow-y:auto}
-.mo-t{font-size:18px;font-weight:800;margin-bottom:4px}
-.mo-s{font-size:13px;color:var(--mu);margin-bottom:20px}
-.fg{display:flex;flex-direction:column;gap:12px}
-.fg2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-label{display:block;font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px}
-.fi{width:100%;padding:9px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-size:13px;font-family:inherit;background:#fafafa;outline:none}
-.fi:focus{border-color:var(--graphite);background:#fff}
-.row-btns{display:flex;gap:10px;margin-top:8px}
-</style>
-</head>
-
-<header class="topbar">
-  <div class="brand">
-    <a href="index.html"><img src="nn-logo.svg" alt="Nicolas Nicolas Group"/></a>
-  </div>
-  <div class="top-actions">
-    <a class="tb-btn" href="index.html">Home</a>
-    <a class="tb-btn" href="suppliers.html">Suppliers</a>
-    <a class="tb-btn" href="roles.html">Roles</a>
-    <a class="tb-btn" href="employees.html">Employees</a>
-  </div>
-</header>
-
-<body>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nicolas Nicolas Group — Inventory</title>
+  <link rel="icon" type="image/svg+xml" href="nn-logo.svg"/>
+  <script type="module" src="auth_guard.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#f0f4f8;--card:#fff;--border:#e2e8f0;--text:#0f172a;--muted:#64748b;--dim:#94a3b8;--blue:#3b5fe2;--blue-50:#eef2ff;--blue-100:#e0e7ff;--green:#16a34a;--green-50:#f0fdf4;--green-100:#dcfce7;--amber:#d97706;--amber-50:#fffbeb;--amber-100:#fef3c7;--red:#dc2626;--red-50:#fef2f2;--red-100:#fee2e2;--purple:#7c3aed;--purple-50:#f5f3ff;--purple-100:#ede9fe;--f:'DM Sans',sans-serif;--mono:'JetBrains Mono',monospace;--sh:0 1px 3px rgba(0,0,0,.08),0 0 0 1px rgba(0,0,0,.04)}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:var(--f);background:var(--bg);color:var(--text);min-height:100vh}
+    .sidebar{position:fixed;left:0;top:0;bottom:0;width:240px;background:var(--card);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:100;overflow-y:auto}
+    .sb-brand{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid var(--border)}
+    .sb-logo{display:block;height:56px;max-width:100%}
+    .sb-name{font-weight:700;font-size:14px}.rb{display:inline-flex;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:600;margin-top:3px;background:var(--blue-50);color:var(--blue)}
+    .sb-nav{flex:1;padding:10px}.sb-s{font-size:10px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.8px;padding:14px 8px 6px}
+    .nl{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:9px;font-size:13px;font-weight:500;color:var(--muted);text-decoration:none;transition:all .15s}
+    .nl:hover{background:var(--bg);color:var(--text)}.nl.on{background:var(--blue-50);color:var(--blue);font-weight:600}
+    .nl .ic{font-size:16px;width:20px;text-align:center}
+    .sb-foot{padding:12px 10px;border-top:1px solid var(--border)}
+    .wrap{margin-left:240px;min-height:100vh}
+    .topbar{background:var(--card);border-bottom:1px solid var(--border);padding:16px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+    .tt{font-size:20px;font-weight:700;letter-spacing:-.3px}
+    .body{padding:20px 28px 80px}
+    .btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;font-size:13px;font-weight:600;border:none;border-radius:9px;cursor:pointer;font-family:var(--f);transition:all .15s}
+    .b-pri{background:var(--blue);color:#fff}.b-pri:hover{background:#2e4fc7}
+    .b-grn{background:var(--green);color:#fff}.b-grn:hover{background:#15803d}
+    .b-gho{background:var(--card);border:1px solid var(--border);color:var(--muted)}.b-gho:hover{color:var(--text)}
+    .b-red{background:var(--red);color:#fff}.b-amb{background:var(--amber);color:#fff}
+    .b-sm{padding:5px 11px;font-size:12px}
+    .fl{display:block;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px}
+    .fi{width:100%;padding:10px 13px;border:1.5px solid var(--border);border-radius:9px;font-family:var(--f);font-size:13px;color:var(--text);background:#fff;outline:none;transition:border-color .15s}
+    .fi:focus{border-color:var(--blue)}.fi::placeholder{color:var(--dim)}
+    .fg{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+    .fg3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px}
+    .kpig{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:20px}
+    .kpi{background:var(--card);border-radius:13px;box-shadow:var(--sh);padding:15px}
+    .ki{font-size:20px;margin-bottom:7px}.kl{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
+    .kv{font-size:22px;font-weight:700;font-family:var(--mono);letter-spacing:-1px}
+    .tabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:18px}
+    .tb{padding:8px 18px;font-size:13px;font-weight:600;border:1.5px solid var(--border);background:var(--card);color:var(--muted);border-radius:9px;cursor:pointer;font-family:var(--f);transition:all .15s}
+    .tb:hover{color:var(--text)}.tb.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+    .tp{display:none}.tp.on{display:block}
+    .card{background:var(--card);border-radius:14px;box-shadow:var(--sh);padding:22px;margin-bottom:16px}
+    .ct{font-size:16px;font-weight:700;margin-bottom:4px}.cs{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:16px}
+    .tw{overflow-x:auto;border-radius:11px;border:1px solid var(--border)}
+    table{width:100%;border-collapse:collapse}
+    thead th{padding:10px 13px;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;background:#f8fafc;border-bottom:1px solid var(--border);white-space:nowrap;text-align:left}
+    tbody td{padding:12px 13px;font-size:13px;border-bottom:1px solid var(--border);vertical-align:middle}
+    tbody tr:last-child td{border:none}tbody tr:hover{background:#f8fafc}
+    .mono{font-family:var(--mono);font-size:12px}
+    .bdg{display:inline-flex;align-items:center;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:600}
+    .bg{background:var(--green-100);color:#15803d}.ba{background:var(--amber-100);color:#92400e}.br{background:var(--red-100);color:#991b1b}.bb{background:var(--blue-100);color:#1e40af}.bgy{background:#f1f5f9;color:var(--muted)}.bp{background:var(--purple-100);color:#5b21b6}
+    .sw{display:flex;flex-direction:column;gap:3px;min-width:90px}
+    .sv{font-size:13px;font-weight:700;font-family:var(--mono)}
+    .sbg{height:5px;background:var(--bg);border-radius:99px;overflow:hidden;border:1px solid var(--border)}
+    .sf{height:100%;border-radius:99px}
+    .sp{font-size:10px;color:var(--muted)}
+    .g2{display:grid;grid-template-columns:1.6fr 1fr;gap:16px}
+    .g2e{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .tbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+    .si{padding:8px 13px;border:1.5px solid var(--border);border-radius:9px;font-family:var(--f);font-size:13px;outline:none;width:200px;transition:border-color .15s}
+    .si:focus{border-color:var(--blue)}
+    .fsel{padding:8px 11px;border:1.5px solid var(--border);border-radius:9px;font-family:var(--f);font-size:13px;outline:none;width:auto;cursor:pointer}
+    .empty td{color:var(--dim)!important;text-align:center;padding:32px!important}
+    .mov{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:500;display:none;align-items:center;justify-content:center;padding:20px}
+    .mov.on{display:flex}
+    .mo{background:var(--card);border-radius:18px;padding:28px;width:100%;max-width:520px;box-shadow:0 20px 60px rgba(0,0,0,.2);max-height:90vh;overflow-y:auto}
+    .mot{font-size:18px;font-weight:700;margin-bottom:4px}.mos{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.6}
+    .mof{display:grid;gap:12px}.moa{display:flex;gap:10px;margin-top:20px;justify-content:flex-end}
+    .mer{color:var(--red);font-size:12px;margin-top:8px;min-height:16px}
+    .notif{position:fixed;bottom:24px;right:24px;padding:14px 20px;border-radius:12px;font-size:13px;font-weight:600;z-index:9999;display:none;align-items:center;gap:8px;box-shadow:0 4px 16px rgba(0,0,0,.2)}
+    .notif.on{display:flex}.notif.ok{background:#15803d;color:#fff}.notif.err{background:var(--red);color:#fff}
+    .ai{padding:11px 14px;border-radius:10px;margin-bottom:8px;font-size:13px;line-height:1.5}
+    .ai-r{background:var(--red-50);border:1px solid var(--red-100)}.ai-a{background:var(--amber-50);border:1px solid var(--amber-100)}
+    @media(max-width:1100px){.kpig{grid-template-columns:repeat(3,1fr)}.g2,.g2e{grid-template-columns:1fr}.fg,.fg3{grid-template-columns:1fr}.sidebar{display:none}.wrap{margin-left:0}}
+  </style>
 <script>const PAGE_KEY='inventory'</script>
 <script src="access.js"></script>
+<script src="lang.js"></script>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="sb-brand" style="flex-direction:column;align-items:flex-start;gap:6px">
+    <a href="index.html" style="display:block;width:100%;text-decoration:none">
+      <img class="sb-logo" src="nn-logo.svg" alt="Nicolas Nicolas Group"/>
+    </a>
+    <div style="font-size:10px;color:var(--muted);font-weight:700;letter-spacing:1.5px;text-transform:uppercase">Operations Console</div>
+  </div>
+  <nav class="sb-nav">
+    <div class="sb-s">Console</div>
+    <a href="index.html"     class="nl"><span class="ic">🏠</span>Home</a>
+    <a href="inventory.html" class="nl on"><span class="ic">📦</span>Inventory</a>
+    <a href="suppliers.html" class="nl"><span class="ic">🏭</span>Suppliers</a>
+    <div class="sb-s">People</div>
+    <a href="employees.html" class="nl"><span class="ic">👥</span>Employees</a>
+    <a href="roles.html"     class="nl"><span class="ic">🛡️</span>Roles</a>
+  </nav>
+  <div class="sb-foot">
+    <a href="index.html" class="nl"><span class="ic">←</span>Back to home</a>
+  </div>
+</aside>
 
 <div class="wrap">
-  <div class="hdr">
-    <div>
-      <h1>📦 Inventory</h1>
-      <div class="sub">Stock items, quantities and reorder alerts</div>
-    </div>
-    <button class="btn" onclick="openAdd()">+ Add Item</button>
-  </div>
+  <div class="topbar">
 
-  <div class="card">
-    <div class="toolbar">
-      <input class="srch" id="q" placeholder="Search items, SKUs, suppliers…"/>
-      <select class="fi" id="fStock" style="max-width:180px">
-        <option value="">All stock levels</option>
-        <option value="ok">In stock</option>
-        <option value="low">Low</option>
-        <option value="out">Out of stock</option>
-      </select>
+  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;flex:1">
+    <div><div class="tt">📦 Inventory Management</div><div style="font-size:12px;color:var(--muted);margin-top:3px">Stock · Add items & lots · FEFO · Requisitions</div></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn b-pri" id="btnAI">+ Add Item</button>
+      <button class="btn b-grn" id="btnAL">+ Add Stock Lot</button>
+      <button class="btn b-gho" id="btnImportItems" title="Import items from an Excel file">📥 Import Items</button>
+      <button class="btn b-gho" onclick="exportFilteredCsv()" title="Download filtered stock list as CSV">⬇ CSV</button>
+      <input type="file" id="itemsImportFile" accept=".xlsx,.xls,.csv" style="display:none"/>
+      <button class="btn b-gho" id="btnR">↻ Refresh</button>
     </div>
-    <div class="tw">
-      <table>
-        <thead>
-          <tr>
-            <th data-sortable>Item</th>
-            <th data-sortable>SKU</th>
-            <th data-sortable>Quantity</th>
-            <th data-sortable>Reorder at</th>
-            <th data-sortable>Supplier</th>
-            <th data-sortable>Status</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody id="tb">
-          <tr><td colspan="7" class="empty">Loading inventory…</td></tr>
-        </tbody>
+  </div>
+</div>
+<div class="body">
+
+<!-- PRINT HEADER — shows only when printing -->
+<div class="print-header" style="display:none">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:0 0 16px 0;border-bottom:2px solid #0f172a;margin-bottom:20px">
+    <div style="display:flex;align-items:center;gap:16px">
+      <img src="nn-logo.svg" style="height:56px;object-fit:contain" alt="Nicolas Nicolas Group"/>
+      <div style="border-left:2px solid #e2e8f0;padding-left:16px">
+        <div style="font-size:16px;font-weight:800;color:#0f172a">Nicolas Nicolas Group</div>
+        <div style="font-size:11px;color:#64748b;margin-top:2px">Operations Console — Inventory Report</div>
+      </div>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:11px;color:#64748b">Printed on</div>
+      <div style="font-size:12px;font-weight:700;color:#0f172a" id="printDate"></div>
+    </div>
+  </div>
+</div>
+<script>
+  document.getElementById('printDate') && (document.getElementById('printDate').textContent = new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'long',year:'numeric'}))
+</script>
+
+    <div class="kpig">
+      <div class="kpi"><div class="ki">📦</div><div class="kl">Lots</div><div class="kv" id="kLots">—</div></div>
+      <div class="kpi"><div class="ki">🗂</div><div class="kl">Items</div><div class="kv" id="kItems">—</div></div>
+      <div class="kpi"><div class="ki">💰</div><div class="kl">Value</div><div class="kv" id="kVal" style="font-size:16px">—</div></div>
+      <div class="kpi"><div class="ki">⚠</div><div class="kl">Low Stock</div><div class="kv" id="kLow" style="color:#dc2626">—</div></div>
+      <div class="kpi"><div class="ki">⏰</div><div class="kl">Near Expiry</div><div class="kv" id="kExp" style="color:#d97706">—</div></div>
+      <div class="kpi"><div class="ki">📋</div><div class="kl">Open Req.</div><div class="kv" id="kReq" style="color:#3b5fe2">—</div></div>
+    </div>
+    <div class="tabs">
+      <button class="tb on" data-t="stock">📦 Stock</button>
+      <button class="tb" data-t="items">🗂 Items</button>
+      <button class="tb" data-t="reqs">📋 Requisitions</button>
+      <button class="tb" data-t="pos">📤 Purchase Orders</button>
+      <button class="tb" data-t="fefo">🔄 FEFO Consume</button>
+      <button class="tb" data-t="bom">⚗️ BOM</button>
+      <button class="tb" data-t="autoreq">🧮 Auto-Requisition</button>
+    </div>
+
+    <!-- STOCK -->
+    <div class="tp on" id="tp-stock">
+      <div class="g2">
+        <div>
+          <div class="card">
+            <!-- Saved views: inline chip row -->
+            <div id="savedViewsMount" style="margin-bottom:10px"></div>
+            <div class="tbar">
+              <input class="si" id="sSearch" placeholder="🔍  Search item, lot…"/>
+              <select class="fsel" id="sStatus"><option value="all">All Status</option><option value="available">Available</option><option value="low">Low Stock</option><option value="out">Out of Stock</option><option value="near_expiry">Near Expiry</option><option value="expired">Expired</option></select>
+              <select class="fsel" id="sCat"><option value="all">All Categories</option></select>
+            </div>
+            <div class="tw"><table>
+              <thead><tr><th>Item</th><th>Lot No.</th><th>Stock</th><th>Unit Cost</th><th>Value</th><th>Expiry</th><th>Location</th><th>Status</th><th></th></tr></thead>
+              <tbody id="tStock"><tr class="empty"><td colspan="9">Loading…</td></tr></tbody>
+            </table></div>
+          </div>
+        </div>
+        <div>
+          <div class="card"><div class="ct" style="margin-bottom:12px">⚠ Alerts</div><div id="dAlerts"><div style="color:var(--dim);font-size:13px">Loading…</div></div></div>
+          <div class="card"><div class="ct" style="margin-bottom:12px">📜 Recent Activity</div><div id="dActivity"><div style="color:var(--dim);font-size:13px">Loading…</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ITEMS -->
+    <div class="tp" id="tp-items">
+      <div class="card">
+        <div class="ct">🗂 Items Catalogue</div>
+        <div class="cs">All inventory items. Click Edit to update settings, or + Lot to add stock.</div>
+        <div class="tw"><table>
+          <thead><tr><th>Item Name</th><th>Category</th><th>Unit</th><th>Min</th><th>Max</th><th>Monthly Use</th><th>Lead Time</th><th>Storage</th><th>Auto Req</th><th>Current Stock</th><th>Created By</th><th>Actions</th></tr></thead>
+          <tbody id="tItems"><tr class="empty"><td colspan="12">Loading…</td></tr></tbody>
+        </table></div>
+      </div>
+    </div>
+
+    <!-- REQUISITIONS -->
+    <div class="tp" id="tp-reqs">
+      <div class="g2e">
+        <div>
+          <div class="card">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+              <div class="ct">📋 Queue</div>
+              <div style="display:flex;gap:8px">
+                <button class="btn b-gho b-sm" id="btnSendPO">📤 Send POs</button>
+                <button class="btn b-pri b-sm" id="btnAutoR">⚡ Auto-Generate</button>
+              </div>
+            </div>
+            <div id="dReqs"><div style="color:var(--dim);font-size:13px">Loading…</div></div>
+          </div>
+        </div>
+        <div>
+          <div class="card">
+            <div class="ct" style="margin-bottom:14px">➕ New Requisition</div>
+            <div style="display:grid;gap:11px">
+              <div><label class="fl">Item Name *</label><input class="fi" id="nrItem" placeholder="e.g. Resin"/></div>
+              <div class="fg">
+                <div><label class="fl">Quantity *</label><input class="fi" id="nrQty" type="number" min="0.01" step="0.01"/></div>
+                <div><label class="fl">Priority</label><select class="fi" id="nrPri"><option value="normal">Normal</option><option value="high">High</option><option value="urgent">Urgent</option></select></div>
+              </div>
+              <div><label class="fl">Requested By</label><input class="fi" id="nrBy" placeholder="Name"/></div>
+              <div><label class="fl">Notes</label><textarea class="fi" id="nrNote" style="min-height:55px;resize:vertical" placeholder="Reason…"></textarea></div>
+            </div>
+            <button class="btn b-pri" style="width:100%;justify-content:center;margin-top:12px" id="btnSubR">Submit</button>
+          </div>
+          <div class="card">
+            <div class="ct" style="margin-bottom:14px">✏️ Update Status</div>
+            <div style="display:grid;gap:10px">
+              <div><label class="fl">Requisition ID</label><input class="fi" id="raId" placeholder="Paste ID from queue…"/></div>
+              <div><label class="fl">Actor</label><input class="fi" id="raAct" placeholder="Manager name"/></div>
+              <div><label class="fl">Note</label><input class="fi" id="raNote" placeholder="Optional"/></div>
+            </div>
+            <div class="fg3" style="margin-top:12px">
+              <button class="btn b-grn b-sm" style="justify-content:center" id="btnApp">✓ Approve</button>
+              <button class="btn b-amb b-sm" style="justify-content:center" id="btnFul">📦 Fulfill</button>
+              <button class="btn b-red b-sm" style="justify-content:center" id="btnRej">✗ Reject</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PURCHASE ORDERS -->
+    <div class="tp" id="tp-pos">
+      <div class="card" id="poSetupCard" style="display:none;margin-bottom:14px;border-left:3px solid #f59e0b">
+        <div class="ct" style="margin-bottom:10px">⚠️ Needs setup before POs can send</div>
+        <div id="poSetup" style="font-size:13px;color:var(--muted)"></div>
+      </div>
+      <div class="card">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+          <div class="ct">📤 Purchase Orders</div>
+          <select id="poFilter" class="fsel" style="max-width:170px">
+            <option value="">All statuses</option>
+            <option value="sent">Sent</option>
+            <option value="received">Received</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+        </div>
+        <div style="overflow:auto">
+          <table style="width:100%;border-collapse:collapse;font-size:13px">
+            <thead><tr style="text-align:left;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.4px">
+              <th style="padding:8px 10px">PO #</th><th style="padding:8px 10px">Supplier</th>
+              <th style="padding:8px 10px">Items</th><th style="padding:8px 10px;text-align:right">Total</th>
+              <th style="padding:8px 10px">Email</th><th style="padding:8px 10px">Status</th>
+              <th style="padding:8px 10px">Created</th><th style="padding:8px 10px">Actions</th>
+            </tr></thead>
+            <tbody id="tPOs"><tr><td colspan="8" style="padding:14px;color:var(--dim)">Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- FEFO -->
+    <div class="tp" id="tp-fefo">
+      <div class="g2e">
+        <div class="card">
+          <div class="ct">🔄 FEFO Consumption</div>
+          <div class="cs">Selects the First Expired First Out lot automatically. Updates stock and logs usage.</div>
+          <div style="display:grid;gap:12px">
+            <div><label class="fl">Item *</label><select class="fi" id="fItem"><option value="">— Select item —</option></select></div>
+            <div class="fg">
+              <div><label class="fl">Quantity *</label><input class="fi" id="fQty" type="number" min="0.01" step="0.01"/></div>
+              <div><label class="fl">Unit</label><input class="fi" id="fUnit" placeholder="Auto-filled" readonly/></div>
+            </div>
+            <div class="fg">
+              <div><label class="fl">Order No.</label><input class="fi" id="fOrder" placeholder="e.g. ORD-1048"/></div>
+              <div><label class="fl">Batch ID</label><input class="fi" id="fBatch" placeholder="Optional"/></div>
+            </div>
+            <div><label class="fl">Note</label><textarea class="fi" id="fNote" style="min-height:55px;resize:vertical" placeholder="Optional…"></textarea></div>
+            <div id="fPrev" style="display:none;background:var(--amber-50);border:1px solid var(--amber-100);border-radius:10px;padding:12px;font-size:13px;line-height:1.6"></div>
+          </div>
+          <button class="btn b-amb" style="width:100%;justify-content:center;margin-top:14px" id="btnFefo">⚡ Consume via FEFO</button>
+        </div>
+        <div class="card">
+          <div class="ct" style="margin-bottom:12px">📜 Consumption Log</div>
+          <div id="dLog"><div style="color:var(--dim);font-size:13px;text-align:center;padding:20px">No consumptions yet.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⚗️ BOM — Bill of Materials -->
+    <div class="tp" id="tp-bom">
+      <div class="g2e">
+        <div>
+          <div class="card">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+              <div>
+                <div class="ct">⚗️ Bill of Materials</div>
+                <div class="cs" style="margin-bottom:0">Define how much of each material is consumed per unit produced (in-house) <strong>or per case</strong> for outsourced shipments. Used by auto-requisition. Use category <strong>🚚 Outsourcing</strong> for boxes/packaging consumed only by outsourced cases.</div>
+              </div>
+              <button class="btn b-pri b-sm" onclick="openAddBom()">+ Add Material</button>
+            </div>
+            <div class="tw"><table>
+              <thead><tr><th>Material</th><th>Category</th><th>Unit</th><th>Qty / Unit</th><th>Pack Size</th><th>Pack Unit</th><th>Reserve %</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody id="bomTbl"><tr><td colspan="9" style="text-align:center;padding:24px;color:var(--dim)">Loading BOM...</td></tr></tbody>
+            </table></div>
+          </div>
+        </div>
+        <div>
+          <div class="card" id="bomFormCard">
+            <div class="ct" style="margin-bottom:14px" id="bomFormTitle">➕ Add BOM Entry</div>
+            <div style="display:grid;gap:11px">
+              <input type="hidden" id="bomEditId"/>
+              <div><label class="fl">Material Name *</label><select class="fi" id="bomName" onchange="onBomMaterialChange()"><option value="">— Select from inventory —</option></select></div>
+              <div><label class="fl">Category</label>
+                <select class="fi" id="bomCategory">
+                  <option value="Film">Film</option>
+                  <option value="Resin">Resin</option>
+                  <option value="Packaging">Packaging</option>
+                  <option value="Cleaning">Cleaning</option>
+                  <option value="Outsourcing">🚚 Outsourcing (boxes, packaging for outsourced cases)</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div class="fg">
+                <div><label class="fl">Unit *</label><input class="fi" id="bomUnit" placeholder="sheet / liter / unit"/></div>
+                <div><label class="fl">Qty *</label><input class="fi" id="bomQtyPerAligner" type="number" step="0.001" min="0.001" placeholder="e.g. 1"/></div>
+              </div>
+              <div><label class="fl">Per *</label>
+                <select class="fi" id="bomQtyBasis">
+                  <option value="per_aligner">Per Unit (scales with unit count)</option>
+                  <option value="per_case">Per Case (fixed amount per case)</option>
+                </select>
+              </div>
+              <div class="fg">
+                <div><label class="fl">Pack Size</label><input class="fi" id="bomPackSize" type="number" step="1" min="1" placeholder="e.g. 50"/></div>
+                <div><label class="fl">Pack Unit</label><input class="fi" id="bomPackUnit" placeholder="e.g. roll / box"/></div>
+              </div>
+              <div><label class="fl">Safety Reserve %</label><input class="fi" id="bomReserve" type="number" step="1" min="0" max="100" value="10" placeholder="10"/></div>
+              <div><label class="fl">Notes</label><input class="fi" id="bomNotes" placeholder="Optional notes..."/></div>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:14px">
+              <button class="btn b-gho" style="flex:1;justify-content:center" onclick="resetBomForm()">Cancel</button>
+              <button class="btn b-pri" style="flex:2;justify-content:center" onclick="saveBom()">💾 Save Material</button>
+            </div>
+            <div id="bomErr" style="color:var(--red);font-size:12px;margin-top:8px;min-height:14px"></div>
+          </div>
+          <!-- BOM Summary -->
+          <div class="card">
+            <div class="ct" style="margin-bottom:12px">📊 BOM Summary</div>
+            <div style="font-size:12px;color:var(--muted);margin-bottom:12px">Materials needed to produce <strong>1,000 units</strong>:</div>
+            <div id="bomSummary"><div style="color:var(--dim);font-size:13px;text-align:center;padding:16px">Add BOM entries to see summary</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 🧮 AUTO-REQUISITION -->
+    <div class="tp" id="tp-autoreq">
+      <div class="card" style="margin-bottom:16px">
+        <div class="ct">🧮 Auto-Requisition Calculator</div>
+        <div class="cs">Applies BOM formulas against current inventory and generates a proforma requisition for missing materials.</div>
+
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px">
+          <div style="background:var(--blue-50);border:1px solid var(--blue-100);border-radius:12px;padding:14px;text-align:center">
+            <div style="font-size:24px;font-weight:800;font-family:var(--mono);color:var(--blue)" id="reqActiveBloom">—</div>
+            <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-top:4px">Active Cases</div>
+          </div>
+          <div style="background:var(--amber-50);border:1px solid var(--amber-100);border-radius:12px;padding:14px;text-align:center">
+            <div style="font-size:24px;font-weight:800;font-family:var(--mono);color:var(--amber)" id="reqTotalPlanned">—</div>
+            <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-top:4px">Total Units Planned</div>
+          </div>
+          <div style="background:var(--green-50);border:1px solid var(--green-100);border-radius:12px;padding:14px;text-align:center">
+            <div style="font-size:24px;font-weight:800;font-family:var(--mono);color:var(--green)" id="reqTotalProduced">—</div>
+            <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-top:4px">Already Produced</div>
+          </div>
+          <div style="background:var(--red-50);border:1px solid var(--red-100);border-radius:12px;padding:14px;text-align:center">
+            <div style="font-size:24px;font-weight:800;font-family:var(--mono);color:var(--red)" id="reqAlignersLeft">—</div>
+            <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-top:4px">Still to Produce</div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          <button class="btn b-pri" onclick="calculateRequisition()">🧮 Calculate Now</button>
+          <div style="font-size:12px;color:var(--muted)" id="reqLastCalc"></div>
+        </div>
+      </div>
+
+      <div class="card" id="reqResultCard" style="display:none">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+          <div>
+            <div class="ct">📋 Proforma Requisition</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:3px" id="reqSubTitle"></div>
+          </div>
+          <div style="display:flex;gap:8px">
+            <button class="btn b-gho b-sm" onclick="exportReqCSV()">⬇ Export CSV</button>
+            <button class="btn b-pri b-sm" onclick="saveRequisition()">💾 Save as Draft Requisition</button>
+          </div>
+        </div>
+        <div class="tw">
+          <table>
+            <thead><tr>
+              <th>Material</th><th>Unit</th>
+              <th>Qty Needed</th><th>+ Reserve</th><th>Total Needed</th>
+              <th>In Stock</th><th>To Order</th><th>Packs to Order</th>
+              <th>Status</th>
+            </tr></thead>
+            <tbody id="reqResultTbl"></tbody>
+          </table>
+        </div>
+        <div style="margin-top:16px;padding:14px;background:var(--blue-50);border:1px solid var(--blue-100);border-radius:12px;font-size:13px">
+          <strong>ℹ️ Note:</strong> This is a proforma estimate based on BOM formulas and current inventory snapshot. Approve and send to supplier after review.
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+          <div class="ct">📂 Saved Requisitions</div>
+          <span style="font-size:12px;color:var(--muted)" id="savedReqCount"></span>
+        </div>
+        <div class="tw"><table>
+          <thead><tr><th>Req #</th><th>Title</th><th>Units Base</th><th>Status</th><th>Generated By</th><th>Created</th><th>Actions</th></tr></thead>
+          <tbody id="savedReqTbl"><tr><td colspan="7" style="text-align:center;padding:24px;color:var(--dim)">No requisitions saved yet</td></tr></tbody>
+        </table></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL: ADD ITEM -->
+<div class="mov" id="mItem">
+  <div class="mo">
+    <div class="mot" id="mItemT">Add New Item</div>
+    <div class="mos">Define item details and reorder settings. Add stock lots separately.</div>
+    <input type="hidden" id="eiId"/>
+    <div class="mof">
+      <div class="fg"><div><label class="fl">Item Name *</label><input class="fi" id="iN" placeholder="e.g. Resin"/></div><div><label class="fl">Category</label><input class="fi" id="iC" placeholder="e.g. Material"/></div></div>
+      <div class="fg"><div><label class="fl">Unit of Measure</label><input class="fi" id="iU" placeholder="litres / pcs / kg"/></div><div><label class="fl">SKU</label><input class="fi" id="iSK" placeholder="Optional"/></div></div>
+      <div class="fg"><div><label class="fl">Min Qty (reorder point)</label><input class="fi" id="iMn" type="number" step="0.01" placeholder="0"/></div><div><label class="fl">Max Qty (target)</label><input class="fi" id="iMx" type="number" step="0.01" placeholder="0"/></div></div>
+      <div class="fg"><div><label class="fl">Monthly Consumption</label><input class="fi" id="iMC" type="number" step="0.01" placeholder="0"/></div><div><label class="fl">Lead Time (days)</label><input class="fi" id="iLT" type="number" placeholder="0"/></div></div>
+      <div class="fg"><div><label class="fl">Preferred Supplier</label><select class="fi" id="iSup"><option value="">— Select Supplier —</option></select></div><div><label class="fl">Auto Requisition</label><select class="fi" id="iAR"><option value="true">Enabled</option><option value="false">Disabled</option></select></div></div>
+      <div><label class="fl">Storage conditions</label><textarea class="fi" id="iStor" style="min-height:50px;resize:vertical" placeholder="e.g. Store at 15–25 °C, dry, protected from light"></textarea></div>
+      <div><label class="fl">Notes</label><textarea class="fi" id="iNt" style="min-height:55px;resize:vertical" placeholder="Optional…"></textarea></div>
+    </div>
+    <div class="moa"><button class="btn b-gho" id="cItem">Cancel</button><button class="btn b-pri" id="svItem">Save Item</button></div>
+    <div class="mer" id="eItem"></div>
+  </div>
+</div>
+
+<!-- MODAL: ADD LOT -->
+<div class="mov" id="mLot">
+  <div class="mo">
+    <div class="mot">Add Stock Lot</div>
+    <div class="mos">Record a new batch received. Stock will be immediately available.</div>
+    <div class="mof">
+      <div><label class="fl">Item *</label><select class="fi" id="lIt"><option value="">— Select item —</option></select></div>
+      <div class="fg"><div><label class="fl">Lot Number</label><input class="fi" id="lLN" placeholder="e.g. LOT-R042"/></div><div><label class="fl">Serial No.</label><input class="fi" id="lSN" placeholder="Optional"/></div></div>
+      <div class="fg"><div><label class="fl">Quantity Received *</label><input class="fi" id="lQT" type="number" step="0.01" min="0.01" placeholder="0"/></div><div><label class="fl">Unit Cost ($) *</label><input class="fi" id="lUC" type="number" step="0.01" min="0" placeholder="0.00"/></div></div>
+      <div class="fg"><div><label class="fl">Purchase Date</label><input class="fi" id="lPD" type="date"/></div><div><label class="fl">Expiry Date</label><input class="fi" id="lED" type="date"/></div></div>
+      <div class="fg"><div><label class="fl">Supplier</label><select class="fi" id="lSup"><option value="">— Select Supplier —</option></select></div><div><label class="fl">Location / Shelf</label><select class="fi" id="lLoc"><option value="">— Select Location —</option></select></div></div>
+      <div class="fg"><div><label class="fl">Min Stock (this lot)</label><input class="fi" id="lMS" type="number" step="0.01" placeholder="0"/></div><div><label class="fl">Reorder Point</label><input class="fi" id="lRP" type="number" step="0.01" placeholder="0"/></div></div>
+      <div><label class="fl">Notes</label><textarea class="fi" id="lNt" style="min-height:55px;resize:vertical" placeholder="Optional…"></textarea></div>
+    </div>
+    <div class="moa"><button class="btn b-gho" id="cLot">Cancel</button><button class="btn b-grn" id="svLot">Add Lot</button></div>
+    <div class="mer" id="eLot"></div>
+  </div>
+</div>
+
+<!-- Import Items — preview modal -->
+<div class="mov" id="mImport">
+  <div class="mo" style="max-width:900px;width:100%">
+    <div class="mot">📥 Import Items from Excel</div>
+    <div id="impInfo" style="font-size:12px;color:var(--muted);margin:6px 0 12px">No file loaded</div>
+    <div style="max-height:55vh;overflow:auto;border:1px solid var(--border);border-radius:10px">
+      <table style="width:100%;font-size:12px" id="impTbl">
+        <thead style="background:var(--bg);position:sticky;top:0"><tr>
+          <th style="padding:8px 10px;text-align:left">Item Name</th>
+          <th style="padding:8px 10px;text-align:left">Sales Description</th>
+          <th style="padding:8px 10px;text-align:left">Qty</th>
+          <th style="padding:8px 10px;text-align:left">Product Type</th>
+          <th style="padding:8px 10px;text-align:left">Action</th>
+        </tr></thead>
+        <tbody id="impTbody"></tbody>
       </table>
     </div>
+    <div class="moa" style="margin-top:12px">
+      <button class="btn b-gho" id="cImp">Cancel</button>
+      <button class="btn b-pri" id="svImp" disabled>💾 Import rows</button>
+    </div>
+    <div class="mer" id="eImp"></div>
   </div>
 </div>
 
-<div class="overlay" id="mItem">
-  <div class="mo">
-    <div class="mo-t" id="moTitle">Add Item</div>
-    <div class="mo-s">Inventory item — quantity is optional, defaults to 0</div>
-    <div class="fg">
-      <div class="fg2">
-        <div><label>Name *</label><input class="fi" id="iName" placeholder="e.g. Resin cartridge"/></div>
-        <div><label>SKU</label><input class="fi" id="iSku" placeholder="optional"/></div>
-      </div>
-      <div class="fg2">
-        <div><label>Quantity</label><input class="fi" id="iQty" type="number" step="1" placeholder="0"/></div>
-        <div><label>Reorder at</label><input class="fi" id="iReorder" type="number" step="1" placeholder="optional"/></div>
-      </div>
-      <div class="fg2">
-        <div><label>Unit</label><input class="fi" id="iUnit" placeholder="pcs, kg, box…"/></div>
-        <div><label>Preferred supplier</label><select class="fi" id="iSup"><option value="">— none —</option></select></div>
-      </div>
-      <div><label>Notes</label><textarea class="fi" id="iNotes" rows="2" style="resize:vertical"></textarea></div>
-      <div class="row-btns">
-        <button class="btn" onclick="saveItem()">💾 Save</button>
-        <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
-      </div>
-    </div>
-  </div>
-</div>
+<div class="notif" id="notif"></div>
+
+<!-- SheetJS for xlsx parsing in the browser -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
 <script type="module">
 import{createClient}from'https://esm.sh/@supabase/supabase-js@2'
 import{SUPABASE_CONFIG}from'./config.js'
 const sb=createClient(SUPABASE_CONFIG.url,SUPABASE_CONFIG.anonKey)
 
-let items=[], suppliers=[], editId=null
+// Optional: read a comma-separated list of excluded case statuses from
+// system_settings (Settings page). Falls back to a permissive default.
+async function getBloomExcluded(){
+  try{
+    const{data}=await sb.from('system_settings').select('value').eq('key','bloom_excluded_statuses').maybeSingle()
+    if(data?.value)return new Set(data.value.split(',').map(s=>s.trim()).filter(Boolean))
+  }catch(e){}
+  return new Set(['DELIVERED','ARCHIVE','CANCELLED'])
+}
 
-async function load(){
-  const [ir, sr] = await Promise.all([
-    sb.from('inventory_items').select('*').order('name'),
-    sb.from('suppliers').select('id,name').order('name'),
+// Best-effort notifications. In this fresh NN deployment there are no
+// Brevo credentials or notification_settings rows yet, so these calls
+// are no-ops. Wire real values into system_settings + notification_settings
+// when ready.
+async function checkLowStockNotify(){/* wire when notification_settings exists */}
+async function notifyLowStock(itemName,currentQty,minQty){/* wire when notification_settings + brevo_api_key exist */}
+async function notifyRequisition(itemName,qty){/* wire when notification_settings + brevo_api_key exist */}
+
+const $=id=>document.getElementById(id)
+const money=n=>Number(n||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})
+const fmtD=v=>v?new Date(v).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}):'—'
+const fdt=v=>v?new Date(v).toLocaleString('en-GB',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}):'—'
+const daysUntil=d=>{if(!d)return null;const a=new Date();a.setHours(0,0,0,0);return Math.round((new Date(d)-a)/86400000)}
+function notify(msg,type='ok'){const el=$('notif');el.textContent=(type==='ok'?'✅ ':'❌ ')+msg;el.className=`notif on ${type}`;setTimeout(()=>el.classList.remove('on'),3500)}
+function lotSt(r){const q=Number(r.available_qty||0),m=Number(r.min_qty||r.min_stock||r.reorder_point||0),d=daysUntil(r.expiry_date);if(q<=0)return'out';if(d!==null&&d<0)return'expired';if(d!==null&&d<=30)return'near_expiry';if(m>0&&q<=m)return'low';return'available'}
+function stBdg(s){const mp={available:'<span class="bdg bg">✓ Available</span>',low:'<span class="bdg ba">⚠ Low</span>',out:'<span class="bdg br">🚫 Out</span>',near_expiry:'<span class="bdg bp">⏰ Near Expiry</span>',expired:'<span class="bdg br">Expired</span>'};return mp[s]||`<span class="bdg bgy">${s}</span>`}
+function stkBar(q,mx){const p=mx>0?Math.min(100,Math.round(Number(q)/Number(mx)*100)):0;const c=Number(q)<=0?'#dc2626':p<30?'#d97706':'#16a34a';return`<div class="sw"><div class="sv" style="color:${c}">${q}</div><div class="sbg"><div class="sf" style="width:${p}%;background:${c}"></div></div><div class="sp">${p}% of max</div></div>`}
+let allLots=[],allItems=[],allReqs=[]
+let _suppliers=[], _locations=[], _suppliersReady=false
+let _supplierReadyCallbacks=[]
+
+async function loadSupplierDropdowns(){
+  try{
+    const[supR,locR]=await Promise.all([
+      sb.from('suppliers').select('id,name').order('name'),
+      sb.from('inventory_locations').select('id,location_name').order('location_name'),
+    ])
+    _suppliers=supR.data||[]
+    _locations=locR.data||[]
+  }catch(e){console.warn('supplier load:',e.message)}
+  _suppliersReady=true
+  fillSupplierDropdowns()
+  _supplierReadyCallbacks.forEach(fn=>fn())
+  _supplierReadyCallbacks=[]
+}
+function fillSupplierDropdowns(){
+  const supOpts='<option value="">— Select Supplier —</option>'+_suppliers.map(s=>`<option value="${s.id}">${s.name}</option>`).join('')
+  const locOpts='<option value="">— Select Location —</option>'+_locations.map(l=>`<option value="${l.id}">${l.location_name}</option>`).join('')
+  document.querySelectorAll('#iSup,#lSup').forEach(el=>{if(el)el.innerHTML=supOpts})
+  document.querySelectorAll('#lLoc').forEach(el=>{if(el)el.innerHTML=locOpts})
+}
+function whenSuppliersReady(fn){
+  if(_suppliersReady)fn()
+  else _supplierReadyCallbacks.push(fn)
+}
+
+async function loadAll(){
+  const _itemsRes = await sb.from('inventory_items').select('*').order('name')
+  allItems = _itemsRes.data || []
+  const[lr,rr,hr]=await Promise.all([
+    sb.from('inventory_lots_enriched_view').select('*').order('item_name'),
+    sb.from('inventory_requisitions').select('*').order('created_at',{ascending:false}).limit(30),
+    sb.from('inventory_stock_history').select('action_type,quantity,created_at,note').order('created_at',{ascending:false}).limit(8),
   ])
-  items = ir.data || []
-  suppliers = sr.data || []
-  const sel = document.getElementById('iSup')
-  sel.innerHTML = '<option value="">— none —</option>' +
-    suppliers.map(s=>`<option value="${s.id}">${s.name}</option>`).join('')
-  render()
+  loadSupplierDropdowns()
+  allLots=lr.data||[];allReqs=rr.data||[]
+  let tv=0,lc=0,ec=0
+  allLots.forEach(r=>{tv+=Number(r.available_qty||0)*Number(r.unit_cost||0);const s=lotSt(r);if(s==='low'||s==='out')lc++;if(s==='near_expiry'||s==='expired')ec++})
+  $('kLots').textContent=allLots.length;$('kItems').textContent=allItems.length;$('kVal').textContent='$'+money(tv);$('kLow').textContent=lc;$('kExp').textContent=ec;$('kReq').textContent=allReqs.filter(r=>['pending','approved'].includes(r.status)).length
+  const cats=[...new Set(allLots.map(r=>r.category_name).filter(Boolean))],sel=$('sCat'),ex=[...$('sCat').options].map(o=>o.value)
+  cats.forEach(c=>{if(!ex.includes(c)){const o=document.createElement('option');o.value=c;o.textContent=c;sel.appendChild(o)}})
+  const pops=['lIt','fItem'];pops.forEach(id=>{const s=$(id),cv=s.value;s.innerHTML='<option value="">— Select item —</option>';allItems.forEach(it=>{const iname=it.item_name||it.name||'?';const o=document.createElement('option');o.value=it.id;o.dataset.name=iname;o.dataset.unit=it.unit_of_measure||it.unit||'';o.textContent=iname+((it.unit_of_measure||it.unit)?' ('+(it.unit_of_measure||it.unit)+')':'');s.appendChild(o)});if(cv)s.value=cv})
+  const bs=$('bomName');if(bs){const bcv=bs.value;bs.innerHTML='<option value="">— Select from inventory —</option>';allItems.forEach(it=>{const iname=it.item_name||it.name||'';if(!iname)return;const o=document.createElement('option');o.value=iname;o.dataset.unit=it.unit_of_measure||it.unit||'';o.dataset.category=it.category_name||it.category||'';o.textContent=iname+((it.unit_of_measure||it.unit)?' ('+(it.unit_of_measure||it.unit)+')':'');bs.appendChild(o)});if(bcv){if(![...bs.options].some(o=>o.value===bcv)){const o=document.createElement('option');o.value=bcv;o.textContent=bcv+' (not in inventory)';bs.appendChild(o)}bs.value=bcv}}
+  rStock();rItems();rReqs();rActivity(hr.data||[]);loadPOs()
 }
-
-function statusOf(it){
-  if (!it.reorder_level && !it.quantity) return {cls:'b-gray',lbl:'—'}
-  const q = Number(it.quantity||0), r = Number(it.reorder_level||0)
-  if (q <= 0) return {cls:'b-out', lbl:'Out'}
-  if (r && q <= r) return {cls:'b-low', lbl:'Low'}
-  return {cls:'b-ok', lbl:'In stock'}
+let allPOs=[]
+async function loadPOs(){
+  const{data}=await sb.from('purchase_orders').select('*').order('created_at',{ascending:false}).limit(100)
+  allPOs=data||[];rPOs();rPOSetup()
 }
-
-function render(){
-  const q = document.getElementById('q').value.trim().toLowerCase()
-  const fs = document.getElementById('fStock').value
-  const tb = document.getElementById('tb')
-  const rows = items.filter(it=>{
-    const s = statusOf(it)
-    if (fs==='ok' && s.lbl!=='In stock') return false
-    if (fs==='low' && s.lbl!=='Low') return false
-    if (fs==='out' && s.lbl!=='Out') return false
-    if (!q) return true
-    const hay = [it.name, it.sku, (suppliers.find(x=>x.id===it.preferred_supplier_id)||{}).name].filter(Boolean).join(' ').toLowerCase()
-    return hay.includes(q)
+async function rPOSetup(){
+  const{data:sups}=await sb.from('suppliers').select('id,name,email,contact_email')
+  const noSupEmail=(sups||[]).filter(s=>!(s.email||s.contact_email))
+  const noItemSup=allItems.filter(it=>!(it.preferred_supplier_id||it.supplier_id))
+  const lnk='color:var(--blue);cursor:pointer;text-decoration:underline'
+  const parts=[]
+  if(noItemSup.length){
+    const names=noItemSup.slice(0,20).map(it=>`<a style="${lnk}" onclick="doEditItem('${it.id}')">${it.item_name||it.name||'?'}</a>`).join(', ')
+    parts.push(`<div style="margin-bottom:8px"><strong style="color:var(--text)">${noItemSup.length} item(s) without a preferred supplier</strong> — click to assign one (these are skipped when generating POs):<div style="margin-top:4px">${names}${noItemSup.length>20?` <span style="color:var(--dim)">… +${noItemSup.length-20} more</span>`:''}</div></div>`)
+  }
+  if(noSupEmail.length){
+    const names=noSupEmail.slice(0,20).map(s=>`<a style="${lnk}" href="suppliers.html#edit=${s.id}">${s.name}</a>`).join(', ')
+    parts.push(`<div><strong style="color:var(--text)">${noSupEmail.length} supplier(s) without an email</strong> — click to add one (their POs are recorded but can't be emailed):<div style="margin-top:4px">${names}${noSupEmail.length>20?` <span style="color:var(--dim)">… +${noSupEmail.length-20} more</span>`:''}</div></div>`)
+  }
+  $('poSetupCard').style.display=parts.length?'':'none'
+  $('poSetup').innerHTML=parts.join('')
+}
+function poEmailBdg(s){const m={sent:'<span class="bdg bg">✉ Sent</span>',failed:'<span class="bdg br">✉ Failed</span>',no_email:'<span class="bdg ba">No email</span>'};return m[s]||'<span class="bdg bgy">—</span>'}
+function rPOs(){
+  const f=$('poFilter').value
+  const rows=allPOs.filter(p=>!f||p.status===f)
+  $('tPOs').innerHTML=rows.length?rows.map(p=>`<tr style="border-top:1px solid var(--border);cursor:pointer" onclick="poToggle('${p.id}')">
+    <td style="padding:8px 10px;font-weight:700"><span id="poarw-${p.id}" style="color:var(--muted);font-size:10px">▶</span> ${p.po_number||'—'}</td>
+    <td style="padding:8px 10px">${p.supplier_name||'—'}<div style="font-size:11px;color:var(--muted)">${p.supplier_email||'no email'}</div></td>
+    <td style="padding:8px 10px;text-align:center">${p.item_count||0}</td>
+    <td style="padding:8px 10px;text-align:right;font-family:monospace">${Number(p.total_cost||0)?Number(p.total_cost).toLocaleString():'—'} ${p.currency||''}</td>
+    <td style="padding:8px 10px">${poEmailBdg(p.email_status)}</td>
+    <td style="padding:8px 10px">${stBdg(p.status)}</td>
+    <td style="padding:8px 10px;font-size:12px;color:var(--muted)">${fdt(p.created_at)}</td>
+    <td style="padding:8px 10px;white-space:nowrap" onclick="event.stopPropagation()">
+      ${p.supplier_email?`<button class="btn b-gho b-sm" onclick="poResend('${p.id}')">↻ Re-send</button>`:''}
+      <button class="btn b-gho b-sm" onclick="poReorder('${p.id}')">🔁 Order again</button>
+      ${p.status==='sent'?`<button class="btn b-pri b-sm" onclick="poReceive('${p.id}')">📥 Receive</button>`:''}
+    </td>
+  </tr>
+  <tr id="podtl-${p.id}" style="display:none"><td colspan="8" style="padding:0 10px 12px;background:var(--bg)"><div id="podtlc-${p.id}" style="font-size:12px;color:var(--muted);padding:8px 0">Loading lines…</div></td></tr>`).join(''):'<tr><td colspan="8" style="padding:14px;color:var(--dim)">No purchase orders yet.</td></tr>'
+}
+window.poToggle=async function(id){
+  const row=$('podtl-'+id),arw=$('poarw-'+id)
+  if(!row)return
+  const open=row.style.display!=='none'
+  row.style.display=open?'none':'';if(arw)arw.textContent=open?'▶':'▼'
+  if(!open) await loadPoDetail(id)
+}
+async function loadPoDetail(id){
+  const po=allPOs.find(p=>p.id===id)||{}
+  const editable=po.status==='sent'
+  const{data:lines}=await sb.from('purchase_order_lines').select('*').eq('po_id',id).order('created_at')
+  const c=$('podtlc-'+id);if(!c)return
+  const fnum=n=>Number(n||0).toLocaleString()
+  const head=`<thead><tr style="text-align:left;color:var(--muted)"><th style="padding:4px 8px">Item</th><th style="padding:4px 8px;text-align:right">Qty</th><th style="padding:4px 8px">Unit</th><th style="padding:4px 8px;text-align:right">Unit Cost</th><th style="padding:4px 8px;text-align:right">Line Total</th>${editable?'<th></th>':''}</tr></thead>`
+  if(!lines||!lines.length){
+    c.innerHTML='<div style="padding:6px 8px">No line items.</div>'+(editable?addLineForm(id):'')
+    return
+  }
+  const body=lines.map(l=>editable
+    ? `<tr><td style="padding:4px 8px;color:var(--text)">${l.item_name}</td>
+        <td style="padding:4px 8px;text-align:right"><input type="number" min="0" step="any" id="poq-${l.id}" value="${Number(l.quantity||0)}" style="width:84px;text-align:right" class="fsel"></td>
+        <td style="padding:4px 8px">${l.unit||'—'}</td>
+        <td style="padding:4px 8px;text-align:right"><input type="number" min="0" step="any" id="poc-${l.id}" value="${Number(l.unit_cost||0)}" style="width:90px;text-align:right" class="fsel"></td>
+        <td style="padding:4px 8px;text-align:right;font-family:monospace">${fnum(l.line_total)}</td>
+        <td style="padding:4px 8px"><button class="btn b-gho b-sm" title="Remove line" onclick="poRemoveLine('${l.id}','${id}')">✕</button></td></tr>`
+    : `<tr><td style="padding:4px 8px;color:var(--text)">${l.item_name}</td><td style="padding:4px 8px;text-align:right;font-family:monospace">${fnum(l.quantity)}</td><td style="padding:4px 8px">${l.unit||'—'}</td><td style="padding:4px 8px;text-align:right;font-family:monospace">${Number(l.unit_cost||0)?fnum(l.unit_cost):'—'}</td><td style="padding:4px 8px;text-align:right;font-family:monospace">${Number(l.line_total||0)?fnum(l.line_total):'—'}</td></tr>`
+  ).join('')
+  c.innerHTML=`<table style="width:100%;border-collapse:collapse;font-size:12px">${head}<tbody>${body}</tbody></table>`
+    +(editable?`<div style="margin-top:8px;display:flex;gap:8px;align-items:center"><button class="btn b-pri b-sm" onclick="poSaveLines('${id}')">💾 Save changes</button><span style="font-size:11px;color:var(--muted)">Edit quantities/costs, then Save. Receiving uses these amounts.</span></div>${addLineForm(id)}`:'')
+}
+function addLineForm(id){
+  return `<div style="margin-top:10px;padding-top:10px;border-top:1px dashed var(--border);display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+    <input id="poadd-name-${id}" placeholder="Add item…" class="fsel" style="min-width:160px">
+    <input id="poadd-qty-${id}" type="number" min="0" step="any" placeholder="Qty" class="fsel" style="width:80px">
+    <input id="poadd-cost-${id}" type="number" min="0" step="any" placeholder="Unit cost" class="fsel" style="width:96px">
+    <button class="btn b-gho b-sm" onclick="poAddLine('${id}')">＋ Add line</button>
+  </div>`
+}
+async function recomputePo(id){
+  const{data:lines}=await sb.from('purchase_order_lines').select('line_total').eq('po_id',id)
+  const total=(lines||[]).reduce((a,l)=>a+Number(l.line_total||0),0)
+  await sb.from('purchase_orders').update({item_count:(lines||[]).length,total_cost:total}).eq('id',id)
+}
+async function poRefreshOpen(id){
+  await loadPOs()
+  const row=$('podtl-'+id);if(row){row.style.display='';const arw=$('poarw-'+id);if(arw)arw.textContent='▼'}
+  await loadPoDetail(id)
+}
+window.poSaveLines=async function(id){
+  const{data:lines}=await sb.from('purchase_order_lines').select('id').eq('po_id',id)
+  for(const l of (lines||[])){
+    const q=$('poq-'+l.id),c=$('poc-'+l.id);if(!q||!c)continue
+    const qty=Number(q.value||0),uc=Number(c.value||0)
+    await sb.from('purchase_order_lines').update({quantity:qty,unit_cost:uc,line_total:qty*uc}).eq('id',l.id)
+  }
+  await recomputePo(id);notify('✅ Order updated');await poRefreshOpen(id)
+}
+window.poRemoveLine=async function(lineId,id){
+  await sb.from('purchase_order_lines').delete().eq('id',lineId)
+  await recomputePo(id);await poRefreshOpen(id)
+}
+window.poAddLine=async function(id){
+  const nm=$('poadd-name-'+id).value.trim(),qty=Number($('poadd-qty-'+id).value||0),uc=Number($('poadd-cost-'+id).value||0)
+  if(!nm||qty<=0){notify('Enter an item name and quantity','err');return}
+  await sb.from('purchase_order_lines').insert([{po_id:id,item_name:nm,quantity:qty,unit_cost:uc,line_total:qty*uc}])
+  await recomputePo(id);await poRefreshOpen(id)
+}
+window.poResend=async function(id){
+  notify('Re-sending PO…')
+  const r=await resendPO(sb,id)
+  notify(r.ok?'✉ PO re-sent to supplier':('Failed: '+(r.error||'')),r.ok?'ok':'err')
+  loadPOs()
+}
+window.poReorder=async function(id){
+  notify('🔁 Creating new order…')
+  const r=await reorderPO(sb,id,{createdBy:'Manager'})
+  if(!r.ok){notify('Failed: '+(r.error||''),'err');return}
+  notify(`🔁 ${r.po_number} created · ${r.emailStatus==='sent'?'emailed':r.emailStatus==='no_email'?'no supplier email':'email failed'}`)
+  loadPOs()
+}
+window.poReceive=async function(id){
+  const{data:po}=await sb.from('purchase_orders').select('*').eq('id',id).single()
+  const{data:lines}=await sb.from('purchase_order_lines').select('*').eq('po_id',id)
+  if(!lines||!lines.length){notify('PO has no lines','err');return}
+  let made=0,skip=[]
+  for(const l of lines){
+    const it=allItems.find(x=>(x.item_name||x.name||'').trim().toLowerCase()===l.item_name.trim().toLowerCase())
+    if(!it){skip.push(l.item_name);continue}
+    const{data:nl,error}=await sb.from('inventory_lots').insert([{item_id:it.id,lot_no:`${po.po_number}-${made+1}`,initial_qty:Number(l.quantity)||0,available_qty:Number(l.quantity)||0,unit_cost:Number(l.unit_cost)||0,purchase_date:new Date().toISOString().slice(0,10),supplier_id:po.supplier_id||null,notes:`Received from ${po.po_number}`}]).select().single()
+    if(error){skip.push(l.item_name+' ('+error.message+')');continue}
+    await sb.from('inventory_stock_history').insert([{lot_id:nl.id,action_type:'purchase',quantity:Number(l.quantity)||0,unit_cost:Number(l.unit_cost)||0,note:`Received via ${po.po_number}`}])
+    made++
+  }
+  await sb.from('purchase_orders').update({status:'received'}).eq('id',id)
+  if(po.source==='inventory_queue') await sb.from('inventory_requisitions').update({status:'received'}).eq('po_id',id)
+  let msg=`📥 ${po.po_number} received · ${made} lot(s) created`
+  if(skip.length)msg+=` · ${skip.length} skipped (item not in inventory)`
+  notify(msg)
+  loadAll()
+}
+function rStock(){
+  const term=$('sSearch').value.toLowerCase(),sf=$('sStatus').value,cf=$('sCat').value
+  const fl=allLots.filter(r=>{const st=lotSt(r),hay=`${r.item_name||''} ${r.lot_no||''} ${r.supplier_name||''} ${r.location_name||''} ${r.category_name||''}`.toLowerCase();return(!term||hay.includes(term))&&(sf==='all'||st===sf)&&(cf==='all'||r.category_name===cf)})
+  $('tStock').innerHTML=fl.length?fl.map(r=>{const st=lotSt(r),v=Number(r.available_qty||0)*Number(r.unit_cost||0),d=daysUntil(r.expiry_date);return`<tr>
+    <td><strong>${r.item_name||'—'}</strong><div style="font-size:11px;color:var(--muted)">${r.category_name||''}</div></td>
+    <td class="mono">${r.lot_no||'—'}</td>
+    <td>${stkBar(r.available_qty||0,r.max_qty||0)}</td>
+    <td class="mono">$${money(r.unit_cost)}</td>
+    <td class="mono" style="font-weight:700">$${money(v)}</td>
+    <td>${r.expiry_date?`<div style="font-size:12px">${fmtD(r.expiry_date)}</div><div style="font-size:10px;color:${d!==null&&d<=30?'#d97706':d!==null&&d<0?'#dc2626':'var(--dim)'}">${d!==null?(d<0?`${Math.abs(d)}d ago`:`in ${d}d`):'—'}</div>`:'—'}</td>
+    <td style="font-size:12px">${r.location_name||'—'}</td>
+    <td>${stBdg(st)}</td>
+    <td><button class="btn b-gho b-sm" onclick="doAdj('${r.id}','${(r.item_name||'').replace(/'/g,"\\'")}',${ r.available_qty||0})">Adjust</button></td>
+  </tr>`}).join(''):`<tr class="empty"><td colspan="9">No lots found.</td></tr>`
+  const al=allLots.filter(r=>['low','out','near_expiry','expired'].includes(lotSt(r))).slice(0,8)
+  $('dAlerts').innerHTML=al.length?al.map(r=>{const st=lotSt(r),d=daysUntil(r.expiry_date);const cls=st==='out'||st==='expired'?'ai-r':'ai-a';const det=st==='out'?'Out of stock':st==='expired'?`Expired ${Math.abs(d)}d ago`:st==='near_expiry'?`Expires in ${d}d`:`Low: ${r.available_qty}`;return`<div class="ai ${cls}"><strong>${r.item_name}</strong> — ${det}<div style="font-size:11px;color:var(--muted);margin-top:2px">Lot: ${r.lot_no||'—'}</div></div>`}).join(''):`<div style="color:var(--muted);font-size:13px;padding:6px">✅ All stock levels OK</div>`
+}
+function rItems(){
+  const stk={};allLots.forEach(r=>{const k=r.item_name||r.name||'';if(k){stk[k]=(stk[k]||0)+Number(r.available_qty||0)}})
+  $('tItems').innerHTML=allItems.length?allItems.map(it=>{const iname=it.item_name||it.name||'—';const s=stk[iname]||stk[it.name]||0,mn=Number(it.min_qty||it.min_stock||0),c=s<=0?'#dc2626':mn>0&&s<=mn?'#d97706':'#16a34a';return`<tr>
+    <td><strong>${iname}</strong></td><td style="font-size:12px">${it.category_name||it.category||'—'}</td><td class="mono">${it.unit_of_measure||it.unit||'—'}</td>
+    <td class="mono">${it.min_qty||0}</td><td class="mono">${it.max_qty||0}</td><td class="mono">${it.monthly_consumption||0}</td><td class="mono">${it.lead_time_days||0}d</td>
+    <td style="font-size:11px;color:var(--muted);max-width:160px" title="${(it.storage_conditions||'').replace(/"/g,'&quot;')}">${it.storage_conditions?(it.storage_conditions.length>50?it.storage_conditions.slice(0,50)+'…':it.storage_conditions):'—'}</td>
+    <td>${it.auto_requisition_enabled?'<span class="bdg bg">On</span>':'<span class="bdg br">Off</span>'}</td>
+    <td><span class="mono" style="font-weight:700;color:${c}">${s}</span></td>
+    <td style="font-size:12px;color:var(--muted)">${it.created_by||'—'}</td>
+    <td><div style="display:flex;gap:5px"><button class="btn b-gho b-sm" onclick="doEditItem('${it.id}')">✏ Edit</button><button class="btn b-grn b-sm" onclick="doAddLot('${it.id}')">+ Lot</button></div></td>
+  </tr>`}).join(''):`<tr class="empty"><td colspan="12">No items yet. Click + Add Item above.</td></tr>`
+}
+function rReqs(){
+  const op=allReqs.filter(r=>['pending','approved'].includes(r.status)),cl=allReqs.filter(r=>['sent','received','fulfilled','rejected','cancelled'].includes(r.status)).slice(0,8)
+  const mk=r=>`<div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:13px;margin-bottom:8px">
+    <div style="display:flex;justify-content:space-between;gap:8px">
+      <div><div style="font-size:14px;font-weight:700">${r.item_name}</div><div style="font-size:12px;color:var(--muted);margin-top:2px">Qty: <strong>${r.quantity_requested}</strong> · ${r.requester_name||'—'} · ${fdt(r.created_at)}</div>${r.po_number?`<div style="font-size:11px;color:var(--blue);margin-top:2px;font-weight:700">📤 ${r.po_number}</div>`:''}${r.notes?`<div style="font-size:11px;color:var(--dim);margin-top:2px">${r.notes}</div>`:''}</div>
+      <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end">${stBdg(r.status)}<span class="bdg ${r.priority==='urgent'?'br':r.priority==='high'?'ba':'bgy'}">${r.priority}</span><span class="bdg bgy" style="font-size:9px">${(r.generated_by==='auto'||r.requester_name==='Auto-Generator')?'⚡Auto':'👤Manual'}</span></div>
+    </div>
+    <div style="font-size:10px;color:var(--dim);margin-top:8px;word-break:break-all">ID: ${r.id}</div>
+  </div>`
+  $('dReqs').innerHTML=`<div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px">Open (${op.length})</div>${op.length?op.map(mk).join(''):'<div style="color:var(--dim);font-size:13px;padding:10px 0">No open requisitions.</div>'}<div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin:14px 0 8px">Recently Closed</div>${cl.length?cl.map(mk).join(''):'<div style="color:var(--dim);font-size:13px;padding:10px 0">None.</div>'}`
+}
+function rActivity(h){
+  $('dActivity').innerHTML=h.length?h.map(x=>`<div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">
+    <div style="width:28px;height:28px;border-radius:8px;background:${x.action_type==='purchase'?'#dcfce7':x.action_type==='usage'?'#fef3c7':'#f1f5f9'};display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">${x.action_type==='purchase'?'📥':x.action_type==='usage'?'📤':'⚙'}</div>
+    <div><div style="font-size:12px;font-weight:600">${x.action_type} · ${x.quantity}</div><div style="font-size:11px;color:var(--muted)">${fdt(x.created_at)}${x.note?' · '+x.note:''}</div></div>
+  </div>`).join(''):`<div style="color:var(--dim);font-size:13px">No recent activity.</div>`
+}
+$('fItem').addEventListener('change',async function(){
+  const id=this.value;const opt=this.options[this.selectedIndex];$('fUnit').value=opt?.dataset?.unit||''
+  if(!id){$('fPrev').style.display='none';return}
+  const{data:f}=await sb.rpc('get_fefo_lot',{p_item_id:id});const lot=Array.isArray(f)?f[0]:f
+  $('fPrev').style.display='block';$('fPrev').innerHTML=lot?`<strong>FEFO Lot: ${lot.lot_no||'—'}</strong><br>Available: ${lot.available_qty} · Expiry: ${fmtD(lot.expiry_date)} · Unit Cost: $${money(lot.unit_cost)}`:'⚠ No available lots for this item.'
+})
+$('btnFefo').addEventListener('click',async()=>{
+  const itemId=$('fItem').value,qty=Number($('fQty').value||0)
+  if(!itemId||qty<=0){notify('Select an item and enter quantity','err');return}
+  try{
+    const{data:it}=await sb.from('inventory_items').select('name').eq('id',itemId).single()
+    const{data:f,error:fe}=await sb.rpc('get_fefo_lot',{p_item_id:itemId});if(fe)throw fe
+    const lot=Array.isArray(f)?f[0]:f;if(!lot){notify('No available lots','err');return}
+    if(Number(lot.available_qty)<qty){notify(`Insufficient. Available: ${lot.available_qty}`,'err');return}
+    const ord=$('fOrder').value.trim(),bat=$('fBatch').value.trim(),note=$('fNote').value.trim()
+    await sb.from('inventory_lots').update({available_qty:Number(lot.available_qty)-qty}).eq('id',lot.lot_id)
+    await sb.from('inventory_stock_history').insert([{lot_id:lot.lot_id,action_type:'usage',quantity:qty,unit_cost:lot.unit_cost||0,reference_no:ord||null,production_order_no:ord||null,production_batch_id:bat||null,note:note||'FEFO consumption'}])
+    await sb.from('inventory_batch_consumption').insert([{lot_id:lot.lot_id,production_order_no:ord||null,production_batch_id:bat||null,consumed_qty:qty,note:note||'FEFO consumption'}])
+    const lg=$('dLog'),e=document.createElement('div')
+    e.style.cssText='background:var(--green-50);border:1px solid var(--green-100);border-radius:10px;padding:11px;margin-bottom:8px;font-size:13px'
+    e.innerHTML=`<strong>✅ ${it.name}</strong> — ${qty} consumed<div style="font-size:11px;color:var(--muted);margin-top:3px">Lot: ${lot.lot_no||'—'} · ${new Date().toLocaleTimeString()}</div>`
+    lg.insertBefore(e,lg.firstChild)
+    notify(`Consumed ${qty} of ${it.name}`);$('fQty').value='';$('fNote').value='';loadAll()
+  }catch(err){notify(err.message,'err')}
+})
+$('btnSubR').addEventListener('click',async()=>{
+  const item=$('nrItem').value.trim(),qty=Number($('nrQty').value||0);if(!item||qty<=0){notify('Item and quantity required','err');return}
+  const{error}=await sb.from('inventory_requisitions').insert([{requester_name:$('nrBy').value.trim()||'Manager',item_name:item,quantity_requested:qty,priority:$('nrPri').value,notes:$('nrNote').value.trim()||null,status:'pending'}])
+  if(error){notify(error.message,'err');return}
+  notify('Requisition submitted');['nrItem','nrQty','nrNote','nrBy'].forEach(id=>$(id).value='');loadAll()
+})
+$('btnSendPO').addEventListener('click',async()=>{
+  const approved=allReqs.filter(r=>r.status==='approved'&&!r.po_id)
+  if(!approved.length){notify('No approved requisitions to send — approve items first','err');return}
+  notify('📤 Generating purchase orders…')
+  const items=approved.map(r=>({item_name:r.item_name,quantity:r.quantity_requested,unit:r.unit,ref_id:r.id}))
+  const res=await createAndEmailPOs(sb,items,{source:'inventory_queue',createdBy:'Manager'})
+  for(const po of res.pos){
+    if(po.refIds.length) await sb.from('inventory_requisitions').update({status:'sent',po_id:po.id,po_number:po.po_number}).in('id',po.refIds)
+  }
+  let msg=`📤 ${res.pos.length} PO(s) created · ${res.emailed} emailed`
+  if(res.noSupplier.length) msg+=` · ${res.noSupplier.length} item(s) skipped (no preferred supplier)`
+  notify(msg)
+  if(res.failed.length) console.warn('[PO] issues:',res.failed)
+  loadAll()
+})
+$('btnAutoR').addEventListener('click',async()=>{
+  const{data,error}=await sb.rpc('generate_auto_requisitions')
+  if(error){notify(error.message,'err');return}
+  const toOrder=(data||[]).filter(r=>Number(r.qty_to_order)>0)
+  if(!toOrder.length){notify('✅ All materials sufficiently stocked — nothing to requisition');return}
+  await sb.from('inventory_requisitions').delete().eq('status','pending').eq('requester_name','Auto-Generator')
+  const rows=toOrder.map(r=>({
+    item_name:r.material_name,
+    quantity_requested:Number(r.qty_to_order)||0,
+    unit:r.unit||null,
+    requester_name:'Auto-Generator',
+    priority:'normal',
+    status:'pending',
+    notes:`Auto · need ${Math.round(Number(r.qty_needed)||0)}, in stock ${Math.round(Number(r.qty_in_stock)||0)}`
+  }))
+  const{error:ie}=await sb.from('inventory_requisitions').insert(rows)
+  if(ie){notify(ie.message,'err');return}
+  notify(`✅ ${rows.length} item(s) added to the requisition queue`)
+  loadAll()
+})
+async function updReq(status){const id=$('raId').value.trim();if(!id){notify('Paste requisition ID','err');return}
+  const act=$('raAct').value.trim(),note=$('raNote').value.trim(),p={status,notes:note||null}
+  if(status==='approved'){p.approved_by=act||null;p.approved_at=new Date().toISOString()}
+  if(status==='fulfilled')p.fulfilled_at=new Date().toISOString()
+  const{error}=await sb.from('inventory_requisitions').update(p).eq('id',id);if(error){notify(error.message,'err');return}
+  notify('Updated');$('raId').value='';loadAll()
+}
+$('btnApp').addEventListener('click',()=>updReq('approved'))
+$('btnFul').addEventListener('click',()=>updReq('fulfilled'))
+$('btnRej').addEventListener('click',()=>updReq('rejected'))
+window.doAdj=async(id,name,cur)=>{
+  const nv=prompt(`Adjust "${name}"\nCurrent: ${cur}\nNew quantity:`);if(nv===null)return
+  const q=Number(nv);if(isNaN(q)||q<0){notify('Invalid quantity','err');return}
+  const{error}=await sb.from('inventory_lots').update({available_qty:q}).eq('id',id);if(error){notify(error.message,'err');return}
+  const diff=q-cur;if(diff!==0)await sb.from('inventory_stock_history').insert([{lot_id:id,action_type:'adjustment',quantity:Math.abs(diff),note:`Manual: ${cur}→${q}`}])
+  notify(`Adjusted to ${q}`);loadAll()
+}
+window.doEditItem=(id)=>{
+  const it=allItems.find(x=>x.id===id);if(!it)return
+  $('eiId').value=id;$('mItemT').textContent='Edit Item'
+  ;['iN','iC','iU','iSK','iMn','iMx','iMC','iLT','iNt','iStor'].forEach(f=>$(f).value='')
+  $('iN').value=it.item_name||it.name||'';$('iC').value=it.category_name||it.category||'';$('iU').value=it.unit_of_measure||it.unit||''
+  $('iSK').value=it.sku||'';$('iMn').value=it.min_qty||'';$('iMx').value=it.max_qty||''
+  $('iMC').value=it.monthly_consumption||'';$('iLT').value=it.lead_time_days||''
+  $('iAR').value=it.auto_requisition_enabled?'true':'false';$('iNt').value=it.notes||''
+  $('iStor').value=it.storage_conditions||''
+  fillSupplierDropdowns();setTimeout(()=>{$('iSup').value=it.preferred_supplier_id||''},50)
+  $('mItem').classList.add('on')
+}
+window.doAddLot=(itemId)=>{$('lIt').value=itemId;$('lLN').value='LOT-'+Date.now().toString().slice(-6);$('lPD').value=new Date().toISOString().slice(0,10);$('mLot').classList.add('on')}
+$('btnAI').addEventListener('click',()=>{
+  if(!_suppliersReady) loadSupplierDropdowns()
+  whenSuppliersReady(()=>{
+    $('eiId').value='';$('mItemT').textContent='Add New Item'
+    ;['iN','iC','iU','iSK','iMn','iMx','iMC','iLT','iNt','iStor'].forEach(id=>$(id).value='')
+    $('iSup').value='';$('iAR').value='true'
+    fillSupplierDropdowns()
+    $('eItem').textContent=''
+    $('mItem').classList.add('on')
   })
-  if (!rows.length){ tb.innerHTML = '<tr><td colspan="7" class="empty">No items yet — click “+ Add Item” to create your first one</td></tr>'; return }
-  tb.innerHTML = rows.map(it=>{
-    const s = statusOf(it)
-    const sup = suppliers.find(x=>x.id===it.preferred_supplier_id)
+})
+$('cItem').addEventListener('click',()=>$('mItem').classList.remove('on'))
+$('mItem').addEventListener('click',e=>{if(e.target===$('mItem'))$('mItem').classList.remove('on')})
+$('svItem').addEventListener('click',async()=>{
+  const nm=$('iN').value.trim();if(!nm){$('eItem').textContent='Item name required';return}
+  const id=$('eiId').value
+  const _cat=$('iC').value.trim()||null,_unit=$('iU').value.trim()||'pcs'
+  const p={name:nm,item_name:nm,category_name:_cat,category:_cat,unit_of_measure:_unit,unit:_unit,sku:$('iSK').value.trim()||null,min_qty:Number($('iMn').value||0),min_stock:Number($('iMn').value||0),max_qty:Number($('iMx').value||0),monthly_consumption:Number($('iMC').value||0),lead_time_days:Number($('iLT').value||0),auto_requisition_enabled:$('iAR').value==='true',notes:$('iNt').value.trim()||null,storage_conditions:$('iStor').value.trim()||null,active:true,updated_at:new Date().toISOString()}
+  const supIdVal=$('iSup').value;if(supIdVal)p.preferred_supplier_id=supIdVal
+  if(!id) p.created_by = 'Manager'
+  try{if(id){const{error}=await sb.from('inventory_items').update(p).eq('id',id);if(error)throw error}else{const{error}=await sb.from('inventory_items').insert([p]);if(error)throw error}
+    $('mItem').classList.remove('on');notify(id?'Item updated':'Item created');loadAll()
+  }catch(err){$('eItem').textContent='❌ '+err.message;console.error('saveItem:',err)}
+})
+$('btnAL').addEventListener('click',()=>{
+  if(!_suppliersReady) loadSupplierDropdowns()
+  whenSuppliersReady(()=>{
+    ;['lIt','lSN','lQT','lUC','lED','lSup','lLoc','lMS','lRP','lNt'].forEach(id=>$(id).value='')
+    $('lLN').value='LOT-'+Date.now().toString().slice(-6)
+    $('lPD').value=new Date().toISOString().slice(0,10)
+    fillSupplierDropdowns()
+    $('mLot').classList.add('on')
+  })
+})
+$('cLot').addEventListener('click',()=>$('mLot').classList.remove('on'))
+$('mLot').addEventListener('click',e=>{if(e.target===$('mLot'))$('mLot').classList.remove('on')})
+$('svLot').addEventListener('click',async()=>{
+  const iid=$('lIt').value,qty=Number($('lQT').value||0);if(!iid||qty<=0){$('eLot').textContent='Select item and enter quantity';return}
+  try{
+    let sid=null,lid=null
+    const supVal=$('lSup').value;if(supVal)sid=supVal
+    const locVal=$('lLoc').value;if(locVal)lid=locVal
+    const p={item_id:iid,lot_no:$('lLN').value.trim()||null,serial_no:$('lSN').value.trim()||null,initial_qty:qty,available_qty:qty,unit_cost:Number($('lUC').value||0),purchase_date:$('lPD').value||null,expiry_date:$('lED').value||null,min_stock:Number($('lMS').value||0),reorder_point:Number($('lRP').value||0),reorder_qty:0,notes:$('lNt').value.trim()||null,supplier_id:sid,location_id:lid}
+    const{data:nl,error}=await sb.from('inventory_lots').insert([p]).select().single();if(error)throw error
+    await sb.from('inventory_stock_history').insert([{lot_id:nl.id,action_type:'purchase',quantity:qty,unit_cost:Number($('lUC').value||0),note:`Lot received: ${p.lot_no||'—'}`}])
+    $('mLot').classList.remove('on');notify('Stock lot added');loadAll()
+  }catch(err){$('eLot').textContent=err.message}
+})
+document.querySelectorAll('.tb').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.tb').forEach(x=>x.classList.remove('on'))
+  document.querySelectorAll('.tp').forEach(x=>x.classList.remove('on'))
+  b.classList.add('on');$('tp-'+b.dataset.t).classList.add('on')
+}))
+$('sSearch').addEventListener('input',rStock);$('sStatus').addEventListener('change',rStock);$('sCat').addEventListener('change',rStock)
+$('poFilter').addEventListener('change',rPOs)
+
+import { downloadCsv, todayIso } from './csv_export.js';
+window.exportFilteredCsv = () => {
+  const term=$('sSearch').value.toLowerCase(), sf=$('sStatus').value, cf=$('sCat').value;
+  const fl=allLots.filter(r=>{
+    const st=lotSt(r), hay=`${r.item_name||''} ${r.lot_no||''} ${r.supplier_name||''} ${r.location_name||''} ${r.category_name||''}`.toLowerCase();
+    return(!term||hay.includes(term))&&(sf==='all'||st===sf)&&(cf==='all'||r.category_name===cf);
+  });
+  downloadCsv(`inventory_${todayIso()}.csv`, [
+    { header:'Item',          get: r => r.item_name || '' },
+    { header:'Category',      get: r => r.category_name || '' },
+    { header:'Lot #',         get: r => r.lot_no || '' },
+    { header:'Batch #',       get: r => r.batch_no || '' },
+    { header:'Qty available', get: r => r.available_qty ?? '' },
+    { header:'Qty initial',   get: r => r.initial_qty ?? '' },
+    { header:'Unit',          get: r => r.unit || '' },
+    { header:'Unit Cost',     get: r => r.unit_cost ?? '' },
+    { header:'Total Value',   get: r => ((Number(r.available_qty||0)*Number(r.unit_cost||0)) || 0).toFixed(2) },
+    { header:'Received',      get: r => r.received_date || '' },
+    { header:'Expiry',        get: r => r.expiry_date || '' },
+    { header:'Supplier',      get: r => r.supplier_name || '' },
+    { header:'Location',      get: r => r.location_name || r.location || '' },
+    { header:'Status',        get: r => lotSt(r) },
+  ], fl);
+};
+
+import { mountSavedViews } from './user_views.js';
+import { createAndEmailPOs, resendPO, reorderPO } from './po.js';
+mountSavedViews({
+  sb, page: 'inventory',
+  mountEl: document.getElementById('savedViewsMount'),
+  filterIds: ['sSearch','sStatus','sCat'],
+  applyFilter: () => rStock(),
+  currentUser: sessionStorage.getItem('cw_current_emp') || localStorage.getItem('cw_current_emp') || '',
+});
+$('btnR').addEventListener('click',loadAll)
+
+// ════════════════════════════════════════════════════════
+// ⚗️ BOM — BILL OF MATERIALS
+// ════════════════════════════════════════════════════════
+let allBom = []
+let bomCaseData = [], alignerMapBom = {}, prodRecordsBom = []
+
+async function loadBom() {
+  // Cases + aligner details + production records are optional integrations
+  // (from a Bloom-style order pipeline). In fresh NN they're empty.
+  const [bomRes, casesRes, alsRes, recsRes] = await Promise.all([
+    sb.from('bom').select('*').order('category').order('material_name'),
+    sb.from('bloom_cases').select('case_id,current_status').limit(20000).then(r=>r,()=>({data:[]})),
+    sb.from('bloom_aligner_details').select('case_number,number_of_aligners,aligner_upper,aligner_lower,order_type').limit(50000).then(r=>r,()=>({data:[]})),
+    sb.from('production_records').select('case_id,aligners_produced,status').limit(5000).then(r=>r,()=>({data:[]})),
+  ])
+  allBom = bomRes.data || []
+  bomCaseData = casesRes.data || []
+  prodRecordsBom = recsRes.data || []
+  alignerMapBom = {}
+  ;(alsRes.data||[]).forEach(a=>{const k=String(a.case_number);if(!alignerMapBom[k])alignerMapBom[k]=[];alignerMapBom[k].push(a)})
+  renderBom()
+  await updateAutoReqStats()
+}
+
+function renderBom() {
+  if (!allBom.length) {
+    $('bomTbl').innerHTML = '<tr><td colspan="9" style="text-align:center;padding:32px;color:var(--dim)"><div style="font-size:32px;margin-bottom:8px">⚗️</div><div style="font-size:14px;font-weight:600;color:var(--muted)">No BOM entries yet</div><div style="font-size:12px;margin-top:4px">Add materials to define your production formula</div></td></tr>'
+    $('bomSummary').innerHTML = '<div style="color:var(--dim);font-size:13px;text-align:center;padding:16px">Add BOM entries to see summary</div>'
+    return
+  }
+  $('bomTbl').innerHTML = allBom.map(b => {
+    const basis = b.qty_basis || 'per_aligner'
+    const basisLbl = basis === 'per_case' ? '/case' : '/unit'
     return `<tr>
-      <td><strong>${it.name||'—'}</strong></td>
-      <td class="mono">${it.sku||'—'}</td>
-      <td class="mono">${it.quantity??'—'} ${it.unit||''}</td>
-      <td class="mono">${it.reorder_level??'—'}</td>
-      <td>${sup?sup.name:'—'}</td>
-      <td><span class="badge ${s.cls}">${s.lbl}</span></td>
-      <td style="text-align:right">
-        <button class="btn btn-sm btn-ghost" onclick="editItem('${it.id}')">✏️</button>
-        <button class="btn btn-sm btn-red" onclick="delItem('${it.id}')">🗑</button>
-      </td>
+      <td style="font-weight:700">${b.material_name}</td>
+      <td><span class="bdg bb">${b.category||'—'}</span></td>
+      <td class="mono">${b.unit}</td>
+      <td class="mono" style="font-weight:700;color:var(--blue)">${b.qty_per_aligner}${basisLbl}</td>
+      <td class="mono">${b.pack_size||'—'}</td>
+      <td style="font-size:12px">${b.pack_unit||'—'}</td>
+      <td class="mono">${b.safety_reserve_pct||10}%</td>
+      <td><span class="bdg ${b.active?'bg':'bgy'}">${b.active?'Active':'Inactive'}</span></td>
+      <td><div style="display:flex;gap:5px">
+        <button class="btn b-gho b-sm" onclick="editBom('${b.id}')">✏ Edit</button>
+        <button class="btn b-red b-sm" onclick="deleteBom('${b.id}')">✕</button>
+      </div></td>
     </tr>`
   }).join('')
+
+  $('bomSummary').innerHTML = allBom.filter(b=>b.active).map(b => {
+    const basis = b.qty_basis || 'per_aligner'
+    let qty, suffix
+    if (basis === 'per_case') { qty = b.qty_per_aligner; suffix = 'per case' }
+    else { qty = b.qty_per_aligner * 1000; suffix = 'per 1,000 units' }
+    const packs = b.pack_size ? Math.ceil(qty / b.pack_size) : null
+    return `<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px">
+      <span style="font-weight:600">${b.material_name}</span>
+      <span style="font-family:var(--mono);color:var(--blue);font-weight:700">${qty.toLocaleString()} ${b.unit} ${suffix}${packs?` = ${packs} ${b.pack_unit}`:''}</span>
+    </div>`
+  }).join('') || '<div style="color:var(--dim);font-size:13px;padding:10px">No active BOM entries</div>'
 }
 
-window.openAdd=()=>{
-  editId=null
-  document.getElementById('moTitle').textContent='Add Item'
-  ;['iName','iSku','iQty','iReorder','iUnit','iNotes'].forEach(id=>document.getElementById(id).value='')
-  document.getElementById('iSup').value=''
-  document.getElementById('mItem').classList.add('on')
+window.openAddBom = function() {
+  $('bomEditId').value = ''
+  $('bomFormTitle').textContent = '➕ Add BOM Entry'
+  $('bomName').value = ''; $('bomCategory').value = 'Film'
+  $('bomUnit').value = ''; $('bomQtyPerAligner').value = ''
+  $('bomQtyBasis').value = 'per_aligner'
+  $('bomPackSize').value = ''; $('bomPackUnit').value = ''
+  $('bomReserve').value = '10'; $('bomNotes').value = ''
+  $('bomErr').textContent = ''
+  $('bomName').focus()
 }
-window.editItem=(id)=>{
-  const it = items.find(x=>x.id===id); if(!it) return
-  editId=id
-  document.getElementById('moTitle').textContent='Edit Item'
-  document.getElementById('iName').value=it.name||''
-  document.getElementById('iSku').value=it.sku||''
-  document.getElementById('iQty').value=it.quantity??''
-  document.getElementById('iReorder').value=it.reorder_level??''
-  document.getElementById('iUnit').value=it.unit||''
-  document.getElementById('iNotes').value=it.notes||''
-  document.getElementById('iSup').value=it.preferred_supplier_id||''
-  document.getElementById('mItem').classList.add('on')
-}
-window.saveItem=async()=>{
-  const name = document.getElementById('iName').value.trim()
-  if(!name){ alert('Item name is required'); return }
-  const payload = {
-    name,
-    sku: document.getElementById('iSku').value.trim() || null,
-    quantity: Number(document.getElementById('iQty').value || 0),
-    reorder_level: document.getElementById('iReorder').value === '' ? null : Number(document.getElementById('iReorder').value),
-    unit: document.getElementById('iUnit').value.trim() || 'pcs',
-    notes: document.getElementById('iNotes').value.trim() || null,
-    preferred_supplier_id: document.getElementById('iSup').value || null,
+
+window.onBomMaterialChange = function() {
+  const s = $('bomName'), o = s.options[s.selectedIndex]
+  if (!o) return
+  const u = o.dataset.unit, c = o.dataset.category
+  if (u && !$('bomUnit').value.trim()) $('bomUnit').value = u
+  if (c && ['Film','Resin','Packaging','Cleaning','Outsourcing','Other'].includes(c)) {
+    $('bomCategory').value = c
+    if (c === 'Packaging' || c === 'Outsourcing') $('bomQtyBasis').value = 'per_case'
   }
-  const { error } = editId
-    ? await sb.from('inventory_items').update(payload).eq('id', editId)
-    : await sb.from('inventory_items').insert([payload])
-  if (error) { alert('Save failed: '+error.message); return }
-  closeModal(); load()
 }
-window.delItem=async(id)=>{
-  if(!confirm('Delete this item?')) return
-  const { error } = await sb.from('inventory_items').delete().eq('id',id)
-  if (error) { alert('Delete failed: '+error.message); return }
-  load()
-}
-window.closeModal=()=>document.getElementById('mItem').classList.remove('on')
-document.getElementById('mItem').addEventListener('click',e=>{if(e.target===document.getElementById('mItem'))closeModal()})
-document.getElementById('q').addEventListener('input',render)
-document.getElementById('fStock').addEventListener('change',render)
 
-load()
+window.editBom = function(id) {
+  const b = allBom.find(x=>x.id===id)
+  if (!b) return
+  $('bomEditId').value = b.id
+  $('bomFormTitle').textContent = '✏️ Edit BOM Entry'
+  const bn = $('bomName'), mn = b.material_name || ''
+  if (mn && ![...bn.options].some(o=>o.value===mn)) {
+    const o = document.createElement('option'); o.value = mn; o.textContent = mn + ' (not in inventory)'; bn.appendChild(o)
+  }
+  bn.value = mn
+  $('bomCategory').value = b.category || 'Film'
+  $('bomUnit').value = b.unit || ''
+  $('bomQtyPerAligner').value = b.qty_per_aligner || ''
+  $('bomQtyBasis').value = b.qty_basis || 'per_aligner'
+  $('bomPackSize').value = b.pack_size || ''
+  $('bomPackUnit').value = b.pack_unit || ''
+  $('bomReserve').value = b.safety_reserve_pct || 10
+  $('bomNotes').value = b.notes || ''
+  $('bomErr').textContent = ''
+}
+
+window.saveBom = async function() {
+  const name = $('bomName').value.trim()
+  const unit = $('bomUnit').value.trim()
+  const qty = parseFloat($('bomQtyPerAligner').value)
+  const basis = $('bomQtyBasis').value || 'per_aligner'
+  if (!name) { $('bomErr').textContent = 'Material name required'; return }
+  if (!unit) { $('bomErr').textContent = 'Unit required'; return }
+  if (!qty || qty <= 0) { $('bomErr').textContent = 'Qty must be > 0'; return }
+
+  const row = {
+    material_name: name, category: $('bomCategory').value,
+    unit, qty_per_aligner: qty, qty_basis: basis,
+    pack_size: parseFloat($('bomPackSize').value) || null,
+    pack_unit: $('bomPackUnit').value.trim() || null,
+    safety_reserve_pct: parseInt($('bomReserve').value) || 10,
+    notes: $('bomNotes').value.trim() || null,
+    active: true, updated_at: new Date().toISOString()
+  }
+  const id = $('bomEditId').value
+  const { error } = id
+    ? await sb.from('bom').update(row).eq('id', id)
+    : await sb.from('bom').insert(row)
+  if (error) { $('bomErr').textContent = error.message; return }
+  notify(id ? 'BOM entry updated' : 'BOM entry added')
+  resetBomForm()
+  loadBom()
+}
+
+window.resetBomForm = function() {
+  $('bomEditId').value = ''; $('bomFormTitle').textContent = '➕ Add BOM Entry'
+  $('bomName').value = ''; $('bomUnit').value = ''; $('bomQtyPerAligner').value = ''
+  $('bomQtyBasis').value = 'per_aligner'
+  $('bomPackSize').value = ''; $('bomPackUnit').value = ''; $('bomReserve').value = '10'
+  $('bomNotes').value = ''; $('bomErr').textContent = ''
+}
+
+window.deleteBom = async function(id) {
+  if (!confirm('Delete this BOM entry?')) return
+  await sb.from('bom').delete().eq('id', id)
+  notify('Deleted'); loadBom()
+}
+
+// ════════════════════════════════════════════════════════
+// 🧮 AUTO-REQUISITION
+// ════════════════════════════════════════════════════════
+let reqResults = []
+
+async function updateAutoReqStats() {
+  const _excl=await getBloomExcluded()
+  const activeCases = bomCaseData.filter(c => !_excl.has((c.current_status||'').toUpperCase()))
+  $('reqActiveBloom').textContent = activeCases.length.toLocaleString()
+
+  let totalPlanned = 0
+  activeCases.forEach(c => {
+    const als = alignerMapBom[String(c.case_id)] || []
+    const tp = als.find(a=>a.order_type==='TreatmentPlan') || als[0]
+    if (tp) totalPlanned += Number(tp.number_of_aligners)||(Number(tp.aligner_upper||0)+Number(tp.aligner_lower||0))
+  })
+  $('reqTotalPlanned').textContent = totalPlanned.toLocaleString()
+
+  const produced = prodRecordsBom
+    .filter(r=>r.status==='complete')
+    .reduce((a,r)=>a+(r.aligners_produced||0),0)
+  $('reqTotalProduced').textContent = produced.toLocaleString()
+  $('reqAlignersLeft').textContent = Math.max(0, totalPlanned - produced).toLocaleString()
+}
+
+window.calculateRequisition = async function() {
+  if (!allBom.filter(b=>b.active).length) {
+    notify('Add BOM entries first before calculating', 'err'); return
+  }
+  const { data: rows, error } = await sb.rpc('generate_auto_requisitions')
+  if (error) { notify(error.message, 'err'); return }
+  const nN = v => { const n = Number(v); return Number.isFinite(n) ? n : 0 }
+  reqResults = (rows || []).map(r => {
+    const need = nN(r.qty_needed), inStock = nN(r.qty_in_stock), toOrder = nN(r.qty_to_order)
+    return {
+      bom_id: r.bom_id || null,
+      material_name: r.material_name,
+      unit: r.unit || '',
+      qty_needed: need,
+      qty_reserve: 0,
+      qty_total: need,
+      in_stock: inStock,
+      to_order: toOrder,
+      pack_size: r.pack_size != null ? nN(r.pack_size) : null,
+      pack_unit: '',
+      packs_to_order: r.packs_to_order != null ? nN(r.packs_to_order) : null,
+      sufficient: toOrder <= 0,
+      from_bom: r.bom_id != null
+    }
+  }).sort((a,b)=> b.to_order - a.to_order)
+
+  $('reqResultCard').style.display = 'block'
+  $('reqSubTitle').textContent = `${reqResults.length} material(s) · forecast + min-stock reorder`
+  $('reqLastCalc').textContent = `Last calculated: ${new Date().toLocaleTimeString()}`
+
+  const needsOrder = reqResults.filter(r=>!r.sufficient)
+  $('reqResultTbl').innerHTML = reqResults.map(r => {
+    const stCls = r.sufficient ? 'bg' : r.to_order > 1000 ? 'br' : 'ba'
+    const stLbl = r.sufficient ? '✅ Covered' : (r.from_bom ? '⚠️ Order Needed' : '⚠️ Below Min')
+    return `<tr style="${!r.sufficient?'background:var(--amber-50)':''}">
+      <td style="font-weight:700">${r.material_name}</td>
+      <td class="mono">${r.unit}</td>
+      <td class="mono">${r.qty_needed.toLocaleString()}</td>
+      <td class="mono" style="color:var(--muted)">+${r.qty_reserve.toLocaleString()}</td>
+      <td class="mono" style="font-weight:700">${r.qty_total.toLocaleString()}</td>
+      <td class="mono" style="color:var(--green)">${r.in_stock.toLocaleString()}</td>
+      <td class="mono" style="font-weight:700;color:${r.sufficient?'var(--green)':'var(--red)'}">${r.to_order.toLocaleString()}</td>
+      <td class="mono" style="color:var(--blue)">${r.packs_to_order!=null?r.packs_to_order+(r.pack_unit?' '+r.pack_unit:''):'—'}</td>
+      <td><span class="bdg ${stCls}">${stLbl}</span></td>
+    </tr>`
+  }).join('')
+
+  if (!needsOrder.length) {
+    notify('✅ All materials covered — no purchase needed!')
+  } else {
+    notify(`⚠️ ${needsOrder.length} material(s) need ordering`)
+  }
+}
+
+window.saveRequisition = async function() {
+  if (!reqResults.length) { notify('Run calculation first', 'err'); return }
+  const nN = v => { const n = Number(v); return Number.isFinite(n) ? n : null }
+  const { data: req, error: e1 } = await sb.from('requisitions').insert({
+    title: 'Auto-Requisition ' + new Date().toLocaleDateString('en-GB'),
+    generated_by: 'auto-calculator',
+    aligners_base: nN($('reqAlignersLeft').textContent.replace(/,/g,'')) ?? 0,
+    status: 'draft'
+  }).select().single()
+  if (e1) { notify(e1.message, 'err'); return }
+
+  const lines = reqResults.map(r => ({
+    requisition_id: req.id,
+    bom_id: r.bom_id || null,
+    material_name: r.material_name,
+    unit: r.unit || null,
+    qty_needed: nN(r.qty_total),
+    qty_in_stock: nN(r.in_stock),
+    qty_to_order: nN(r.to_order),
+    pack_size: nN(r.pack_size),
+    packs_to_order: nN(r.packs_to_order)
+  }))
+  const { error: e2 } = await sb.from('requisition_lines').insert(lines)
+  if (e2) { notify(e2.message, 'err'); return }
+  notify(`✅ Requisition ${req.requisition_no||req.id.slice(0,8)} saved as draft!`)
+  loadSavedRequisitions()
+}
+
+window.exportReqCSV = function() {
+  if (!reqResults.length) return
+  const rows = [['Material','Unit','Qty Needed','+ Reserve','Total Needed','In Stock','To Order','Packs to Order','Status']]
+  reqResults.forEach(r => rows.push([r.material_name,r.unit,r.qty_needed,r.qty_reserve,r.qty_total,r.in_stock,r.to_order,r.packs_to_order||'—',r.sufficient?'Covered':'Order Needed']))
+  const csv = rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n')
+  const a = document.createElement('a'); a.href = 'data:text/csv;charset=utf-8,'+encodeURIComponent(csv)
+  a.download = `requisition-${new Date().toISOString().slice(0,10)}.csv`; a.click()
+}
+
+async function loadSavedRequisitions() {
+  const { data } = await sb.from('requisitions').select('*').order('created_at',{ascending:false}).limit(20)
+  const reqs = data || []
+  $('savedReqCount').textContent = reqs.length + ' requisitions'
+  if (!reqs.length) {
+    $('savedReqTbl').innerHTML = '<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--dim)">No requisitions saved yet</td></tr>'
+    return
+  }
+  const stCls = s => s==='approved'?'bg':s==='sent'?'bb':s==='draft'?'bgy':s==='received'?'bg':'ba'
+  $('savedReqTbl').innerHTML = reqs.map(r=>`<tr>
+    <td class="mono" style="font-weight:700;color:var(--blue)">${r.requisition_no||'—'}</td>
+    <td style="font-weight:600">${r.title||'—'}</td>
+    <td class="mono" style="text-align:center">${(r.aligners_base||0).toLocaleString()}</td>
+    <td><span class="bdg ${stCls(r.status)}">${r.status}</span></td>
+    <td style="font-size:12px">${r.generated_by||'—'}</td>
+    <td style="font-size:12px;color:var(--muted)">${r.created_at?.slice(0,10)||'—'}</td>
+    <td><div style="display:flex;gap:5px">
+      ${r.status==='draft'?`<button class="btn b-grn b-sm" onclick="approveReq('${r.id}')">✓ Approve</button>`:''}
+      <button class="btn b-gho b-sm" onclick="viewReqLines('${r.id}','${r.requisition_no||''}')">📋 View</button>
+    </div></td>
+  </tr>`).join('')
+}
+
+window.approveReq = async function(id) {
+  await sb.from('requisitions').update({status:'approved',approved_by:'Manager',approved_at:new Date().toISOString()}).eq('id',id)
+  notify('✅ Requisition approved'); loadSavedRequisitions()
+}
+
+window.viewReqLines = async function(id, reqNo) {
+  const { data } = await sb.from('requisition_lines').select('*').eq('requisition_id', id)
+  const lines = data || []
+  if (!lines.length) { notify('No lines in this requisition'); return }
+  const txt = lines.map(l=>`${l.material_name}: ${l.qty_to_order} ${l.unit} (${l.packs_to_order||'—'} packs)`).join('\n')
+  alert(`Requisition ${reqNo}\n\n${txt}`)
+}
+
+document.querySelectorAll('.tb').forEach(b => {
+  if (b.dataset.t === 'bom') b.addEventListener('click', loadBom)
+  if (b.dataset.t === 'autoreq') b.addEventListener('click', () => { loadBom(); loadSavedRequisitions() })
+})
+
+// ────────────────────────────────────────────────────────────────────
+// Import Items from xlsx / csv
+// Columns: Item Name (required), Sales Description, UPC (=qty), Product Type
+// ────────────────────────────────────────────────────────────────────
+const IMPORT_LOT_NO = 'EXCEL-IMPORT'
+
+const impFile = $('itemsImportFile')
+const impBtn  = $('btnImportItems')
+const impMo   = $('mImport')
+const impTbody= $('impTbody')
+const impInfo = $('impInfo')
+const impSave = $('svImp')
+const impCancel = $('cImp')
+const impErr  = $('eImp')
+
+let _impRows = []
+
+function normHeader(s){ return String(s||'').trim().toLowerCase().replace(/[\s_\-]+/g,'') }
+function readCell(row, keys){
+  for (const k of Object.keys(row)) {
+    const n = normHeader(k)
+    for (const want of keys) if (n === normHeader(want)) return String(row[k] ?? '').trim()
+  }
+  return ''
+}
+function parseQty(v){
+  if (v === '' || v == null) return 0
+  const n = Number(String(v).replace(/[,\s]/g,''))
+  return Number.isFinite(n) ? n : 0
+}
+
+impBtn?.addEventListener('click', () => impFile.click())
+impCancel?.addEventListener('click', () => impMo.classList.remove('on'))
+
+impFile?.addEventListener('change', async (ev) => {
+  const f = ev.target.files?.[0]
+  if (!f) return
+  try {
+    const buf = await f.arrayBuffer()
+    const wb  = XLSX.read(buf, { type: 'array' })
+    const ws  = wb.Sheets[wb.SheetNames[0]]
+    const rows = XLSX.utils.sheet_to_json(ws, { defval: '' })
+    if (!rows.length) throw new Error('Sheet is empty')
+    _impRows = rows.map(r => ({
+      item_name:         readCell(r, ['Item Name','item_name','name','ItemName']),
+      sales_description: readCell(r, ['Sales Description','description','sales_desc','Description']),
+      qty:               parseQty(readCell(r, ['UPC','qty','quantity','Qty','Quantity','available_qty','qte','Qte','stock','Stock'])),
+      product_type:      readCell(r, ['Product Type','product_type','category','Category','type','Type'])
+    })).filter(r => r.item_name)
+    if (!_impRows.length) throw new Error("No rows with a populated 'Item Name' column")
+
+    const { data: existing } = await sb.from('inventory_items').select('id,item_name,name')
+    const existByName = new Map()
+    ;(existing || []).forEach(it => {
+      const key = (it.item_name || it.name || '').toLowerCase().trim()
+      if (key) existByName.set(key, it)
+    })
+    _impRows.forEach(r => {
+      const match = existByName.get(r.item_name.toLowerCase())
+      r._existingId = match?.id || null
+    })
+
+    const newCt = _impRows.filter(r => !r._existingId).length
+    const updCt = _impRows.length - newCt
+    impInfo.textContent = `${f.name} — ${_impRows.length} rows: ${newCt} new, ${updCt} existing will be updated. Stock quantities go into a lot labelled "${IMPORT_LOT_NO}".`
+
+    impTbody.innerHTML = _impRows.slice(0, 500).map(r => `<tr>
+      <td style="padding:6px 10px;border-top:1px solid var(--border)">${r.item_name || ''}</td>
+      <td style="padding:6px 10px;border-top:1px solid var(--border);color:var(--muted)">${r.sales_description || ''}</td>
+      <td style="padding:6px 10px;border-top:1px solid var(--border);font-family:var(--mono);font-weight:700">${r.qty.toLocaleString()}</td>
+      <td style="padding:6px 10px;border-top:1px solid var(--border)">${r.product_type || ''}</td>
+      <td style="padding:6px 10px;border-top:1px solid var(--border);font-weight:700;color:${r._existingId ? 'var(--amber)' : 'var(--green)'}">${r._existingId ? '↻ Update' : '+ New'}</td>
+    </tr>`).join('')
+    if (_impRows.length > 500) impTbody.innerHTML += `<tr><td colspan="5" style="padding:10px;text-align:center;color:var(--muted)">… and ${_impRows.length - 500} more rows (all will be imported)</td></tr>`
+
+    impErr.textContent = ''
+    impSave.disabled = false
+    impMo.classList.add('on')
+  } catch (err) {
+    notify('⚠️ ' + (err.message || err), 'err')
+  } finally {
+    impFile.value = ''
+  }
+})
+
+impSave?.addEventListener('click', async () => {
+  impSave.disabled = true
+  impSave.textContent = 'Importing…'
+  impErr.textContent = ''
+  let ins = 0, upd = 0, lotsUpserted = 0, fail = 0
+  try {
+    const BATCH = 200
+    const newRows     = _impRows.filter(r => !r._existingId)
+    const updateRows  = _impRows.filter(r =>  r._existingId)
+
+    for (let i = 0; i < newRows.length; i += BATCH) {
+      const slice = newRows.slice(i, i + BATCH).map(r => ({
+        item_name:    r.item_name,
+        name:         r.item_name,
+        description:  r.sales_description || null,
+        category:     r.product_type || null,
+        category_name:r.product_type || null,
+        active: true, is_active: true
+      }))
+      const { data: inserted, error } = await sb.from('inventory_items').insert(slice).select('id,item_name,name')
+      if (error) { fail += slice.length; console.error(error); continue }
+      ins += inserted?.length || 0
+      ;(inserted || []).forEach(ex => {
+        const key = (ex.item_name || ex.name || '').toLowerCase().trim()
+        const row = newRows.find(r => r.item_name.toLowerCase() === key)
+        if (row) row._existingId = ex.id
+      })
+    }
+
+    for (const r of updateRows) {
+      const { error } = await sb.from('inventory_items').update({
+        item_name:    r.item_name,
+        name:         r.item_name,
+        description:  r.sales_description || null,
+        category:     r.product_type || null,
+        category_name:r.product_type || null,
+        updated_at:   new Date().toISOString()
+      }).eq('id', r._existingId)
+      if (error) { fail++; console.error(error); continue }
+      upd++
+    }
+
+    const withId = _impRows.filter(r => r._existingId)
+    const { data: existingLots } = await sb.from('inventory_lots')
+      .select('id,item_id')
+      .eq('lot_no', IMPORT_LOT_NO)
+    const lotByItem = new Map((existingLots || []).map(l => [l.item_id, l.id]))
+
+    for (const r of withId) {
+      const existingLotId = lotByItem.get(r._existingId)
+      let lotId = existingLotId
+      if (existingLotId) {
+        const { error } = await sb.from('inventory_lots').update({
+          item_name:     r.item_name,
+          available_qty: r.qty,
+          initial_qty:   r.qty,
+          is_active:     true,
+          updated_at:    new Date().toISOString()
+        }).eq('id', existingLotId)
+        if (error) { fail++; console.error(error); continue }
+      } else {
+        const { data: newLot, error } = await sb.from('inventory_lots').insert({
+          item_id:       r._existingId,
+          item_name:     r.item_name,
+          lot_no:        IMPORT_LOT_NO,
+          lot_number:    IMPORT_LOT_NO,
+          available_qty: r.qty,
+          initial_qty:   r.qty,
+          quantity:      r.qty,
+          is_active:     true
+        }).select('id').single()
+        if (error) { fail++; console.error(error); continue }
+        lotId = newLot?.id
+      }
+      lotsUpserted++
+      try {
+        await sb.from('inventory_stock_history').insert({
+          lot_id:      lotId,
+          item_id:     r._existingId,
+          item_name:   r.item_name,
+          action_type: 'import',
+          quantity:    r.qty,
+          note:        existingLotId ? 'Re-imported from Excel (qty updated)' : 'Imported from Excel'
+        })
+      } catch(e) { /* non-fatal */ }
+    }
+
+    notify(`✅ Import done — ${ins} added, ${upd} updated, ${lotsUpserted} stock lots synced${fail ? ', ' + fail + ' failed' : ''}`, fail ? 'err' : 'ok')
+    impMo.classList.remove('on')
+    loadAll()
+  } catch (err) {
+    impErr.textContent = err.message || String(err)
+  } finally {
+    impSave.textContent = '💾 Import rows'
+    impSave.disabled = false
+  }
+})
+
+loadAll()
 </script>
 
 <script src="table_sort.js"></script>
+
+<!-- COPYRIGHT FOOTER -->
+<div style="position:fixed;bottom:0;left:0;right:0;background:var(--card,#fff);border-top:1px solid var(--border,#e2e8f0);padding:6px 20px;display:flex;align-items:center;justify-content:space-between;font-size:10px;color:var(--dim,#94a3b8);z-index:999;font-family:'DM Sans',sans-serif">
+  <span>© 2026 <strong style="color:var(--muted,#64748b)">Nicolas Nicolas Group</strong> — Operations Console</span>
+  <span>Audit trail active · All rights reserved</span>
+</div>
+
 </body>
 </html>

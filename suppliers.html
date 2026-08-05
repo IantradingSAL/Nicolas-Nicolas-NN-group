@@ -49,13 +49,21 @@ label{display:block;font-size:11px;font-weight:700;color:var(--mu);text-transfor
 .sw-lbl{font-size:12px;font-weight:700;color:#5b21b6}
 .sw-sub{font-size:11px;color:var(--mu)}
 
-.nn-topbar{background:#fff;border-bottom:1px solid var(--bdr);padding:14px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
-.nn-brand{display:flex;align-items:center;gap:14px}
-.nn-brand img{height:56px;display:block}
-.nn-nav{display:flex;gap:8px;flex-wrap:wrap}
-.nn-nav a{font:600 12px/1 'DM Sans',sans-serif;color:#111;padding:8px 14px;border:1px solid #d4d4d8;border-radius:999px;background:#fff;text-decoration:none;transition:all .12s}
-.nn-nav a:hover{border-color:#3a3a3a}
-.nn-nav a.on{background:#111;color:#fff;border-color:#111}
+
+/* NN shared sidebar */
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:240px;background:var(--card);border-right:1px solid var(--bdr);display:flex;flex-direction:column;z-index:100;overflow-y:auto;font-family:'DM Sans',sans-serif}
+.sb-brand{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:16px 18px;border-bottom:1px solid var(--bdr)}
+.sb-logo{display:block;height:56px;max-width:100%}
+.sb-tag{font-size:10px;color:var(--mu);font-weight:700;letter-spacing:1.5px;text-transform:uppercase}
+.sb-nav{flex:1;padding:10px}
+.sb-s{font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.8px;padding:14px 8px 6px}
+.nl{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:9px;font-size:13px;font-weight:500;color:var(--mu);text-decoration:none;transition:all .15s}
+.nl:hover{background:var(--bg);color:var(--txt)}
+.nl.on{background:var(--b50);color:var(--blue);font-weight:600}
+.nl .ic{font-size:16px;width:20px;text-align:center}
+.sb-foot{padding:12px 10px;border-top:1px solid var(--bdr)}
+.wrap{margin-left:240px}
+@media(max-width:900px){.sidebar{display:none}.wrap{margin-left:0}}
 </style>
 </head>
 <body>
@@ -63,18 +71,28 @@ label{display:block;font-size:11px;font-weight:700;color:var(--mu);text-transfor
 <script>PAGE_KEY='suppliers'</script>
 
 
-<header class="nn-topbar">
-  <div class="nn-brand">
-    <a href="index.html"><img src="nn-logo.svg" alt="Nicolas Nicolas Group"/></a>
+
+
+<aside class="sidebar">
+  <div class="sb-brand">
+    <a href="index.html" style="display:block;width:100%;text-decoration:none">
+      <img class="sb-logo" src="nn-logo.svg" alt="Nicolas Nicolas Group"/>
+    </a>
+    <div class="sb-tag">Operations Console</div>
   </div>
-  <nav class="nn-nav">
-    <a href="index.html">Home</a>
-    <a href="inventory.html">Inventory</a>
-    <a href="suppliers.html" class="on">Suppliers</a>
-    <a href="roles.html">Roles</a>
-    <a href="employees.html">Employees</a>
+  <nav class="sb-nav">
+    <div class="sb-s">Console</div>
+    <a href="index.html"     class="nl"><span class="ic">🏠</span>Home</a>
+    <a href="inventory.html" class="nl"><span class="ic">📦</span>Inventory</a>
+    <a href="suppliers.html" class="nl on"><span class="ic">🏭</span>Suppliers</a>
+    <div class="sb-s">People</div>
+    <a href="employees.html" class="nl"><span class="ic">👥</span>Employees</a>
+    <a href="roles.html"     class="nl"><span class="ic">🛡️</span>Roles</a>
   </nav>
-</header>
+  <div class="sb-foot">
+    <a href="index.html" class="nl"><span class="ic">←</span>Back to home</a>
+  </div>
+</aside>
 
 <div class="wrap">
   <div class="hdr">
