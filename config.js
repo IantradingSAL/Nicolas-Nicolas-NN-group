@@ -1,14 +1,12 @@
 // Supabase connection config for Nicolas Nicolas Group.
 //
-// PLACEHOLDER — replace url and anonKey with the values from your
-// Supabase project (Project Settings → API), then commit.
-//
-// Until real values are provided, the pages will render but any
-// database call will fail with a network error, and the audit
-// logger will queue events in localStorage instead of writing
-// them to the `audit_log` table.
+// Wired to the "IantradingSAL's Project" Supabase project — the same
+// production database used by the wider Bloom / Cedarwings app. Any
+// supplier / inventory / employee / role written from the NN pages
+// lands directly in that production database. Point elsewhere by
+// swapping the values below.
 
 export const SUPABASE_CONFIG = {
-  url:     'https://REPLACE_ME.supabase.co',
-  anonKey: 'REPLACE_ME_ANON_KEY',
+  url:     'https://onjbwhkmmtqnymhjnplw.supabase.co',
+  anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9uamJ3aGttbXRxbnltaGpucGx3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ4MDY4MjUsImV4cCI6MjA5MDM4MjgyNX0.lhlsRdOqVHZuOXCJa0lCNuZkYJHhf1AZ_zOwqHHAeG4',
 }
