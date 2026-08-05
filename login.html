@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Sign in — Nicolas Nicolas Group</title>
+<link rel="icon" type="image/svg+xml" href="nn-logo.svg"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#f0f4f8;--card:#fff;--bdr:#e2e8f0;--txt:#0f172a;--mu:#64748b;--dim:#94a3b8;
+  --blue:#3b5fe2;--b50:#eef2ff;--green:#16a34a;--red:#dc2626;--r50:#fef2f2;
+  --f:'DM Sans','Helvetica Neue',Arial,sans-serif;
+  --sh:0 1px 3px rgba(0,0,0,.08),0 0 0 1px rgba(0,0,0,.04);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:var(--f);color:var(--txt);
+  min-height:100vh;
+  background:
+    radial-gradient(1000px 500px at 100% -10%, rgba(107,114,128,.10), transparent 60%),
+    radial-gradient(800px  460px at -10% 110%, rgba(17,17,17,.06), transparent 60%),
+    linear-gradient(180deg,#fafafa 0%,#f4f4f5 100%);
+  display:flex;align-items:center;justify-content:center;padding:20px
+}
+.card{
+  background:var(--card);border-radius:20px;box-shadow:var(--sh),0 20px 60px rgba(0,0,0,.06);
+  padding:36px 32px 30px;width:100%;max-width:400px
+}
+.brand{display:flex;flex-direction:column;align-items:center;margin-bottom:22px}
+.brand img{height:60px;display:block}
+.tag{font-size:10px;color:var(--mu);font-weight:700;letter-spacing:1.8px;text-transform:uppercase;margin-top:8px}
+h1{font-size:20px;font-weight:800;letter-spacing:-.3px;margin-bottom:4px;text-align:center}
+.sub{font-size:13px;color:var(--mu);text-align:center;margin-bottom:22px}
+label{display:block;font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px}
+.fi{width:100%;padding:11px 14px;border:1.5px solid var(--bdr);border-radius:10px;font-family:var(--f);font-size:14px;color:var(--txt);background:#fff;outline:none;transition:border-color .15s}
+.fi:focus{border-color:var(--blue)}
+.fg{margin-bottom:14px}
+.btn{width:100%;padding:12px 18px;background:var(--blue);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .12s;margin-top:6px}
+.btn:hover{background:#2e4fc7}
+.btn:disabled{opacity:.6;cursor:not-allowed}
+.err{background:var(--r50);border:1px solid #fecaca;color:var(--red);padding:10px 12px;border-radius:9px;font-size:12px;line-height:1.5;margin-top:12px;display:none}
+.err.on{display:block}
+.hint{font-size:12px;color:var(--dim);text-align:center;margin-top:16px;line-height:1.5}
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="brand">
+    <img src="nn-logo.svg" alt="Nicolas Nicolas Group"/>
+    <div class="tag">Operations Console</div>
+  </div>
+  <h1>Sign in</h1>
+  <div class="sub">Use the credentials your admin created for you.</div>
+
+  <form id="loginForm" autocomplete="on">
+    <div class="fg">
+      <label for="email">Email</label>
+      <input class="fi" type="email" id="email" name="email" autocomplete="username" required autofocus/>
+    </div>
+    <div class="fg">
+      <label for="password">Password</label>
+      <input class="fi" type="password" id="password" name="password" autocomplete="current-password" required/>
+    </div>
+    <button class="btn" type="submit" id="btn">Sign in →</button>
+    <div class="err" id="err"></div>
+  </form>
+
+  <div class="hint">Every sign-in and every action is written to the audit log.</div>
+</div>
+
+<script type="module">
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import { SUPABASE_CONFIG } from './config.js'
+const sb = createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey)
+
+// If already signed in, skip login and go straight to the console.
+const nextUrl = new URLSearchParams(location.search).get('next') || 'index.html'
+;(async () => {
+  const { data } = await sb.auth.getSession()
+  if (data?.session) location.replace(nextUrl)
+})()
+
+const form = document.getElementById('loginForm')
+const btn  = document.getElementById('btn')
+const err  = document.getElementById('err')
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault()
+  err.classList.remove('on')
+  btn.disabled = true
+  btn.textContent = 'Signing in…'
+  const email = document.getElementById('email').value.trim()
+  const password = document.getElementById('password').value
+  const { error } = await sb.auth.signInWithPassword({ email, password })
+  if (error) {
+    err.textContent = error.message
+    err.classList.add('on')
+    btn.disabled = false
+    btn.textContent = 'Sign in →'
+    return
+  }
+  location.replace(nextUrl)
+})
+</script>
+
+</body>
+</html>
