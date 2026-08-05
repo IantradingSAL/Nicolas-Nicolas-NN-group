@@ -326,10 +326,19 @@ let allRoles=[], editId=null;
 // see it read-only. RLS enforces this server-side too.
 
 async function load(){
-  const r=await sb.from('role_templates').select('*').order('created_at');
-  allRoles=r.data||[];
-  renderRoles();
-  renderMatrix();
+  try{
+    const r=await sb.from('role_templates').select('*').order('created_at');
+    if(r.error) throw r.error;
+    allRoles=r.data||[];
+    renderRoles();
+    renderMatrix();
+  }catch(e){
+    console.error('[roles] load failed:', e);
+    const msg = (e && (e.message||e.error_description||String(e))) || 'Unknown error';
+    const box = `<div style="text-align:center;color:#dc2626;padding:24px;font-size:13px"><strong>Load failed</strong><div style="color:var(--mu);margin-top:6px;font-family:var(--mono);font-size:12px">${msg}</div></div>`;
+    const rl = document.getElementById('rolesList'); if(rl) rl.innerHTML = box;
+    const mw = document.getElementById('matrixWrap'); if(mw) mw.innerHTML = box;
+  }
 }
 
 function renderRoles(){
