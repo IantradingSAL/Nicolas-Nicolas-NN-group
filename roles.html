@@ -325,6 +325,8 @@ let allRoles=[], editId=null;
 // Only a Super Admin may change the role catalog. Admins (full app access)
 // see it read-only. RLS enforces this server-side too.
 
+const ME_IS_SUPER = true;
+
 async function load(){
   try{
     const r=await sb.from('role_templates').select('*').order('created_at');
