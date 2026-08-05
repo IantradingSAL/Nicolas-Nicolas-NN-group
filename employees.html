@@ -205,8 +205,8 @@ tbody tr:hover{background:#f8fafc}
 
     <div class="fg2">
       <div>
-        <label class="fl">Email <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:10px">(optional — for notifications)</span></label>
-        <input class="fi" id="fEmail" type="email" placeholder="youssef@nicolasgroup.com" autocomplete="off" autocapitalize="off" spellcheck="false"/>
+        <label class="fl">Email * <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:10px">(used to sign in)</span></label>
+        <input class="fi" id="fEmail" type="email" placeholder="youssef@nicolasgroup.com" autocomplete="off" autocapitalize="off" spellcheck="false" required/>
       </div>
       <div>
         <label class="fl">Phone <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:10px">(optional)</span></label>
@@ -604,7 +604,8 @@ document.getElementById('saveBtn').addEventListener('click',async()=>{
   if(!selPrimary)return setErr('Select a primary role')
   if(!username)return setErr('Username is required')
   if(!/^[a-z0-9._-]{2,}$/.test(username))return setErr('Username: lowercase letters, digits, . _ - only, min 2 chars')
-  if(email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))return setErr('Email looks invalid')
+  if(!email) return setErr('Email is required — the employee signs in with it')
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))return setErr('Email looks invalid')
   const needsAuth=!existing||!existing.auth_user_id
   if(needsAuth&&password.length<6)return setErr('Password must be at least 6 characters')
   if(!needsAuth&&password&&password.length<6)return setErr('New password must be at least 6 characters')
@@ -633,9 +634,8 @@ document.getElementById('saveBtn').addEventListener('click',async()=>{
   try{
     let authUserId=existing?.auth_user_id||null
     if(needsAuth){
-      // Use the real Email if provided, otherwise synthetic <username>@nicolasgroup.local
-      const authEmail=email||toEmail(username)
-      const res=await adminUser({action:'create',email:authEmail,password,name,role:sysRole})
+      // Email is required — that's what the employee will type on the login screen.
+      const res=await adminUser({action:'create',email,password,name,role:sysRole})
       authUserId=res?.id||res?.user?.id
       if(!authUserId)throw new Error('Auth creation failed — no id returned')
     }else if(password){
