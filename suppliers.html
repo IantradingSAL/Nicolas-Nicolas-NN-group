@@ -48,11 +48,33 @@ label{display:block;font-size:11px;font-weight:700;color:var(--mu);text-transfor
 .sw input{width:16px;height:16px;accent-color:#7c3aed}
 .sw-lbl{font-size:12px;font-weight:700;color:#5b21b6}
 .sw-sub{font-size:11px;color:var(--mu)}
+
+.nn-topbar{background:#fff;border-bottom:1px solid var(--bdr);padding:14px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.nn-brand{display:flex;align-items:center;gap:14px}
+.nn-brand img{height:56px;display:block}
+.nn-nav{display:flex;gap:8px;flex-wrap:wrap}
+.nn-nav a{font:600 12px/1 'DM Sans',sans-serif;color:#111;padding:8px 14px;border:1px solid #d4d4d8;border-radius:999px;background:#fff;text-decoration:none;transition:all .12s}
+.nn-nav a:hover{border-color:#3a3a3a}
+.nn-nav a.on{background:#111;color:#fff;border-color:#111}
 </style>
 </head>
 <body>
 <script src="access.js?v=20260422c"></script>
 <script>PAGE_KEY='suppliers'</script>
+
+
+<header class="nn-topbar">
+  <div class="nn-brand">
+    <a href="index.html"><img src="nn-logo.svg" alt="Nicolas Nicolas Group"/></a>
+  </div>
+  <nav class="nn-nav">
+    <a href="index.html">Home</a>
+    <a href="inventory.html">Inventory</a>
+    <a href="suppliers.html" class="on">Suppliers</a>
+    <a href="roles.html">Roles</a>
+    <a href="employees.html">Employees</a>
+  </nav>
+</header>
 
 <div class="wrap">
   <div class="hdr">
