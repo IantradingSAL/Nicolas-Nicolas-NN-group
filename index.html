@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Nicolas Nicolas Group</title>
+<title>Nicolas Nicolas Group — Home</title>
 <link rel="icon" type="image/svg+xml" href="nn-logo.svg"/>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet"/>
 <script type="module" src="auth_guard.js"></script>
@@ -12,15 +12,16 @@
 :root{
   --bg:#f0f4f8;--card:#fff;--bdr:#e2e8f0;--txt:#0f172a;--mu:#64748b;--dim:#94a3b8;
   --blue:#3b5fe2;--b50:#eef2ff;--b100:#e0e7ff;
-  --ink:#111;--graphite:#3a3a3a;--steel:#6b7280;--silver:#a1a1aa;
-  --f:'DM Sans','Helvetica Neue',Arial,sans-serif;
-  --sh:0 1px 3px rgba(0,0,0,.07),0 0 0 1px rgba(0,0,0,.04);
-  --sh2:0 6px 24px rgba(0,0,0,.09),0 0 0 1px rgba(0,0,0,.04);
+  --green:#16a34a;--g50:#f0fdf4;--g100:#dcfce7;
+  --amber:#d97706;--a50:#fffbeb;--a100:#fef3c7;
+  --purple:#7c3aed;--p50:#f5f3ff;--p100:#ede9fe;
+  --f:'DM Sans',sans-serif;--mono:'JetBrains Mono',monospace;
+  --sh:0 1px 3px rgba(0,0,0,.08),0 0 0 1px rgba(0,0,0,.04);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:var(--f);background:var(--bg);color:var(--txt);min-height:100vh}
 
-/* NN shared sidebar */
+/* Shared NN sidebar (identical across all pages) */
 .sidebar{position:fixed;left:0;top:0;bottom:0;width:240px;background:var(--card);border-right:1px solid var(--bdr);display:flex;flex-direction:column;z-index:100;overflow-y:auto}
 .sb-brand{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:16px 18px;border-bottom:1px solid var(--bdr)}
 .sb-logo{display:block;height:56px;max-width:100%}
@@ -33,34 +34,50 @@ body{font-family:var(--f);background:var(--bg);color:var(--txt);min-height:100vh
 .nl .ic{font-size:16px;width:20px;text-align:center}
 .sb-foot{padding:12px 10px;border-top:1px solid var(--bdr)}
 
+/* Content shell — same shape as other pages */
 .wrap{margin-left:240px;min-height:100vh}
 .topbar{background:var(--card);border-bottom:1px solid var(--bdr);padding:16px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
 .tt{font-size:20px;font-weight:700;letter-spacing:-.3px}
 .body{padding:20px 28px 80px}
 
-/* Hero */
-.hero{max-width:1100px;margin:0 auto;padding:36px 4px 20px}
-.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:2.2px;color:var(--steel);text-transform:uppercase;padding:6px 12px;border:1px solid #d4d4d8;border-radius:999px;background:#fff}
-.eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--graphite);display:inline-block}
-.h1{font-size:clamp(30px,5vw,52px);font-weight:800;line-height:1.05;letter-spacing:-1.5px;margin-top:18px;background:linear-gradient(180deg,#0f0f0f 0%,#3a3a3a 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
-.sub{margin-top:14px;max-width:600px;font-size:15px;line-height:1.55;color:var(--mu)}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;font-size:13px;font-weight:600;border:none;border-radius:9px;cursor:pointer;font-family:var(--f);transition:all .15s;text-decoration:none}
+.b-pri{background:var(--blue);color:#fff}.b-pri:hover{background:#2e4fc7}
+.b-gho{background:var(--card);border:1px solid var(--bdr);color:var(--mu)}.b-gho:hover{color:var(--txt)}
+.b-sm{padding:5px 11px;font-size:12px}
 
-/* Modules grid */
-.grid{max-width:1100px;margin:32px auto 60px;padding:0 4px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
-@media(max-width:1000px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:560px){.grid{grid-template-columns:1fr}}
+/* KPI grid — matches inventory / employees */
+.kpig{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+.kpi{background:var(--card);border-radius:14px;box-shadow:var(--sh);padding:18px}
+.kpi-ico{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:19px;margin-bottom:12px}
+.kpi-lbl{font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
+.kpi-val{font-size:28px;font-weight:700;font-family:var(--mono);letter-spacing:-1px;color:var(--txt)}
+.kpi-sub{font-size:11px;color:var(--dim);margin-top:4px}
 
-.card{position:relative;display:block;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--bdr);border-radius:18px;padding:22px 20px 20px;overflow:hidden;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;box-shadow:var(--sh);min-height:200px}
-.card:hover{transform:translateY(-3px);box-shadow:var(--sh2);border-color:#d4d4d8}
-.card .num{font:700 11px/1 var(--f);letter-spacing:2px;color:var(--silver)}
-.card .ic{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#1f1f1f,#4b4b4b);color:#fff;display:flex;align-items:center;justify-content:center;font-size:19px;margin:12px 0 14px}
-.card h3{font-size:17px;font-weight:800;letter-spacing:-.3px}
-.card p{margin-top:5px;font-size:12.5px;line-height:1.5;color:var(--mu);min-height:36px}
-.card .go{display:inline-flex;align-items:center;gap:6px;margin-top:12px;font:700 12px/1 var(--f);color:var(--ink)}
-.card:hover .go svg{transform:translateX(4px)}
-.card .go svg{transition:transform .18s ease}
+/* Cards — same look as .card in the other pages */
+.card{background:var(--card);border-radius:14px;box-shadow:var(--sh);padding:22px;margin-bottom:16px}
+.ct{font-size:15px;font-weight:700;margin-bottom:4px}
+.cs{font-size:12px;color:var(--mu);line-height:1.6;margin-bottom:16px}
 
-.foot{max-width:1100px;margin:0 auto;padding:16px 4px 32px;color:var(--silver);font-size:12px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;border-top:1px solid var(--bdr)}
+/* Module grid — plain cards, not the hero-style */
+.mods{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+@media(max-width:1100px){.kpig,.mods{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.kpig,.mods{grid-template-columns:1fr}}
+.mod{display:block;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:18px;box-shadow:var(--sh);transition:transform .15s,box-shadow .15s,border-color .15s}
+.mod:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.08);border-color:var(--blue)}
+.mod-row{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.mod-ic{width:38px;height:38px;border-radius:10px;background:var(--b50);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.mod-name{font-size:14px;font-weight:700;letter-spacing:-.2px}
+.mod-sub{font-size:12px;color:var(--mu);line-height:1.5;min-height:52px}
+.mod-open{margin-top:12px;font:600 12px/1 var(--f);color:var(--blue);display:inline-flex;align-items:center;gap:4px}
+
+/* Status list — small rows */
+.srow{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid var(--bdr);font-size:13px}
+.srow:last-child{border:none}
+.srow .lbl{color:var(--txt);font-weight:500}
+.srow .val{color:var(--mu);font-family:var(--mono);font-size:12px}
+.bdg{display:inline-flex;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:600}
+.b-ok{background:var(--g100);color:#15803d}
+.b-warn{background:var(--a100);color:#92400e}
 
 @media(max-width:900px){.sidebar{display:none}.wrap{margin-left:0}}
 </style>
@@ -92,59 +109,151 @@ body{font-family:var(--f);background:var(--bg);color:var(--txt);min-height:100vh
   <div class="topbar">
     <div>
       <div class="tt">🏠 Home</div>
-      <div style="font-size:12px;color:var(--mu);margin-top:3px">Nicolas Nicolas Group — Operations Console</div>
+      <div style="font-size:12px;color:var(--mu);margin-top:3px" id="today"></div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <a class="btn b-gho" href="inventory.html">📦 Inventory</a>
+      <a class="btn b-pri" href="suppliers.html">🏭 Suppliers</a>
     </div>
   </div>
 
   <div class="body">
-    <section class="hero">
-      <span class="eyebrow"><span class="dot"></span> Welcome</span>
-      <h1 class="h1">Run every part of<br/>the business, one console.</h1>
-      <p class="sub">
-        A clean, quiet workspace for the Nicolas Nicolas Group team —
-        inventory, suppliers, employees and roles, all in one place.
-        Every action a teammate takes is traced in the audit log so
-        nothing is ever lost.
-      </p>
-    </section>
 
-    <div class="grid">
-      <a class="card" href="inventory.html">
-        <div class="num">01</div>
-        <div class="ic">📦</div>
-        <h3>Inventory</h3>
-        <p>Items, stock lots, FEFO consume, BOM, auto-requisitions and purchase orders.</p>
-        <span class="go">Open <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M12 6l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-      </a>
-      <a class="card" href="suppliers.html">
-        <div class="num">02</div>
-        <div class="ic">🏭</div>
-        <h3>Suppliers</h3>
-        <p>Contacts, certifications, contracts and default pricing.</p>
-        <span class="go">Open <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M12 6l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-      </a>
-      <a class="card" href="roles.html">
-        <div class="num">03</div>
-        <div class="ic">🛡️</div>
-        <h3>Roles</h3>
-        <p>Permission templates and who can do what across the console.</p>
-        <span class="go">Open <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M12 6l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-      </a>
-      <a class="card" href="employees.html">
-        <div class="num">04</div>
-        <div class="ic">👥</div>
-        <h3>Employees</h3>
-        <p>Team directory, contact details and role assignments.</p>
-        <span class="go">Open <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M12 6l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-      </a>
+    <!-- KPI row -->
+    <div class="kpig">
+      <div class="kpi">
+        <div class="kpi-ico" style="background:var(--b50);color:var(--blue)">📦</div>
+        <div class="kpi-lbl">Inventory Items</div>
+        <div class="kpi-val" id="kItems">—</div>
+        <div class="kpi-sub" id="kItemsSub">Loading…</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-ico" style="background:var(--p50);color:var(--purple)">🏭</div>
+        <div class="kpi-lbl">Suppliers</div>
+        <div class="kpi-val" id="kSup">—</div>
+        <div class="kpi-sub" id="kSupSub">Loading…</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-ico" style="background:var(--g50);color:var(--green)">👥</div>
+        <div class="kpi-lbl">Employees</div>
+        <div class="kpi-val" id="kEmp">—</div>
+        <div class="kpi-sub" id="kEmpSub">Loading…</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-ico" style="background:var(--a50);color:var(--amber)">🛡️</div>
+        <div class="kpi-lbl">Roles Defined</div>
+        <div class="kpi-val" id="kRol">—</div>
+        <div class="kpi-sub" id="kRolSub">Loading…</div>
+      </div>
     </div>
 
-    <div class="foot">
-      <div>© 2026 Nicolas Nicolas Group</div>
-      <div>Audit trail active — every click, every session.</div>
+    <!-- Modules -->
+    <div class="card">
+      <div class="ct">Modules</div>
+      <div class="cs">Every part of the business, one console. Every click, every session is written to the audit log.</div>
+      <div class="mods">
+        <a class="mod" href="inventory.html">
+          <div class="mod-row"><div class="mod-ic">📦</div><div class="mod-name">Inventory</div></div>
+          <div class="mod-sub">Items, stock lots, FEFO consume, BOM, auto-requisitions and purchase orders.</div>
+          <span class="mod-open">Open →</span>
+        </a>
+        <a class="mod" href="suppliers.html">
+          <div class="mod-row"><div class="mod-ic">🏭</div><div class="mod-name">Suppliers</div></div>
+          <div class="mod-sub">Supplier directory, certifications and contracts.</div>
+          <span class="mod-open">Open →</span>
+        </a>
+        <a class="mod" href="employees.html">
+          <div class="mod-row"><div class="mod-ic">👥</div><div class="mod-name">Employees</div></div>
+          <div class="mod-sub">Team directory, contacts and role assignments.</div>
+          <span class="mod-open">Open →</span>
+        </a>
+        <a class="mod" href="roles.html">
+          <div class="mod-row"><div class="mod-ic">🛡️</div><div class="mod-name">Roles</div></div>
+          <div class="mod-sub">Permission templates and page-level access.</div>
+          <span class="mod-open">Open →</span>
+        </a>
+      </div>
     </div>
+
+    <!-- Status -->
+    <div style="display:grid;grid-template-columns:2fr 1fr;gap:16px">
+      <div class="card">
+        <div class="ct">Recent activity</div>
+        <div class="cs">Latest actions across the console (from <code>audit_log</code>).</div>
+        <div id="activity"><div style="color:var(--dim);font-size:13px;padding:8px 0">Loading…</div></div>
+      </div>
+      <div class="card">
+        <div class="ct">System</div>
+        <div class="cs">Deployment status at a glance.</div>
+        <div class="srow"><span class="lbl">Supabase</span><span id="stSb" class="bdg b-warn">Checking…</span></div>
+        <div class="srow"><span class="lbl">Audit logger</span><span class="bdg b-ok">Active</span></div>
+        <div class="srow"><span class="lbl">GitHub Pages</span><span class="bdg b-ok">Live</span></div>
+      </div>
+    </div>
+
   </div>
 </div>
+
+<script type="module">
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import { SUPABASE_CONFIG } from './config.js'
+const sb = createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey)
+
+document.getElementById('today').textContent =
+  new Date().toLocaleDateString('en-GB', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' })
+
+const $ = id => document.getElementById(id)
+const fdt = v => v ? new Date(v).toLocaleString('en-GB',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}) : '—'
+
+async function safeCount(table) {
+  try {
+    const { count, error } = await sb.from(table).select('*', { count: 'exact', head: true })
+    if (error) throw error
+    return count ?? 0
+  } catch (e) { return null }
+}
+
+async function load() {
+  const [items, sups, emps, roles] = await Promise.all([
+    safeCount('inventory_items'),
+    safeCount('suppliers'),
+    safeCount('employees'),
+    safeCount('role_templates'),
+  ])
+  const set = (id, val, subOK, subFail) => {
+    $(id).textContent = val == null ? '—' : val.toLocaleString()
+    $(id + 'Sub').textContent = val == null ? subFail : subOK
+  }
+  set('kItems', items, 'Total items in catalogue', 'Not reachable')
+  set('kSup',   sups,  'Registered suppliers',    'Not reachable')
+  set('kEmp',   emps,  'Team members',            'Not reachable')
+  set('kRol',   roles, 'Permission templates',    'Not reachable')
+
+  // Supabase reachability badge
+  const anyOk = [items, sups, emps, roles].some(v => v != null)
+  const badge = $('stSb')
+  if (anyOk) { badge.textContent = 'Connected'; badge.className = 'bdg b-ok' }
+  else       { badge.textContent = 'Not configured'; badge.className = 'bdg b-warn' }
+
+  // Recent activity from audit_log
+  try {
+    const { data } = await sb.from('audit_log').select('page,action,target,created_at').order('created_at', { ascending: false }).limit(8)
+    const rows = data || []
+    if (!rows.length) {
+      $('activity').innerHTML = '<div style="color:var(--dim);font-size:13px;padding:8px 0">No activity yet — start clicking around and it will show up here.</div>'
+    } else {
+      $('activity').innerHTML = rows.map(r => `
+        <div class="srow">
+          <span class="lbl">${r.action} <span style="color:var(--mu)">on ${r.page || '—'}</span>${r.target ? ` <span style="color:var(--dim)">· ${r.target}</span>` : ''}</span>
+          <span class="val">${fdt(r.created_at)}</span>
+        </div>`).join('')
+    }
+  } catch {
+    $('activity').innerHTML = '<div style="color:var(--dim);font-size:13px;padding:8px 0">Audit log not reachable (Supabase not configured yet).</div>'
+  }
+}
+load()
+</script>
 
 </body>
 </html>

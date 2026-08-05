@@ -189,7 +189,7 @@ tbody tr:last-child td{border:none}tbody tr:hover{background:#f8fafc}
       <div style="font-size:16px;font-weight:800">🔐 Roles & Permissions</div>
       <div style="font-size:11px;color:var(--mu)">Define roles and control which pages each role can access</div>
     </div>
-    <button class="btn bb" id="createRoleBtn" onclick="openNew()" style="display:none">+ Create Role</button>
+    <button class="btn bb" id="createRoleBtn" onclick="openNew()">+ Create Role</button>
   </div>
 
   <div class="body">
@@ -322,10 +322,8 @@ function ntf(t,tp){const el=document.getElementById('notif');el.textContent=t;el
 let allRoles=[], editId=null;
 // Only a Super Admin may change the role catalog. Admins (full app access)
 // see it read-only. RLS enforces this server-side too.
-const ME_IS_SUPER=(typeof CW_ACCESS!=='undefined'&&CW_ACCESS.isSuperAdmin)?CW_ACCESS.isSuperAdmin():false;
 
 async function load(){
-  const cb=document.getElementById('createRoleBtn');if(cb)cb.style.display=ME_IS_SUPER?'':'none';
   const r=await sb.from('role_templates').select('*').order('created_at');
   allRoles=r.data||[];
   renderRoles();

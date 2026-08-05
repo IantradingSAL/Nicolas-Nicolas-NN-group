@@ -43,7 +43,6 @@ label{display:block;font-size:11px;font-weight:700;color:var(--mu);text-transfor
 .row-btns{display:flex;gap:10px;margin-top:8px}
 .inv-link{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--b50);border-radius:8px;font-size:12px;color:var(--blue);font-weight:600;margin-bottom:6px;cursor:pointer}
 .inv-link:hover{background:#dde9ff}
-.badge-default{background:linear-gradient(135deg,#7c3aed,#8b5cf6);color:#fff;font-size:10px;font-weight:700;padding:3px 9px;border-radius:999px;position:absolute;top:16px;left:16px;letter-spacing:.3px}
 .sw{display:flex;align-items:center;gap:8px;padding:10px 12px;background:#faf5ff;border:1px solid #e9d5ff;border-radius:10px;margin-top:4px}
 .sw input{width:16px;height:16px;accent-color:#7c3aed}
 .sw-lbl{font-size:12px;font-weight:700;color:#5b21b6}
@@ -125,23 +124,7 @@ label{display:block;font-size:11px;font-weight:700;color:var(--mu);text-transfor
       <div><label>Email</label><input class="fi" id="sEmail" type="email" placeholder="contact@supplier.com"/></div>
       <div><label>Order email CC</label><input class="fi" id="sCc" placeholder="me@nicolasgroup.com, ops@nicolasgroup.com"/><div style="font-size:12px;color:#64748b;margin-top:3px">Auto-CC'd on every purchase order sent to this supplier. Separate several with commas.</div></div>
       <div><label>Address</label><input class="fi" id="sAddress" placeholder="Street, City"/></div>
-      <div><label>Notes</label><textarea class="fi" id="sNotes" rows="2" placeholder="Any notes…" style="resize:vertical"></textarea></div>
-
-      <div style="border-top:1px solid var(--bdr);padding-top:14px;margin-top:4px">
-        <label style="color:#5b21b6">🚚 Aligner Outsourcing Defaults</label>
-        <div class="fg2">
-          <div><label>Default Price / Aligner</label><input class="fi" id="sDefPrice" type="number" step="0.01" min="0" placeholder="e.g. 7.50"/></div>
-          <div><label>Currency</label>
-            <select class="fi" id="sDefCur"><option value="EUR">EUR €</option><option value="USD">USD $</option><option value="GBP">GBP £</option></select>
-          </div>
-        </div>
-        <div class="sw">
-          <input type="checkbox" id="sDefDist"/>
-          <div style="flex:1">
-            <div class="sw-lbl">Set as default distributor</div>
-            <div class="sw-sub">Auto-selected when preparing outsourced aligner orders</div>
-          </div>
-        </div>
+      <div><label>Notes</label><textarea class="fi" id="sNotes" rows="2" placeholder="Any notes…" style="resize:vertical"></textarea></div></div>
       </div>
 
       <div id="invLinkSection" style="display:none">
@@ -210,16 +193,13 @@ function renderGrid(suppliers,items){
   if(!suppliers.length){g.innerHTML='<div class="empty">No suppliers yet — add your first supplier</div>';return}
   g.innerHTML=suppliers.map(s=>{
     const linked=(items||[]).filter(i=>i.preferred_supplier_id===s.id)
-    const cur=({EUR:'€',USD:'$',GBP:'£'})[s.default_currency||'EUR']||'€'
     return`<div class="card">
-      ${s.is_default_distributor?`<div class="badge-default">★ Default</div>`:''}
       <div class="${s.is_active?'badge-active':'badge-inactive'}">${s.is_active?'Active':'Inactive'}</div>
-      <div class="card-name" style="margin-top:${s.is_default_distributor?'20px':'0'}">${s.name||'Unnamed'}</div>
+      <div class="card-name" style="margin-top:0">${s.name||'Unnamed'}</div>
       <div class="card-country">${s.country||'—'}</div>
       ${s.contact_name?`<div class="card-row">👤 <span>${s.contact_name}</span></div>`:''}
       ${s.email?`<div class="card-row">✉️ <span>${s.email}</span></div>`:''}
       ${s.phone?`<div class="card-row">📞 <span>${s.phone}</span></div>`:''}
-      ${s.default_price_per_aligner!=null?`<div class="card-row" style="margin-top:8px">🦷 <span>${cur}${Number(s.default_price_per_aligner).toFixed(2)} / aligner</span></div>`:''}
       ${linked.length?`<div class="card-row" style="margin-top:8px">📦 <span>${linked.length} inventory item${linked.length>1?'s':''} linked</span></div>`:''}
       <div class="card-actions">
         <button class="btn btn-sm btn-ghost" onclick="window.editSupplier('${s.id}')">✏️ Edit</button>
@@ -320,9 +300,7 @@ window.deleteSupDoc=async(id,supId,attPath)=>{
 window.openAdd=()=>{
   editId=null
   document.getElementById('moTitle').textContent='Add Supplier'
-  ;['sName','sCountry','sContact','sPhone','sEmail','sCc','sAddress','sNotes','sDefPrice'].forEach(id=>document.getElementById(id).value='')
-  document.getElementById('sDefCur').value='EUR'
-  document.getElementById('sDefDist').checked=false
+  ;['sName','sCountry','sContact','sPhone','sEmail','sCc','sAddress','sNotes'].forEach(id=>document.getElementById(id).value='')
   document.getElementById('invLinkSection').style.display='none'
   document.getElementById('supDocSection').style.display='block'
   document.getElementById('supDocList').innerHTML='<div style="font-size:12px;color:#94a3b8">Documents are saved with the supplier when you add them.</div>'
@@ -344,9 +322,6 @@ window.editSupplier=async(id)=>{
   document.getElementById('sCc').value=s.cc_emails||''
   document.getElementById('sAddress').value=s.address||''
   document.getElementById('sNotes').value=s.notes||''
-  document.getElementById('sDefPrice').value=s.default_price_per_aligner??''
-  document.getElementById('sDefCur').value=s.default_currency||'EUR'
-  document.getElementById('sDefDist').checked=!!s.is_default_distributor
   // Documents (certifications + contracts)
   document.getElementById('supDocSection').style.display='block'
   const _f=document.getElementById('sdFile'); if(_f) _f.value=''
@@ -372,8 +347,6 @@ window.editSupplier=async(id)=>{
 async function persistSupplier(){
   const name=document.getElementById('sName').value.trim()
   if(!name){alert('Supplier name is required');return null}
-  const priceRaw=document.getElementById('sDefPrice').value.trim()
-  const isDefault=document.getElementById('sDefDist').checked
   const payload={
     name, country:document.getElementById('sCountry').value.trim()||null,
     contact_name:document.getElementById('sContact').value.trim()||null,
@@ -382,15 +355,7 @@ async function persistSupplier(){
     cc_emails:document.getElementById('sCc').value.trim()||null,
     address:document.getElementById('sAddress').value.trim()||null,
     notes:document.getElementById('sNotes').value.trim()||null,
-    default_price_per_aligner: priceRaw===''?null:Number(priceRaw),
-    default_currency: document.getElementById('sDefCur').value||'EUR',
-    is_default_distributor: isDefault,
     is_active:true
-  }
-  // Enforce single default distributor — unset others first when this one is set
-  if(isDefault){
-    const q=sb.from('suppliers').update({is_default_distributor:false}).eq('is_default_distributor',true)
-    if(editId) await q.neq('id',editId); else await q
   }
   if(editId){
     const{error}=await sb.from('suppliers').update(payload).eq('id',editId)
