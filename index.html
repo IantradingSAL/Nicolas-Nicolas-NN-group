@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Nicolas Nicolas Group</title>
+<link rel="icon" type="image/svg+xml" href="nn-logo.svg"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<script type="module" src="auth_guard.js"></script>
+<script>const PAGE_KEY = 'index'</script>
+<style>
+:root{
+  --ink:#111;
+  --ink-2:#1f1f1f;
+  --graphite:#3a3a3a;
+  --steel:#6b7280;
+  --silver:#a1a1aa;
+  --mist:#e5e7eb;
+  --paper:#f5f5f4;
+  --card:#ffffff;
+  --line:#e5e7eb;
+  --line-2:#d4d4d8;
+  --shadow:0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.05);
+  --shadow-hi:0 4px 12px rgba(0,0,0,.08), 0 16px 40px rgba(0,0,0,.10);
+  --f:'DM Sans','Helvetica Neue',Arial,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:var(--f);
+  color:var(--ink);
+  background:
+    radial-gradient(1200px 600px at 100% -10%, rgba(107,114,128,.10), transparent 60%),
+    radial-gradient(900px  500px at -10% 110%, rgba(17,17,17,.06), transparent 60%),
+    linear-gradient(180deg, #fafafa 0%, #f4f4f5 100%);
+  min-height:100vh;
+}
+
+/* Top bar */
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:22px 40px;border-bottom:1px solid var(--line);
+  background:rgba(255,255,255,.7);backdrop-filter:blur(8px);
+  position:sticky;top:0;z-index:20;
+}
+.brand{display:flex;align-items:center;gap:14px}
+.brand img{height:44px;display:block}
+.brand .kicker{font-size:10px;font-weight:700;letter-spacing:2.5px;color:var(--steel);text-transform:uppercase}
+.top-actions{display:flex;gap:8px;align-items:center}
+.tb-btn{
+  font:600 12px/1 var(--f);letter-spacing:.3px;color:var(--ink);
+  padding:9px 14px;border:1px solid var(--line-2);border-radius:999px;background:#fff;cursor:pointer;
+  transition:transform .12s, box-shadow .12s, border-color .12s;
+}
+.tb-btn:hover{border-color:var(--graphite);transform:translateY(-1px);box-shadow:var(--shadow)}
+
+/* Hero */
+.hero{max-width:1200px;margin:0 auto;padding:64px 40px 24px}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:11px;font-weight:700;letter-spacing:2.2px;color:var(--steel);text-transform:uppercase;
+  padding:6px 12px;border:1px solid var(--line-2);border-radius:999px;background:#fff;
+}
+.eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--graphite);display:inline-block}
+.h1{
+  font-size:clamp(38px, 6vw, 68px);
+  font-weight:800;line-height:1.02;letter-spacing:-2px;margin-top:18px;
+  background:linear-gradient(180deg,#0f0f0f 0%,#3a3a3a 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.sub{
+  margin-top:16px;max-width:640px;font-size:16px;line-height:1.55;color:var(--steel);
+}
+
+/* Modules grid */
+.grid{
+  max-width:1200px;margin:40px auto 80px;padding:0 40px;
+  display:grid;grid-template-columns:repeat(4, minmax(0,1fr));gap:18px;
+}
+@media(max-width:1000px){.grid{grid-template-columns:repeat(2, minmax(0,1fr))}}
+@media(max-width:560px){.grid{grid-template-columns:1fr}.hero{padding-top:36px}.topbar{padding:16px 20px}.grid,.hero{padding-left:20px;padding-right:20px}}
+
+.card{
+  position:relative;display:block;text-decoration:none;color:inherit;
+  background:var(--card);border:1px solid var(--line);border-radius:20px;
+  padding:26px 22px 22px;overflow:hidden;
+  transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  box-shadow:var(--shadow);
+  min-height:220px;
+}
+.card:hover{transform:translateY(-4px);box-shadow:var(--shadow-hi);border-color:var(--line-2)}
+.card::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg, transparent 60%, rgba(17,17,17,.03) 100%);
+}
+.card .num{
+  font:700 11px/1 var(--f);letter-spacing:2px;color:var(--silver);
+}
+.card .ic{
+  width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#1f1f1f,#4b4b4b);
+  color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;
+  margin:14px 0 18px;box-shadow:inset 0 -6px 12px rgba(255,255,255,.06);
+}
+.card h3{font-size:19px;font-weight:800;letter-spacing:-.3px}
+.card p{margin-top:6px;font-size:13px;line-height:1.5;color:var(--steel);min-height:40px}
+.card .go{
+  display:inline-flex;align-items:center;gap:6px;margin-top:14px;
+  font:700 12px/1 var(--f);letter-spacing:.3px;color:var(--ink);
+}
+.card .go svg{transition:transform .18s ease}
+.card:hover .go svg{transform:translateX(4px)}
+
+/* Footer */
+.foot{
+  max-width:1200px;margin:0 auto;padding:24px 40px 48px;color:var(--silver);font-size:12px;
+  display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+  border-top:1px solid var(--line);
+}
+.foot a{color:var(--steel);text-decoration:none}
+.foot a:hover{color:var(--ink)}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <img src="nn-logo.svg" alt="Nicolas Nicolas Group"/>
+  </div>
+  <div class="top-actions">
+    <a class="tb-btn" href="employees.html">Employees</a>
+    <a class="tb-btn" href="suppliers.html">Suppliers</a>
+  </div>
+</header>
+
+<section class="hero">
+  <span class="eyebrow"><span class="dot"></span> Operations Console</span>
+  <h1 class="h1">Run every part of<br/>the business, one console.</h1>
+  <p class="sub">
+    A clean, quiet workspace for the Nicolas Nicolas Group team —
+    inventory, suppliers, employees and roles, all in one place.
+    Every action a teammate takes is traced in the audit log so
+    nothing is ever lost.
+  </p>
+</section>
+
+<main class="grid" id="modules">
+  <a class="card" href="inventory.html">
+    <div class="num">01</div>
+    <div class="ic">📦</div>
+    <h3>Inventory</h3>
+    <p>Items, stock levels, reorder points — a single source of truth.</p>
+    <span class="go">Open <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M12 6l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+  </a>
+  <a class="card" href="suppliers.html">
+    <div class="num">02</div>
+    <div class="ic">🏭</div>
+    <h3>Suppliers</h3>
+    <p>Contacts, certifications, contracts and default pricing.</p>
+    <span class="go">Open <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M12 6l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+  </a>
+  <a class="card" href="roles.html">
+    <div class="num">03</div>
+    <div class="ic">🛡️</div>
+    <h3>Roles</h3>
+    <p>Permission templates and who can do what across the console.</p>
+    <span class="go">Open <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M12 6l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+  </a>
+  <a class="card" href="employees.html">
+    <div class="num">04</div>
+    <div class="ic">👥</div>
+    <h3>Employees</h3>
+    <p>Team directory, contact details and role assignments.</p>
+    <span class="go">Open <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M12 6l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+  </a>
+</main>
+
+<footer class="foot">
+  <div>© Nicolas Nicolas Group</div>
+  <div>Audit trail active — every click, every session.</div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Nicolas Nicolas Group — Inventory</title>
+<link rel="icon" type="image/svg+xml" href="nn-logo.svg"/>
+<script type="module" src="auth_guard.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#f5f5f4;--card:#fff;--bdr:#e5e7eb;--txt:#111;--mu:#6b7280;--dim:#a1a1aa;
+  --ink:#111;--graphite:#3a3a3a;--steel:#6b7280;--silver:#a1a1aa;
+  --green:#16a34a;--g50:#f0fdf4;--red:#dc2626;--r50:#fef2f2;--amber:#d97706;--a50:#fffbeb;
+  --f:'DM Sans',sans-serif;--mono:'JetBrains Mono',monospace;
+  --sh:0 1px 3px rgba(0,0,0,.07),0 0 0 1px rgba(0,0,0,.04);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--f);background:var(--bg);color:var(--txt);min-height:100vh}
+.topbar{background:#fff;border-bottom:1px solid var(--bdr);padding:16px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.brand{display:flex;align-items:center;gap:14px}
+.brand img{height:36px;display:block}
+.top-actions{display:flex;gap:8px}
+.tb-btn{font:600 12px/1 var(--f);color:var(--ink);padding:8px 14px;border:1px solid #d4d4d8;border-radius:999px;background:#fff;text-decoration:none;transition:all .12s}
+.tb-btn:hover{border-color:var(--graphite)}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 20px}
+.hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.hdr h1{font-size:22px;font-weight:800}
+.hdr .sub{font-size:13px;color:var(--mu);margin-top:2px}
+.btn{padding:10px 18px;background:var(--ink);color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .12s}
+.btn:hover{background:var(--graphite)}
+.btn-ghost{background:transparent;color:var(--ink);border:1.5px solid #d4d4d8}
+.btn-sm{padding:6px 12px;font-size:12px}
+.btn-red{background:var(--red)}
+.btn-red:hover{background:#b91c1c}
+.card{background:var(--card);border:1px solid var(--bdr);border-radius:16px;padding:22px;box-shadow:var(--sh)}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;align-items:center}
+.srch{flex:1;min-width:200px;padding:9px 14px;border:1.5px solid var(--bdr);border-radius:9px;font-family:var(--f);font-size:13px;background:#fff;outline:none}
+.srch:focus{border-color:var(--graphite)}
+.tw{overflow-x:auto;border-radius:12px;border:1px solid var(--bdr)}
+table{width:100%;border-collapse:collapse}
+thead th{padding:11px 14px;font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.5px;background:#fafafa;border-bottom:1px solid var(--bdr);text-align:left}
+tbody td{padding:12px 14px;font-size:13px;border-bottom:1px solid var(--bdr)}
+tbody tr:last-child td{border:none}
+tbody tr:hover{background:#fafafa}
+.mono{font-family:var(--mono);font-size:12px}
+.badge{display:inline-flex;padding:3px 9px;border-radius:999px;font-size:10px;font-weight:700}
+.b-ok{background:var(--g50);color:var(--green)}
+.b-low{background:var(--a50);color:var(--amber)}
+.b-out{background:var(--r50);color:var(--red)}
+.empty{text-align:center;padding:60px 20px;color:var(--mu)}
+/* modal */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:100;align-items:center;justify-content:center;padding:20px}
+.overlay.on{display:flex}
+.mo{background:var(--card);border-radius:16px;padding:28px;width:min(520px,95vw);max-height:90vh;overflow-y:auto}
+.mo-t{font-size:18px;font-weight:800;margin-bottom:4px}
+.mo-s{font-size:13px;color:var(--mu);margin-bottom:20px}
+.fg{display:flex;flex-direction:column;gap:12px}
+.fg2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+label{display:block;font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px}
+.fi{width:100%;padding:9px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-size:13px;font-family:inherit;background:#fafafa;outline:none}
+.fi:focus{border-color:var(--graphite);background:#fff}
+.row-btns{display:flex;gap:10px;margin-top:8px}
+</style>
+</head>
+
+<header class="topbar">
+  <div class="brand">
+    <a href="index.html"><img src="nn-logo.svg" alt="Nicolas Nicolas Group"/></a>
+  </div>
+  <div class="top-actions">
+    <a class="tb-btn" href="index.html">Home</a>
+    <a class="tb-btn" href="suppliers.html">Suppliers</a>
+    <a class="tb-btn" href="roles.html">Roles</a>
+    <a class="tb-btn" href="employees.html">Employees</a>
+  </div>
+</header>
+
+<body>
+<script>const PAGE_KEY='inventory'</script>
+<script src="access.js"></script>
+
+<div class="wrap">
+  <div class="hdr">
+    <div>
+      <h1>📦 Inventory</h1>
+      <div class="sub">Stock items, quantities and reorder alerts</div>
+    </div>
+    <button class="btn" onclick="openAdd()">+ Add Item</button>
+  </div>
+
+  <div class="card">
+    <div class="toolbar">
+      <input class="srch" id="q" placeholder="Search items, SKUs, suppliers…"/>
+      <select class="fi" id="fStock" style="max-width:180px">
+        <option value="">All stock levels</option>
+        <option value="ok">In stock</option>
+        <option value="low">Low</option>
+        <option value="out">Out of stock</option>
+      </select>
+    </div>
+    <div class="tw">
+      <table>
+        <thead>
+          <tr>
+            <th data-sortable>Item</th>
+            <th data-sortable>SKU</th>
+            <th data-sortable>Quantity</th>
+            <th data-sortable>Reorder at</th>
+            <th data-sortable>Supplier</th>
+            <th data-sortable>Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="tb">
+          <tr><td colspan="7" class="empty">Loading inventory…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="mItem">
+  <div class="mo">
+    <div class="mo-t" id="moTitle">Add Item</div>
+    <div class="mo-s">Inventory item — quantity is optional, defaults to 0</div>
+    <div class="fg">
+      <div class="fg2">
+        <div><label>Name *</label><input class="fi" id="iName" placeholder="e.g. Resin cartridge"/></div>
+        <div><label>SKU</label><input class="fi" id="iSku" placeholder="optional"/></div>
+      </div>
+      <div class="fg2">
+        <div><label>Quantity</label><input class="fi" id="iQty" type="number" step="1" placeholder="0"/></div>
+        <div><label>Reorder at</label><input class="fi" id="iReorder" type="number" step="1" placeholder="optional"/></div>
+      </div>
+      <div class="fg2">
+        <div><label>Unit</label><input class="fi" id="iUnit" placeholder="pcs, kg, box…"/></div>
+        <div><label>Preferred supplier</label><select class="fi" id="iSup"><option value="">— none —</option></select></div>
+      </div>
+      <div><label>Notes</label><textarea class="fi" id="iNotes" rows="2" style="resize:vertical"></textarea></div>
+      <div class="row-btns">
+        <button class="btn" onclick="saveItem()">💾 Save</button>
+        <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import{createClient}from'https://esm.sh/@supabase/supabase-js@2'
+import{SUPABASE_CONFIG}from'./config.js'
+const sb=createClient(SUPABASE_CONFIG.url,SUPABASE_CONFIG.anonKey)
+
+let items=[], suppliers=[], editId=null
+
+async function load(){
+  const [ir, sr] = await Promise.all([
+    sb.from('inventory_items').select('*').order('name'),
+    sb.from('suppliers').select('id,name').order('name'),
+  ])
+  items = ir.data || []
+  suppliers = sr.data || []
+  const sel = document.getElementById('iSup')
+  sel.innerHTML = '<option value="">— none —</option>' +
+    suppliers.map(s=>`<option value="${s.id}">${s.name}</option>`).join('')
+  render()
+}
+
+function statusOf(it){
+  if (!it.reorder_level && !it.quantity) return {cls:'b-gray',lbl:'—'}
+  const q = Number(it.quantity||0), r = Number(it.reorder_level||0)
+  if (q <= 0) return {cls:'b-out', lbl:'Out'}
+  if (r && q <= r) return {cls:'b-low', lbl:'Low'}
+  return {cls:'b-ok', lbl:'In stock'}
+}
+
+function render(){
+  const q = document.getElementById('q').value.trim().toLowerCase()
+  const fs = document.getElementById('fStock').value
+  const tb = document.getElementById('tb')
+  const rows = items.filter(it=>{
+    const s = statusOf(it)
+    if (fs==='ok' && s.lbl!=='In stock') return false
+    if (fs==='low' && s.lbl!=='Low') return false
+    if (fs==='out' && s.lbl!=='Out') return false
+    if (!q) return true
+    const hay = [it.name, it.sku, (suppliers.find(x=>x.id===it.preferred_supplier_id)||{}).name].filter(Boolean).join(' ').toLowerCase()
+    return hay.includes(q)
+  })
+  if (!rows.length){ tb.innerHTML = '<tr><td colspan="7" class="empty">No items yet — click “+ Add Item” to create your first one</td></tr>'; return }
+  tb.innerHTML = rows.map(it=>{
+    const s = statusOf(it)
+    const sup = suppliers.find(x=>x.id===it.preferred_supplier_id)
+    return `<tr>
+      <td><strong>${it.name||'—'}</strong></td>
+      <td class="mono">${it.sku||'—'}</td>
+      <td class="mono">${it.quantity??'—'} ${it.unit||''}</td>
+      <td class="mono">${it.reorder_level??'—'}</td>
+      <td>${sup?sup.name:'—'}</td>
+      <td><span class="badge ${s.cls}">${s.lbl}</span></td>
+      <td style="text-align:right">
+        <button class="btn btn-sm btn-ghost" onclick="editItem('${it.id}')">✏️</button>
+        <button class="btn btn-sm btn-red" onclick="delItem('${it.id}')">🗑</button>
+      </td>
+    </tr>`
+  }).join('')
+}
+
+window.openAdd=()=>{
+  editId=null
+  document.getElementById('moTitle').textContent='Add Item'
+  ;['iName','iSku','iQty','iReorder','iUnit','iNotes'].forEach(id=>document.getElementById(id).value='')
+  document.getElementById('iSup').value=''
+  document.getElementById('mItem').classList.add('on')
+}
+window.editItem=(id)=>{
+  const it = items.find(x=>x.id===id); if(!it) return
+  editId=id
+  document.getElementById('moTitle').textContent='Edit Item'
+  document.getElementById('iName').value=it.name||''
+  document.getElementById('iSku').value=it.sku||''
+  document.getElementById('iQty').value=it.quantity??''
+  document.getElementById('iReorder').value=it.reorder_level??''
+  document.getElementById('iUnit').value=it.unit||''
+  document.getElementById('iNotes').value=it.notes||''
+  document.getElementById('iSup').value=it.preferred_supplier_id||''
+  document.getElementById('mItem').classList.add('on')
+}
+window.saveItem=async()=>{
+  const name = document.getElementById('iName').value.trim()
+  if(!name){ alert('Item name is required'); return }
+  const payload = {
+    name,
+    sku: document.getElementById('iSku').value.trim() || null,
+    quantity: Number(document.getElementById('iQty').value || 0),
+    reorder_level: document.getElementById('iReorder').value === '' ? null : Number(document.getElementById('iReorder').value),
+    unit: document.getElementById('iUnit').value.trim() || 'pcs',
+    notes: document.getElementById('iNotes').value.trim() || null,
+    preferred_supplier_id: document.getElementById('iSup').value || null,
+  }
+  const { error } = editId
+    ? await sb.from('inventory_items').update(payload).eq('id', editId)
+    : await sb.from('inventory_items').insert([payload])
+  if (error) { alert('Save failed: '+error.message); return }
+  closeModal(); load()
+}
+window.delItem=async(id)=>{
+  if(!confirm('Delete this item?')) return
+  const { error } = await sb.from('inventory_items').delete().eq('id',id)
+  if (error) { alert('Delete failed: '+error.message); return }
+  load()
+}
+window.closeModal=()=>document.getElementById('mItem').classList.remove('on')
+document.getElementById('mItem').addEventListener('click',e=>{if(e.target===document.getElementById('mItem'))closeModal()})
+document.getElementById('q').addEventListener('input',render)
+document.getElementById('fStock').addEventListener('change',render)
+
+load()
+</script>
+
+<script src="table_sort.js"></script>
+</body>
+</html>

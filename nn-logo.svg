@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 96" width="260" height="96">
+  <defs>
+    <linearGradient id="nnGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%"  stop-color="#3a3a3a"/>
+      <stop offset="55%" stop-color="#666"/>
+      <stop offset="100%" stop-color="#a0a0a0"/>
+    </linearGradient>
+  </defs>
+  <!-- NN monogram: two folded planes evoking the wordmark -->
+  <g fill="url(#nnGrad)">
+    <polygon points="6,10 26,10 60,72 60,10 78,10 78,86 58,86 24,24 24,86 6,86"/>
+    <polygon points="88,10 108,10 142,72 142,10 160,10 160,86 140,86 106,24 106,86 88,86"/>
+  </g>
+  <!-- Wordmark -->
+  <g font-family="'DM Sans','Helvetica Neue',Arial,sans-serif" fill="#1a1a1a">
+    <text x="178" y="42" font-size="20" font-weight="800" letter-spacing="-0.5">NICOLAS</text>
+    <text x="178" y="66" font-size="20" font-weight="800" letter-spacing="-0.5" fill="#111">NICOLAS</text>
+    <text x="178" y="86" font-size="10" font-weight="600" letter-spacing="6" fill="#6b6b6b">G R O U P</text>
+  </g>
+</svg>

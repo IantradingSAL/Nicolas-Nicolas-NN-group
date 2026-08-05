@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Nicolas Nicolas Group — Suppliers</title>
+<script type="module" src="auth_guard.js?v=20260531f"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#f0f4f8;--card:#fff;--bdr:#e2e8f0;--txt:#0f172a;--mu:#64748b;--dim:#94a3b8;
+  --blue:#3b5fe2;--b50:#eff3ff;--green:#16a34a;--g50:#f0fdf4;
+  --red:#dc2626;--r50:#fff1f2;--amber:#d97706;--a50:#fffbeb}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 20px}
+.hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.hdr h1{font-size:22px;font-weight:800}
+.btn{padding:10px 20px;background:var(--blue);color:#fff;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+.btn:hover{opacity:.9}
+.btn-sm{padding:6px 14px;font-size:12px}
+.btn-red{background:var(--red)}
+.btn-ghost{background:transparent;color:var(--blue);border:1.5px solid var(--blue)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:20px;position:relative}
+.card-name{font-size:16px;font-weight:800;margin-bottom:4px}
+.card-country{font-size:11px;color:var(--mu);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px}
+.card-row{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--mu);margin-bottom:4px}
+.card-row span{color:var(--txt);font-weight:500}
+.card-actions{display:flex;gap:8px;margin-top:14px}
+.badge-active{background:var(--g50);color:var(--green);font-size:11px;font-weight:700;padding:2px 10px;border-radius:999px;position:absolute;top:16px;right:16px}
+.badge-inactive{background:#f1f5f9;color:var(--dim);font-size:11px;font-weight:700;padding:2px 10px;border-radius:999px;position:absolute;top:16px;right:16px}
+.empty{text-align:center;padding:60px 20px;color:var(--mu)}
+/* Modal */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:100;align-items:center;justify-content:center}
+.overlay.on{display:flex}
+.mo{background:var(--card);border-radius:16px;padding:28px;width:min(520px,95vw);max-height:90vh;overflow-y:auto}
+.mo-t{font-size:18px;font-weight:800;margin-bottom:4px}
+.mo-s{font-size:13px;color:var(--mu);margin-bottom:20px}
+.fg{display:flex;flex-direction:column;gap:12px}
+.fg2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+label{display:block;font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px}
+.fi{width:100%;padding:9px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-size:13px;font-family:inherit;background:var(--bg);color:var(--txt);outline:none}
+.fi:focus{border-color:var(--blue)}
+.row-btns{display:flex;gap:10px;margin-top:8px}
+.inv-link{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--b50);border-radius:8px;font-size:12px;color:var(--blue);font-weight:600;margin-bottom:6px;cursor:pointer}
+.inv-link:hover{background:#dde9ff}
+.badge-default{background:linear-gradient(135deg,#7c3aed,#8b5cf6);color:#fff;font-size:10px;font-weight:700;padding:3px 9px;border-radius:999px;position:absolute;top:16px;left:16px;letter-spacing:.3px}
+.sw{display:flex;align-items:center;gap:8px;padding:10px 12px;background:#faf5ff;border:1px solid #e9d5ff;border-radius:10px;margin-top:4px}
+.sw input{width:16px;height:16px;accent-color:#7c3aed}
+.sw-lbl{font-size:12px;font-weight:700;color:#5b21b6}
+.sw-sub{font-size:11px;color:var(--mu)}
+</style>
+</head>
+<body>
+<script src="access.js?v=20260422c"></script>
+<script>PAGE_KEY='suppliers'</script>
+
+<div class="wrap">
+  <div class="hdr">
+    <div>
+      <h1>🏭 Suppliers</h1>
+      <div style="font-size:13px;color:var(--mu);margin-top:2px">Manage material suppliers — linked to inventory items</div>
+    </div>
+    <button class="btn" onclick="openAdd()">+ Add Supplier</button>
+  </div>
+
+  <div id="grid" class="grid">
+    <div class="empty">Loading suppliers…</div>
+  </div>
+</div>
+
+<!-- Add/Edit Modal -->
+<div class="overlay" id="mSupplier">
+  <div class="mo">
+    <div class="mo-t" id="moTitle">Add Supplier</div>
+    <div class="mo-s">Supplier details — linked to inventory items</div>
+    <div class="fg">
+      <div class="fg2">
+        <div><label>Supplier Name *</label><input class="fi" id="sName" placeholder="e.g. Formlabs"/></div>
+        <div><label>Country</label><input class="fi" id="sCountry" placeholder="e.g. USA"/></div>
+      </div>
+      <div class="fg2">
+        <div><label>Contact Name</label><input class="fi" id="sContact" placeholder="e.g. John Smith"/></div>
+        <div><label>Phone</label><input class="fi" id="sPhone" placeholder="+1 800 000 0000"/></div>
+      </div>
+      <div><label>Email</label><input class="fi" id="sEmail" type="email" placeholder="contact@supplier.com"/></div>
+      <div><label>Order email CC</label><input class="fi" id="sCc" placeholder="me@nicolasgroup.com, ops@nicolasgroup.com"/><div style="font-size:12px;color:#64748b;margin-top:3px">Auto-CC'd on every purchase order sent to this supplier. Separate several with commas.</div></div>
+      <div><label>Address</label><input class="fi" id="sAddress" placeholder="Street, City"/></div>
+      <div><label>Notes</label><textarea class="fi" id="sNotes" rows="2" placeholder="Any notes…" style="resize:vertical"></textarea></div>
+
+      <div style="border-top:1px solid var(--bdr);padding-top:14px;margin-top:4px">
+        <label style="color:#5b21b6">🚚 Aligner Outsourcing Defaults</label>
+        <div class="fg2">
+          <div><label>Default Price / Aligner</label><input class="fi" id="sDefPrice" type="number" step="0.01" min="0" placeholder="e.g. 7.50"/></div>
+          <div><label>Currency</label>
+            <select class="fi" id="sDefCur"><option value="EUR">EUR €</option><option value="USD">USD $</option><option value="GBP">GBP £</option></select>
+          </div>
+        </div>
+        <div class="sw">
+          <input type="checkbox" id="sDefDist"/>
+          <div style="flex:1">
+            <div class="sw-lbl">Set as default distributor</div>
+            <div class="sw-sub">Auto-selected when preparing outsourced aligner orders</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="invLinkSection" style="display:none">
+        <label>Inventory Items Using This Supplier</label>
+        <div id="invLinks"></div>
+      </div>
+      <div id="supDocSection" style="display:none;margin-top:14px;border-top:1px solid #e2e8f0;padding-top:12px">
+        <label style="font-weight:700">📜 Certifications &amp; contracts</label>
+        <div id="supDocList" style="margin:8px 0;font-size:13px"></div>
+        <div style="display:grid;grid-template-columns:120px 1fr 130px 140px;gap:6px;align-items:end;margin-bottom:8px">
+          <div><label style="font-size:11px;color:#64748b">Kind</label>
+            <select class="fi" id="sdKind" style="height:36px">
+              <option value="certification">Certification</option>
+              <option value="contract">Contract</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div><label style="font-size:11px;color:#64748b">Title</label>
+            <input class="fi" id="sdTitle" placeholder="e.g. ISO 13485:2016"/>
+          </div>
+          <div><label style="font-size:11px;color:#64748b">Reference no.</label>
+            <input class="fi" id="sdRef" placeholder="cert / contract #"/>
+          </div>
+          <div><label style="font-size:11px;color:#64748b">Expires</label>
+            <input class="fi" id="sdExp" type="date"/>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <label class="btn btn-ghost btn-sm" style="cursor:pointer;margin:0" for="sdFile">📎 Attach PDF</label>
+          <input id="sdFile" type="file" accept="application/pdf,image/*" style="display:none" onchange="onPickSupDoc()"/>
+          <span id="sdFileName" style="font-size:12px;color:#64748b">No file selected</span>
+          <button class="btn btn-sm" type="button" onclick="addSupDoc()" style="margin-left:auto">＋ Add document</button>
+        </div>
+      </div>
+
+      <div class="row-btns">
+        <button class="btn" onclick="saveSupplier()">💾 Save</button>
+        <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import{createClient}from'https://esm.sh/@supabase/supabase-js@2'
+import{SUPABASE_CONFIG}from'./config.js'
+const sb=createClient(SUPABASE_CONFIG.url,SUPABASE_CONFIG.anonKey)
+
+let all=[], editId=null
+
+async function load(){
+  const[sr,ir]=await Promise.all([
+    sb.from('suppliers').select('*').order('name'),
+    sb.from('inventory_items').select('id,name,preferred_supplier_id')
+  ])
+  all=sr.data||[]
+  const items=ir.data||[]
+  renderGrid(all,items)
+  // Deep link: #edit=<supplierId> opens that supplier straight away.
+  const m=location.hash.match(/edit=([0-9a-f-]+)/i)
+  if(m&&all.some(s=>s.id===m[1])){history.replaceState(null,'',location.pathname);window.editSupplier(m[1])}
+}
+
+function renderGrid(suppliers,items){
+  const g=document.getElementById('grid')
+  if(!suppliers.length){g.innerHTML='<div class="empty">No suppliers yet — add your first supplier</div>';return}
+  g.innerHTML=suppliers.map(s=>{
+    const linked=(items||[]).filter(i=>i.preferred_supplier_id===s.id)
+    const cur=({EUR:'€',USD:'$',GBP:'£'})[s.default_currency||'EUR']||'€'
+    return`<div class="card">
+      ${s.is_default_distributor?`<div class="badge-default">★ Default</div>`:''}
+      <div class="${s.is_active?'badge-active':'badge-inactive'}">${s.is_active?'Active':'Inactive'}</div>
+      <div class="card-name" style="margin-top:${s.is_default_distributor?'20px':'0'}">${s.name||'Unnamed'}</div>
+      <div class="card-country">${s.country||'—'}</div>
+      ${s.contact_name?`<div class="card-row">👤 <span>${s.contact_name}</span></div>`:''}
+      ${s.email?`<div class="card-row">✉️ <span>${s.email}</span></div>`:''}
+      ${s.phone?`<div class="card-row">📞 <span>${s.phone}</span></div>`:''}
+      ${s.default_price_per_aligner!=null?`<div class="card-row" style="margin-top:8px">🦷 <span>${cur}${Number(s.default_price_per_aligner).toFixed(2)} / aligner</span></div>`:''}
+      ${linked.length?`<div class="card-row" style="margin-top:8px">📦 <span>${linked.length} inventory item${linked.length>1?'s':''} linked</span></div>`:''}
+      <div class="card-actions">
+        <button class="btn btn-sm btn-ghost" onclick="window.editSupplier('${s.id}')">✏️ Edit</button>
+        <button class="btn btn-sm btn-red" onclick="window.deleteSupplier('${s.id}')">🗑 Delete</button>
+      </div>
+    </div>`
+  }).join('')
+}
+
+// Supplier documents (certifications, contracts) with expiry badges +
+// optional PDF/image attachment served via signed URL.
+async function loadSupDocs(supId){
+  const wrap=document.getElementById('supDocList'); wrap.innerHTML='⏳'
+  const{data,error}=await sb.from('supplier_documents').select('*').eq('supplier_id',supId).order('expires_at',{ascending:true,nullsFirst:false})
+  if(error){ wrap.innerHTML='<div style="color:#dc2626">Could not load: '+error.message+'</div>'; return }
+  if(!data||!data.length){ wrap.innerHTML='<div style="color:#94a3b8">No documents yet.</div>'; return }
+  const today=new Date().toISOString().slice(0,10)
+  const soon=new Date(Date.now()+30*86400000).toISOString().slice(0,10)
+  wrap.innerHTML=data.map(d=>{
+    const status = !d.expires_at ? '' : (d.expires_at<today ? '<span style="background:#fee2e2;color:#b91c1c;padding:1px 7px;border-radius:999px;font-size:11px;font-weight:700">EXPIRED</span>'
+                              : d.expires_at<soon ? '<span style="background:#fef3c7;color:#92400e;padding:1px 7px;border-radius:999px;font-size:11px;font-weight:700">SOON</span>'
+                              : '<span style="background:#dcfce7;color:#166534;padding:1px 7px;border-radius:999px;font-size:11px;font-weight:700">VALID</span>')
+    const file = d.attachment_url
+      ? `<a href="#" data-att="${d.attachment_url.replace(/"/g,'&quot;')}" onclick="openSupDoc(event,this)" title="Open attachment" style="font-size:11px;color:#3b5fe2;font-weight:700;text-decoration:none">📎 PDF</a>`
+      : '<span style="font-size:11px;color:#cbd5e1">no file</span>'
+    return `<div style="display:flex;gap:8px;align-items:center;padding:6px 8px;border:1px solid #e2e8f0;border-radius:8px;margin-bottom:6px;background:#fff">
+      <span style="background:#f1f5f9;color:#475569;padding:1px 7px;border-radius:6px;font-size:11px;font-weight:700">${d.kind}</span>
+      <strong style="flex:1;font-size:13px">${(d.title||'—')}</strong>
+      <span style="font-size:11px;color:#64748b">${d.reference_no||''}</span>
+      <span style="font-size:11px;color:#0f172a">${d.expires_at?'exp '+d.expires_at:''}</span>
+      ${status}
+      ${file}
+      <button class="btn btn-sm btn-ghost" type="button" onclick="deleteSupDoc('${d.id}','${supId}','${(d.attachment_url||'').replace(/'/g,"\\'")}')" title="Delete">🗑</button>
+    </div>`
+  }).join('')
+}
+
+let _sdPicked=null
+window.onPickSupDoc=()=>{
+  const f=document.getElementById('sdFile').files[0]
+  _sdPicked=f||null
+  document.getElementById('sdFileName').textContent=f?`${f.name} (${Math.round(f.size/1024)} KB)`:'No file selected'
+}
+
+window.openSupDoc=async(ev,el)=>{
+  ev.preventDefault()
+  const path=el.getAttribute('data-att'); if(!path) return
+  const{data,error}=await sb.storage.from('supplier-docs').createSignedUrl(path,300)
+  if(error||!data?.signedUrl){ alert('Could not open: '+(error?.message||'no URL')); return }
+  window.open(data.signedUrl,'_blank','noopener')
+}
+
+window.addSupDoc=async()=>{
+  // If the supplier hasn't been created yet, save it first so the
+  // document has a supplier id to attach to — no "save first" round trip.
+  if(!editId){
+    const id=await persistSupplier()
+    if(!id)return
+    load()
+  }
+  const row = {
+    supplier_id: editId,
+    kind: document.getElementById('sdKind').value,
+    title: document.getElementById('sdTitle').value.trim()||null,
+    reference_no: document.getElementById('sdRef').value.trim()||null,
+    expires_at: document.getElementById('sdExp').value||null,
+    attachment_url: null,
+  }
+  if(!row.title && !row.reference_no && !_sdPicked){ alert('Add a title, a reference number, or attach a file.'); return }
+  if(_sdPicked){
+    if(_sdPicked.size > 20*1024*1024){ alert('File too large (max 20 MB).'); return }
+    const ext=(_sdPicked.name.split('.').pop()||'bin').toLowerCase().replace(/[^a-z0-9]/g,'')
+    const path=`${editId}/${Date.now()}-${Math.random().toString(36).slice(2,8)}.${ext}`
+    const{error:upErr}=await sb.storage.from('supplier-docs').upload(path,_sdPicked,{contentType:_sdPicked.type||'application/octet-stream',upsert:false})
+    if(upErr){ alert('Upload failed: '+upErr.message); return }
+    row.attachment_url=path
+  }
+  const{error}=await sb.from('supplier_documents').insert([row])
+  if(error){
+    if(row.attachment_url){ try{ await sb.storage.from('supplier-docs').remove([row.attachment_url]) }catch{} }
+    alert('Could not save: '+error.message); return
+  }
+  ;['sdTitle','sdRef','sdExp'].forEach(id=>document.getElementById(id).value='')
+  document.getElementById('sdFile').value=''
+  document.getElementById('sdFileName').textContent='No file selected'
+  _sdPicked=null
+  loadSupDocs(editId)
+}
+
+window.deleteSupDoc=async(id,supId,attPath)=>{
+  if(!confirm('Delete this document?')) return
+  const{error}=await sb.from('supplier_documents').delete().eq('id',id)
+  if(error){ alert('Could not delete: '+error.message); return }
+  if(attPath){ try{ await sb.storage.from('supplier-docs').remove([attPath]) }catch{} }
+  loadSupDocs(supId)
+}
+
+window.openAdd=()=>{
+  editId=null
+  document.getElementById('moTitle').textContent='Add Supplier'
+  ;['sName','sCountry','sContact','sPhone','sEmail','sCc','sAddress','sNotes','sDefPrice'].forEach(id=>document.getElementById(id).value='')
+  document.getElementById('sDefCur').value='EUR'
+  document.getElementById('sDefDist').checked=false
+  document.getElementById('invLinkSection').style.display='none'
+  document.getElementById('supDocSection').style.display='block'
+  document.getElementById('supDocList').innerHTML='<div style="font-size:12px;color:#94a3b8">Documents are saved with the supplier when you add them.</div>'
+  const _f=document.getElementById('sdFile'); if(_f) _f.value=''
+  const _fn=document.getElementById('sdFileName'); if(_fn) _fn.textContent='No file selected'
+  _sdPicked=null
+  document.getElementById('mSupplier').classList.add('on')
+}
+
+window.editSupplier=async(id)=>{
+  const s=all.find(x=>x.id===id);if(!s)return
+  editId=id
+  document.getElementById('moTitle').textContent='Edit Supplier'
+  document.getElementById('sName').value=s.name||''
+  document.getElementById('sCountry').value=s.country||''
+  document.getElementById('sContact').value=s.contact_name||''
+  document.getElementById('sPhone').value=s.phone||''
+  document.getElementById('sEmail').value=s.email||''
+  document.getElementById('sCc').value=s.cc_emails||''
+  document.getElementById('sAddress').value=s.address||''
+  document.getElementById('sNotes').value=s.notes||''
+  document.getElementById('sDefPrice').value=s.default_price_per_aligner??''
+  document.getElementById('sDefCur').value=s.default_currency||'EUR'
+  document.getElementById('sDefDist').checked=!!s.is_default_distributor
+  // Documents (certifications + contracts)
+  document.getElementById('supDocSection').style.display='block'
+  const _f=document.getElementById('sdFile'); if(_f) _f.value=''
+  const _fn=document.getElementById('sdFileName'); if(_fn) _fn.textContent='No file selected'
+  _sdPicked=null
+  loadSupDocs(id)
+  // Load linked inventory items
+  const{data:items}=await sb.from('inventory_items').select('id,name').eq('preferred_supplier_id',id)
+  const sec=document.getElementById('invLinkSection')
+  const lnk=document.getElementById('invLinks')
+  if(items&&items.length){
+    sec.style.display='block'
+    lnk.innerHTML=items.map(i=>`<div class="inv-link">📦 ${i.name}</div>`).join('')
+  } else {
+    sec.style.display='none'
+  }
+  document.getElementById('mSupplier').classList.add('on')
+}
+
+// Insert (or update) the supplier from the form. Returns its id, or null
+// on error. On a fresh insert it flips the modal into edit mode so the
+// documents section becomes usable. Shared by saveSupplier + addSupDoc.
+async function persistSupplier(){
+  const name=document.getElementById('sName').value.trim()
+  if(!name){alert('Supplier name is required');return null}
+  const priceRaw=document.getElementById('sDefPrice').value.trim()
+  const isDefault=document.getElementById('sDefDist').checked
+  const payload={
+    name, country:document.getElementById('sCountry').value.trim()||null,
+    contact_name:document.getElementById('sContact').value.trim()||null,
+    phone:document.getElementById('sPhone').value.trim()||null,
+    email:document.getElementById('sEmail').value.trim()||null,
+    cc_emails:document.getElementById('sCc').value.trim()||null,
+    address:document.getElementById('sAddress').value.trim()||null,
+    notes:document.getElementById('sNotes').value.trim()||null,
+    default_price_per_aligner: priceRaw===''?null:Number(priceRaw),
+    default_currency: document.getElementById('sDefCur').value||'EUR',
+    is_default_distributor: isDefault,
+    is_active:true
+  }
+  // Enforce single default distributor — unset others first when this one is set
+  if(isDefault){
+    const q=sb.from('suppliers').update({is_default_distributor:false}).eq('is_default_distributor',true)
+    if(editId) await q.neq('id',editId); else await q
+  }
+  if(editId){
+    const{error}=await sb.from('suppliers').update(payload).eq('id',editId)
+    if(error){alert('Save failed: '+error.message);return null}
+    return editId
+  }
+  const{data:ins,error}=await sb.from('suppliers').insert([payload]).select('id').single()
+  if(error){alert('Save failed: '+error.message);return null}
+  editId=ins.id
+  document.getElementById('moTitle').textContent='Edit Supplier'
+  document.getElementById('supDocSection').style.display='block'
+  return ins.id
+}
+
+window.saveSupplier=async()=>{
+  const wasNew=!editId
+  const id=await persistSupplier()
+  if(!id)return
+  load() // refresh grid behind the modal
+  if(wasNew){
+    loadSupDocs(id)
+    alert('Supplier saved. You can now add certificates and documents below, or press Cancel to finish.')
+  } else {
+    closeModal()
+  }
+}
+
+window.deleteSupplier=async(id)=>{
+  if(!confirm('Delete this supplier?'))return
+  // Remove from inventory items first
+  await sb.from('inventory_items').update({preferred_supplier_id:null}).eq('preferred_supplier_id',id)
+  await sb.from('suppliers').delete().eq('id',id)
+  load()
+}
+
+window.closeModal=()=>document.getElementById('mSupplier').classList.remove('on')
+document.getElementById('mSupplier').addEventListener('click',e=>{if(e.target===document.getElementById('mSupplier'))closeModal()})
+
+load()
+</script>
+<!-- CW_HELP mount (single source of truth, see lang.js) -->
+<div id="helpPanelMount"></div>
+<script>
+(function(){
+  function mountHelp(){
+    if(typeof CW_HELP==="undefined"||typeof CW_HELP.buildPanel!=="function"){setTimeout(mountHelp,50);return}
+    document.getElementById("helpPanelMount").innerHTML=CW_HELP.buildPanel("suppliers","🏭","Fournisseurs","Suppliers")
+    CW_HELP.init("suppliers","🏭","Fournisseurs","Suppliers")
+  }
+  document.addEventListener("DOMContentLoaded",mountHelp)
+})();
+</script>
+</body>
+</html>
