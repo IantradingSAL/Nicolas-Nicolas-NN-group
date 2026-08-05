@@ -1,76 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Nicolas Nicolas Group — Suppliers</title>
-<script type="module" src="auth_guard.js?v=20260531f"></script>
+<link rel="icon" type="image/svg+xml" href="nn-logo.svg"/>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet"/>
+<script type="module" src="auth_guard.js"></script>
+<script>const PAGE_KEY='suppliers'</script>
+<script src="access.js"></script>
 <style>
-:root{--bg:#f0f4f8;--card:#fff;--bdr:#e2e8f0;--txt:#0f172a;--mu:#64748b;--dim:#94a3b8;
-  --blue:#3b5fe2;--b50:#eff3ff;--green:#16a34a;--g50:#f0fdf4;
-  --red:#dc2626;--r50:#fff1f2;--amber:#d97706;--a50:#fffbeb}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh}
-.wrap{max-width:1100px;margin:0 auto;padding:28px 20px}
-.hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
-.hdr h1{font-size:22px;font-weight:800}
-.btn{padding:10px 20px;background:var(--blue);color:#fff;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
-.btn:hover{opacity:.9}
-.btn-sm{padding:6px 14px;font-size:12px}
-.btn-red{background:var(--red)}
-.btn-ghost{background:transparent;color:var(--blue);border:1.5px solid var(--blue)}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
-.card{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:20px;position:relative}
-.card-name{font-size:16px;font-weight:800;margin-bottom:4px}
-.card-country{font-size:11px;color:var(--mu);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px}
-.card-row{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--mu);margin-bottom:4px}
-.card-row span{color:var(--txt);font-weight:500}
-.card-actions{display:flex;gap:8px;margin-top:14px}
-.badge-active{background:var(--g50);color:var(--green);font-size:11px;font-weight:700;padding:2px 10px;border-radius:999px;position:absolute;top:16px;right:16px}
-.badge-inactive{background:#f1f5f9;color:var(--dim);font-size:11px;font-weight:700;padding:2px 10px;border-radius:999px;position:absolute;top:16px;right:16px}
-.empty{text-align:center;padding:60px 20px;color:var(--mu)}
-/* Modal */
-.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:100;align-items:center;justify-content:center}
-.overlay.on{display:flex}
-.mo{background:var(--card);border-radius:16px;padding:28px;width:min(520px,95vw);max-height:90vh;overflow-y:auto}
-.mo-t{font-size:18px;font-weight:800;margin-bottom:4px}
-.mo-s{font-size:13px;color:var(--mu);margin-bottom:20px}
-.fg{display:flex;flex-direction:column;gap:12px}
-.fg2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-label{display:block;font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px}
-.fi{width:100%;padding:9px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-size:13px;font-family:inherit;background:var(--bg);color:var(--txt);outline:none}
-.fi:focus{border-color:var(--blue)}
-.row-btns{display:flex;gap:10px;margin-top:8px}
-.inv-link{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--b50);border-radius:8px;font-size:12px;color:var(--blue);font-weight:600;margin-bottom:6px;cursor:pointer}
-.inv-link:hover{background:#dde9ff}
-.sw{display:flex;align-items:center;gap:8px;padding:10px 12px;background:#faf5ff;border:1px solid #e9d5ff;border-radius:10px;margin-top:4px}
-.sw input{width:16px;height:16px;accent-color:#7c3aed}
-.sw-lbl{font-size:12px;font-weight:700;color:#5b21b6}
-.sw-sub{font-size:11px;color:var(--mu)}
+:root{
+  --bg:#f5f7fb;--card:#fff;--bdr:#e6ebf2;--bdr-2:#d4dbe6;--txt:#0f172a;--mu:#64748b;--dim:#94a3b8;
+  --blue:#3b5fe2;--b50:#eef2ff;--b100:#e0e7ff;
+  --green:#16a34a;--g50:#f0fdf4;--g100:#dcfce7;
+  --amber:#d97706;--a50:#fffbeb;--a100:#fef3c7;
+  --red:#dc2626;--r50:#fef2f2;--r100:#fee2e2;
+  --purple:#7c3aed;--p50:#f5f3ff;--p100:#ede9fe;
+  --teal:#0d9488;--t50:#f0fdfa;--t100:#ccfbf1;
+  --f:'DM Sans',sans-serif;--mono:'JetBrains Mono',monospace;
+  --sh:0 1px 2px rgba(15,23,42,.04),0 1px 3px rgba(15,23,42,.06);
+  --sh-hi:0 4px 14px rgba(15,23,42,.10),0 1px 3px rgba(15,23,42,.10);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--f);background:var(--bg);color:var(--txt);min-height:100vh}
 
-
-/* NN shared sidebar */
-.sidebar{position:fixed;left:0;top:0;bottom:0;width:240px;background:var(--card);border-right:1px solid var(--bdr);display:flex;flex-direction:column;z-index:100;overflow-y:auto;font-family:'DM Sans',sans-serif}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:240px;background:var(--card);border-right:1px solid var(--bdr);display:flex;flex-direction:column;z-index:100;overflow-y:auto}
 .sb-brand{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:16px 18px;border-bottom:1px solid var(--bdr)}
 .sb-logo{display:block;height:56px;max-width:100%}
 .sb-tag{font-size:10px;color:var(--mu);font-weight:700;letter-spacing:1.5px;text-transform:uppercase}
 .sb-nav{flex:1;padding:10px}
-.sb-s{font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.8px;padding:14px 8px 6px}
+.sb-s{font-size:10px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.8px;padding:14px 8px 6px}
 .nl{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:9px;font-size:13px;font-weight:500;color:var(--mu);text-decoration:none;transition:all .15s}
 .nl:hover{background:var(--bg);color:var(--txt)}
 .nl.on{background:var(--b50);color:var(--blue);font-weight:600}
 .nl .ic{font-size:16px;width:20px;text-align:center}
 .sb-foot{padding:12px 10px;border-top:1px solid var(--bdr)}
-.wrap{margin-left:240px}
+
+.wrap{margin-left:240px;min-height:100vh}
+.topbar{background:var(--card);border-bottom:1px solid var(--bdr);padding:14px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;flex-wrap:wrap;gap:12px}
+.tt{font-size:20px;font-weight:800;letter-spacing:-.3px}
+.body{padding:22px 28px 100px;max-width:1500px}
+
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;font-size:13px;font-weight:600;border:none;border-radius:9px;cursor:pointer;font-family:var(--f);transition:all .15s;text-decoration:none}
+.b-pri{background:var(--blue);color:#fff}.b-pri:hover{background:#2e4fc7}
+.b-gho{background:var(--card);border:1px solid var(--bdr-2);color:var(--txt)}.b-gho:hover{border-color:var(--txt)}
+.b-red{background:var(--red);color:#fff}
+.b-grn{background:var(--green);color:#fff}
+.b-sm{padding:5px 11px;font-size:12px}
+
+/* Clickable KPI tiles */
+.kpig{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:18px}
+.kpi{background:var(--card);border-radius:14px;box-shadow:var(--sh);padding:16px;position:relative;overflow:hidden;cursor:pointer;transition:transform .15s,box-shadow .15s;text-decoration:none;color:inherit;display:block}
+.kpi:hover{transform:translateY(-2px);box-shadow:var(--sh-hi)}
+.kpi::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--purple)}
+.kpi.k-g::before{background:var(--green)}.kpi.k-a::before{background:var(--amber)}.kpi.k-b::before{background:var(--blue)}.kpi.k-r::before{background:var(--red)}
+.kpi-row{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.kpi-lbl{font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.5px}
+.kpi-ico{width:32px;height:32px;border-radius:9px;background:var(--p50);color:var(--purple);display:flex;align-items:center;justify-content:center;font-size:15px}
+.kpi.k-g .kpi-ico{background:var(--g50);color:var(--green)}
+.kpi.k-a .kpi-ico{background:var(--a50);color:var(--amber)}
+.kpi.k-b .kpi-ico{background:var(--b50);color:var(--blue)}
+.kpi.k-r .kpi-ico{background:var(--r50);color:var(--red)}
+.kpi-val{font-size:24px;font-weight:800;font-family:var(--mono);letter-spacing:-1px;line-height:1}
+.kpi-sub{font-size:11px;color:var(--dim);margin-top:6px}
+.kpi-more{position:absolute;top:14px;right:14px;font-size:14px;color:var(--dim);opacity:0;transition:opacity .15s}
+.kpi:hover .kpi-more{opacity:1}
+
+.card{background:var(--card);border-radius:14px;box-shadow:var(--sh);padding:20px}
+.chd{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;gap:12px;flex-wrap:wrap}
+.ct{font-size:15px;font-weight:800;letter-spacing:-.2px}
+.cs{font-size:12px;color:var(--mu);margin-top:2px}
+
+/* Bar rows — clickable */
+.bars{display:flex;flex-direction:column;gap:12px}
+.bar-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;font-size:12.5px;cursor:pointer;padding:6px 8px;border-radius:8px;transition:background .15s}
+.bar-row:hover{background:var(--bg)}
+.bar-lbl{display:flex;align-items:center;gap:8px;min-width:0}
+.bar-lbl .name{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bar-track{margin-top:5px;grid-column:1/-1;height:6px;background:var(--bg);border-radius:99px;overflow:hidden;border:1px solid var(--bdr)}
+.bar-fill{height:100%;background:linear-gradient(90deg,#3b5fe2,#7c3aed);border-radius:99px}
+.bar-val{font-family:var(--mono);font-weight:700}
+
+.tbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.si{padding:8px 13px;border:1.5px solid var(--bdr);border-radius:9px;font-family:var(--f);font-size:13px;outline:none;min-width:260px;flex:1;max-width:400px}
+.si:focus{border-color:var(--blue)}
+.fsel{padding:8px 11px;border:1.5px solid var(--bdr);border-radius:9px;font-family:var(--f);font-size:13px;outline:none;cursor:pointer}
+
+/* Supplier cards — clickable */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+.sc{background:var(--card);border:1px solid var(--bdr);border-radius:14px;box-shadow:var(--sh);padding:18px;position:relative;cursor:pointer;transition:transform .15s,box-shadow .15s,border-color .15s}
+.sc:hover{transform:translateY(-2px);box-shadow:var(--sh-hi);border-color:var(--blue)}
+.sc-hdr{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:10px}
+.sc-name{font-size:15px;font-weight:800;letter-spacing:-.2px}
+.sc-country{font-size:10px;color:var(--mu);text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+.sc-badge{padding:2px 8px;border-radius:999px;font-size:10.5px;font-weight:700}
+.sc-badge.ok{background:var(--g100);color:#15803d}
+.sc-badge.no{background:#f1f5f9;color:var(--mu)}
+
+.sc-metrics{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0 12px}
+.sc-metric{background:var(--bg);border:1px solid var(--bdr);border-radius:10px;padding:9px 11px}
+.sc-metric .l{font-size:10px;color:var(--mu);font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+.sc-metric .v{font-size:15px;font-weight:800;font-family:var(--mono);margin-top:3px}
+.sc-metric.warn .v{color:var(--amber)}.sc-metric.good .v{color:var(--green)}.sc-metric.info .v{color:var(--blue)}
+
+.sc-contact{font-size:11.5px;color:var(--mu);line-height:1.5}
+.sc-actions{display:flex;gap:6px;margin-top:12px;padding-top:12px;border-top:1px solid var(--bdr)}
+
+/* Modals */
+.overlay{display:none;position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:500;align-items:center;justify-content:center;padding:20px;overflow-y:auto}
+.overlay.on{display:flex}
+.mo{background:var(--card);border-radius:16px;padding:26px;width:100%;max-width:520px;box-shadow:0 20px 60px rgba(15,23,42,.2);max-height:92vh;overflow-y:auto}
+.mo.wide{max-width:940px}
+.mo-t{font-size:18px;font-weight:800;margin-bottom:2px}
+.mo-s{font-size:12px;color:var(--mu);margin-bottom:16px}
+
+.fl{display:block;font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px}
+.fi{width:100%;padding:9px 12px;border:1.5px solid var(--bdr);border-radius:9px;font-family:var(--f);font-size:13px;background:#fff;outline:none}
+.fi:focus{border-color:var(--blue)}
+.fg{display:flex;flex-direction:column;gap:12px}
+.fg2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.moa{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
+.mer{color:var(--red);font-size:12px;margin-top:8px;min-height:14px}
+
+.tabs{display:flex;gap:4px;flex-wrap:wrap;margin:16px 0 14px}
+.tb{padding:7px 14px;font-size:13px;font-weight:600;border:1.5px solid var(--bdr);background:var(--card);color:var(--mu);border-radius:9px;cursor:pointer;font-family:var(--f)}
+.tb.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+.tp{display:none}.tp.on{display:block}
+
+.tw{overflow-x:auto;border-radius:10px;border:1px solid var(--bdr)}
+table{width:100%;border-collapse:collapse}
+thead th{padding:9px 12px;font-size:10.5px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.5px;background:#f8fafc;border-bottom:1px solid var(--bdr);text-align:left;white-space:nowrap}
+tbody td{padding:10px 12px;font-size:12.5px;border-bottom:1px solid var(--bdr);vertical-align:middle}
+tbody tr:last-child td{border:none}
+tbody tr[data-clickable]{cursor:pointer;transition:background .15s}
+tbody tr[data-clickable]:hover{background:#eef2ff}
+.mono{font-family:var(--mono);font-size:12px}
+.num{font-family:var(--mono);font-weight:700;text-align:right}
+.empty td{text-align:center;padding:26px!important;color:var(--dim)!important}
+
+.bdg{display:inline-flex;padding:3px 9px;border-radius:999px;font-size:10.5px;font-weight:700;letter-spacing:.2px}
+.b-paid{background:var(--g100);color:#15803d}
+.b-unpaid{background:var(--b100);color:#1e40af}
+.b-partial{background:var(--a100);color:#92400e}
+.b-overdue{background:var(--r100);color:#991b1b}
+.b-cancel{background:#f1f5f9;color:var(--mu)}
+.b-lot{background:var(--g100);color:#15803d}
+.b-low{background:var(--a100);color:#92400e}
+.b-out{background:var(--r100);color:#991b1b}
+
+.notif{position:fixed;bottom:24px;right:24px;padding:12px 18px;border-radius:10px;font-size:13px;font-weight:600;z-index:9999;display:none;box-shadow:0 4px 16px rgba(0,0,0,.2);color:#fff}
+.notif.on{display:flex}.notif.ok{background:#15803d}.notif.err{background:var(--red)}
+
+@media(max-width:1100px){.kpig{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.kpig{grid-template-columns:1fr}}
 @media(max-width:900px){.sidebar{display:none}.wrap{margin-left:0}}
 </style>
 </head>
 <body>
-<script src="access.js?v=20260422c"></script>
-<script>PAGE_KEY='suppliers'</script>
-
-
-
 
 <aside class="sidebar">
   <div class="sb-brand">
@@ -81,335 +168,473 @@ label{display:block;font-size:11px;font-weight:700;color:var(--mu);text-transfor
   </div>
   <nav class="sb-nav">
     <div class="sb-s">Console</div>
-    <a href="index.html"     class="nl"><span class="ic">🏠</span>Home</a>
+    <a href="index.html"     class="nl"><span class="ic">🏠</span>Dashboard</a>
     <a href="inventory.html" class="nl"><span class="ic">📦</span>Inventory</a>
     <a href="suppliers.html" class="nl on"><span class="ic">🏭</span>Suppliers</a>
+    <a href="invoices.html"  class="nl"><span class="ic">🧾</span>Invoices</a>
     <div class="sb-s">People</div>
     <a href="employees.html" class="nl"><span class="ic">👥</span>Employees</a>
     <a href="roles.html"     class="nl"><span class="ic">🛡️</span>Roles</a>
-      <div class="sb-s">System</div>
+    <div class="sb-s">System</div>
     <a href="audit_log.html" class="nl"><span class="ic">📜</span>Audit Log</a>
   </nav>
   <div class="sb-foot">
-    <a href="index.html" class="nl"><span class="ic">←</span>Back to home</a>
-  
     <a href="#" class="nl" onclick="window.signOut();return false;" style="color:#dc2626"><span class="ic">🚪</span>Sign out</a>
   </div>
 </aside>
 
 <div class="wrap">
-  <div class="hdr">
+  <div class="topbar">
     <div>
-      <h1>🏭 Suppliers</h1>
-      <div style="font-size:13px;color:var(--mu);margin-top:2px">Manage material suppliers — linked to inventory items</div>
+      <div class="tt">🏭 Suppliers</div>
+      <div style="font-size:12px;color:var(--mu);margin-top:3px">Purchases, payments and linked inventory — click any tile or number to drill in.</div>
     </div>
-    <button class="btn" onclick="openAdd()">+ Add Supplier</button>
+    <div style="display:flex;gap:8px">
+      <button class="btn b-gho" id="btnSeed" title="Add a few dummy invoices per supplier">🎲 Seed demo invoices</button>
+      <button class="btn b-pri" id="btnAdd">+ Add Supplier</button>
+    </div>
   </div>
 
-  <div id="grid" class="grid">
-    <div class="empty">Loading suppliers…</div>
+  <div class="body">
+
+    <!-- KPI row — every tile is a link -->
+    <div class="kpig">
+      <a class="kpi k-b" href="#" onclick="return false" title="Scroll to supplier list">
+        <div class="kpi-more">→</div>
+        <div class="kpi-row"><div class="kpi-lbl">Active suppliers</div><div class="kpi-ico">🏭</div></div>
+        <div class="kpi-val" id="kSup">—</div>
+        <div class="kpi-sub" id="kSupSub">—</div>
+      </a>
+      <a class="kpi" href="invoices.html" title="Open all invoices">
+        <div class="kpi-more">→</div>
+        <div class="kpi-row"><div class="kpi-lbl">Total purchased (12 mo)</div><div class="kpi-ico">💶</div></div>
+        <div class="kpi-val" id="kSpend">—</div>
+        <div class="kpi-sub" id="kSpendSub">—</div>
+      </a>
+      <a class="kpi k-g" href="invoices.html#status=paid" title="Open paid invoices">
+        <div class="kpi-more">→</div>
+        <div class="kpi-row"><div class="kpi-lbl">Paid to suppliers</div><div class="kpi-ico">✅</div></div>
+        <div class="kpi-val" id="kPaid">—</div>
+        <div class="kpi-sub" id="kPaidSub">—</div>
+      </a>
+      <a class="kpi k-a" href="invoices.html#status=unpaid" title="Open unpaid invoices">
+        <div class="kpi-more">→</div>
+        <div class="kpi-row"><div class="kpi-lbl">Outstanding</div><div class="kpi-ico">⏳</div></div>
+        <div class="kpi-val" id="kOut">—</div>
+        <div class="kpi-sub" id="kOutSub">—</div>
+      </a>
+    </div>
+
+    <!-- Top spend + Stock value by supplier -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px" id="chartRow">
+      <div class="card">
+        <div class="chd">
+          <div><div class="ct">Top spend by supplier</div><div class="cs">Last 12 months. Click a bar to see that supplier's details.</div></div>
+        </div>
+        <div class="bars" id="topSpend"><div style="color:var(--dim);font-size:13px">Loading…</div></div>
+      </div>
+      <div class="card">
+        <div class="chd">
+          <div><div class="ct">Stock value by supplier</div><div class="cs">Available qty × unit cost across lots. Click to open.</div></div>
+        </div>
+        <div class="bars" id="topStock"><div style="color:var(--dim);font-size:13px">Loading…</div></div>
+      </div>
+    </div>
+
+    <!-- Grid of supplier cards -->
+    <div class="card">
+      <div class="chd">
+        <div><div class="ct">All suppliers</div><div class="cs">Click a card to open the full purchase history and linked inventory.</div></div>
+      </div>
+      <div class="tbar">
+        <input class="si" id="q" placeholder="🔍 Search name, country, contact…"/>
+        <select class="fsel" id="fStat">
+          <option value="">All statuses</option>
+          <option value="active">Active only</option>
+          <option value="inactive">Inactive only</option>
+        </select>
+        <select class="fsel" id="fSort">
+          <option value="spend">Sort by spend (high → low)</option>
+          <option value="outstanding">Sort by outstanding</option>
+          <option value="name">Sort by name (A → Z)</option>
+          <option value="items">Sort by items linked</option>
+        </select>
+      </div>
+      <div class="grid" id="grid"><div style="color:var(--dim);font-size:13px">Loading…</div></div>
+    </div>
+
   </div>
 </div>
 
-<!-- Add/Edit Modal -->
+<!-- Supplier DETAIL modal -->
+<div class="overlay" id="mDet">
+  <div class="mo wide">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+      <div>
+        <div class="mo-t" id="dName">Supplier</div>
+        <div class="mo-s" id="dSub">—</div>
+      </div>
+      <button class="btn b-gho b-sm" onclick="document.getElementById('mDet').classList.remove('on')">✕ Close</button>
+    </div>
+
+    <div class="kpig" style="grid-template-columns:repeat(4,1fr);margin-bottom:6px">
+      <div class="kpi k-b"><div class="kpi-lbl">Invoiced</div><div class="kpi-val" id="dInv">—</div><div class="kpi-sub" id="dInvSub">—</div></div>
+      <div class="kpi k-g"><div class="kpi-lbl">Paid</div><div class="kpi-val" id="dPaid">—</div><div class="kpi-sub" id="dPaidSub">—</div></div>
+      <div class="kpi k-a"><div class="kpi-lbl">Outstanding</div><div class="kpi-val" id="dOut">—</div><div class="kpi-sub" id="dOutSub">—</div></div>
+      <div class="kpi"><div class="kpi-lbl">Stock value</div><div class="kpi-val" id="dStock">—</div><div class="kpi-sub" id="dStockSub">—</div></div>
+    </div>
+
+    <div class="tabs">
+      <button class="tb on" data-t="inv">🧾 Invoices</button>
+      <button class="tb" data-t="items">📦 Inventory Items</button>
+      <button class="tb" data-t="lots">🗂 Stock Lots</button>
+    </div>
+
+    <div class="tp on" id="tp-inv">
+      <div class="tw"><table>
+        <thead><tr><th>Invoice #</th><th>Issued</th><th>Due</th><th class="num">Amount</th><th class="num">Paid</th><th class="num">Balance</th><th>Status</th></tr></thead>
+        <tbody id="dInvTbl"><tr class="empty"><td colspan="7">—</td></tr></tbody>
+      </table></div>
+      <div style="margin-top:10px;text-align:right"><a class="btn b-gho b-sm" href="invoices.html">Open all invoices →</a></div>
+    </div>
+
+    <div class="tp" id="tp-items">
+      <div class="tw"><table>
+        <thead><tr><th>Item</th><th>Category</th><th>Unit</th><th class="num">On hand</th><th class="num">Min</th><th>Auto req.</th></tr></thead>
+        <tbody id="dItemsTbl"><tr class="empty"><td colspan="6">—</td></tr></tbody>
+      </table></div>
+      <div style="margin-top:10px;text-align:right"><a class="btn b-gho b-sm" href="inventory.html">Open Inventory →</a></div>
+    </div>
+
+    <div class="tp" id="tp-lots">
+      <div class="tw"><table>
+        <thead><tr><th>Lot #</th><th>Item</th><th class="num">Qty</th><th class="num">Unit cost</th><th class="num">Value</th><th>Received</th><th>Expiry</th></tr></thead>
+        <tbody id="dLotsTbl"><tr class="empty"><td colspan="7">—</td></tr></tbody>
+      </table></div>
+      <div style="margin-top:10px;text-align:right"><a class="btn b-gho b-sm" href="inventory.html">Open Inventory →</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- Add / Edit supplier modal -->
 <div class="overlay" id="mSupplier">
   <div class="mo">
     <div class="mo-t" id="moTitle">Add Supplier</div>
-    <div class="mo-s">Supplier details — linked to inventory items</div>
+    <div class="mo-s">Supplier details.</div>
+    <input type="hidden" id="editId"/>
     <div class="fg">
       <div class="fg2">
-        <div><label>Supplier Name *</label><input class="fi" id="sName" placeholder="e.g. Formlabs"/></div>
-        <div><label>Country</label><input class="fi" id="sCountry" placeholder="e.g. USA"/></div>
+        <div><label class="fl">Name *</label><input class="fi" id="sName" placeholder="e.g. Formlabs"/></div>
+        <div><label class="fl">Country</label><input class="fi" id="sCountry" placeholder="e.g. USA"/></div>
       </div>
       <div class="fg2">
-        <div><label>Contact Name</label><input class="fi" id="sContact" placeholder="e.g. John Smith"/></div>
-        <div><label>Phone</label><input class="fi" id="sPhone" placeholder="+1 800 000 0000"/></div>
+        <div><label class="fl">Contact name</label><input class="fi" id="sContact" placeholder="John Smith"/></div>
+        <div><label class="fl">Phone</label><input class="fi" id="sPhone" placeholder="+1 800 000 0000"/></div>
       </div>
-      <div><label>Email</label><input class="fi" id="sEmail" type="email" placeholder="contact@supplier.com"/></div>
-      <div><label>Order email CC</label><input class="fi" id="sCc" placeholder="me@nicolasgroup.com, ops@nicolasgroup.com"/><div style="font-size:12px;color:#64748b;margin-top:3px">Auto-CC'd on every purchase order sent to this supplier. Separate several with commas.</div></div>
-      <div><label>Address</label><input class="fi" id="sAddress" placeholder="Street, City"/></div>
-      <div><label>Notes</label><textarea class="fi" id="sNotes" rows="2" placeholder="Any notes…" style="resize:vertical"></textarea></div>
-
-      <div id="invLinkSection" style="display:none">
-        <label>Inventory Items Using This Supplier</label>
-        <div id="invLinks"></div>
-      </div>
-      <div id="supDocSection" style="display:none;margin-top:14px;border-top:1px solid #e2e8f0;padding-top:12px">
-        <label style="font-weight:700">📜 Certifications &amp; contracts</label>
-        <div id="supDocList" style="margin:8px 0;font-size:13px"></div>
-        <div style="display:grid;grid-template-columns:120px 1fr 130px 140px;gap:6px;align-items:end;margin-bottom:8px">
-          <div><label style="font-size:11px;color:#64748b">Kind</label>
-            <select class="fi" id="sdKind" style="height:36px">
-              <option value="certification">Certification</option>
-              <option value="contract">Contract</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
-          <div><label style="font-size:11px;color:#64748b">Title</label>
-            <input class="fi" id="sdTitle" placeholder="e.g. ISO 13485:2016"/>
-          </div>
-          <div><label style="font-size:11px;color:#64748b">Reference no.</label>
-            <input class="fi" id="sdRef" placeholder="cert / contract #"/>
-          </div>
-          <div><label style="font-size:11px;color:#64748b">Expires</label>
-            <input class="fi" id="sdExp" type="date"/>
-          </div>
-        </div>
-        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-          <label class="btn btn-ghost btn-sm" style="cursor:pointer;margin:0" for="sdFile">📎 Attach PDF</label>
-          <input id="sdFile" type="file" accept="application/pdf,image/*" style="display:none" onchange="onPickSupDoc()"/>
-          <span id="sdFileName" style="font-size:12px;color:#64748b">No file selected</span>
-          <button class="btn btn-sm" type="button" onclick="addSupDoc()" style="margin-left:auto">＋ Add document</button>
-        </div>
-      </div>
-
-      <div class="row-btns">
-        <button class="btn" onclick="saveSupplier()">💾 Save</button>
-        <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
-      </div>
+      <div><label class="fl">Email</label><input class="fi" id="sEmail" type="email" placeholder="contact@supplier.com"/></div>
+      <div><label class="fl">CC on POs</label><input class="fi" id="sCc" placeholder="ops@nicolasgroup.com, finance@…"/></div>
+      <div><label class="fl">Address</label><input class="fi" id="sAddress" placeholder="Street, city"/></div>
+      <div><label class="fl">Notes</label><textarea class="fi" id="sNotes" rows="2" style="resize:vertical"></textarea></div>
     </div>
+    <div class="moa">
+      <button class="btn b-red b-sm" id="btnDel" style="margin-right:auto;display:none">🗑 Delete</button>
+      <button class="btn b-gho" id="btnC">Cancel</button>
+      <button class="btn b-pri" id="btnSv">💾 Save</button>
+    </div>
+    <div class="mer" id="mErr"></div>
   </div>
 </div>
 
-<script type="module">
-import{createClient}from'https://esm.sh/@supabase/supabase-js@2'
-import{SUPABASE_CONFIG}from'./config.js'
-const sb=createClient(SUPABASE_CONFIG.url,SUPABASE_CONFIG.anonKey)
+<div class="notif" id="notif"></div>
 
-let all=[], editId=null
+<script type="module">
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import { SUPABASE_CONFIG } from './config.js'
+const sb = createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey)
+
+const $ = id => document.getElementById(id)
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))
+const money = n => Number(n||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})
+const short = n => {
+  const a = Math.abs(Number(n||0))
+  if (a >= 1_000_000) return '€' + (n/1_000_000).toFixed(1).replace(/\.0$/,'') + 'M'
+  if (a >= 1_000)     return '€' + (n/1_000).toFixed(1).replace(/\.0$/,'') + 'k'
+  return '€' + Math.round(n).toLocaleString()
+}
+const fdate = v => v ? new Date(v).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}) : '—'
+function notify(msg, type='ok'){const n=$('notif');n.textContent=(type==='ok'?'✅ ':'❌ ')+msg;n.className='notif on '+type;setTimeout(()=>n.classList.remove('on'),3500)}
+function statusBadge(s){const c={paid:'b-paid',unpaid:'b-unpaid',partial:'b-partial',overdue:'b-overdue',cancelled:'b-cancel'}[s]||'b-cancel';return `<span class="bdg ${c}">${s||'—'}</span>`}
+function lotStatus(l){const q=Number(l.available_qty||0),m=Number(l.min_stock||l.reorder_point||0);const d=l.expiry_date?Math.round((new Date(l.expiry_date)-Date.now())/86400000):null;if(q<=0)return{cls:'b-out',lbl:'Out'};if(d!==null&&d<0)return{cls:'b-out',lbl:'Expired'};if(m>0&&q<=m)return{cls:'b-low',lbl:'Low'};return{cls:'b-lot',lbl:'OK'}}
+
+let suppliers=[], invoices=[], items=[], lots=[]
 
 async function load(){
-  const[sr,ir]=await Promise.all([
+  const [sr, ir, itR, lr] = await Promise.all([
     sb.from('suppliers').select('*').order('name'),
-    sb.from('inventory_items').select('id,name,preferred_supplier_id')
+    sb.from('invoices').select('*'),
+    sb.from('inventory_items').select('id,name,item_name,category,category_name,preferred_supplier_id,supplier_id,unit_of_measure,unit,min_qty,min_stock,auto_requisition_enabled'),
+    sb.from('inventory_lots').select('id,supplier_id,item_id,lot_no,lot_number,available_qty,unit_cost,purchase_date,received_at,expiry_date,min_stock,reorder_point'),
   ])
-  all=sr.data||[]
-  const items=ir.data||[]
-  renderGrid(all,items)
-  // Deep link: #edit=<supplierId> opens that supplier straight away.
-  const m=location.hash.match(/edit=([0-9a-f-]+)/i)
-  if(m&&all.some(s=>s.id===m[1])){history.replaceState(null,'',location.pathname);window.editSupplier(m[1])}
+  suppliers = sr.data || []
+  invoices  = ir.data || []
+  items     = itR.data || []
+  lots      = lr.data || []
+
+  renderKpis(); renderBars(); renderGrid()
 }
 
-function renderGrid(suppliers,items){
-  const g=document.getElementById('grid')
-  if(!suppliers.length){g.innerHTML='<div class="empty">No suppliers yet — add your first supplier</div>';return}
-  g.innerHTML=suppliers.map(s=>{
-    const linked=(items||[]).filter(i=>i.preferred_supplier_id===s.id)
-    return`<div class="card">
-      <div class="${s.is_active?'badge-active':'badge-inactive'}">${s.is_active?'Active':'Inactive'}</div>
-      <div class="card-name" style="margin-top:0">${s.name||'Unnamed'}</div>
-      <div class="card-country">${s.country||'—'}</div>
-      ${s.contact_name?`<div class="card-row">👤 <span>${s.contact_name}</span></div>`:''}
-      ${s.email?`<div class="card-row">✉️ <span>${s.email}</span></div>`:''}
-      ${s.phone?`<div class="card-row">📞 <span>${s.phone}</span></div>`:''}
-      ${linked.length?`<div class="card-row" style="margin-top:8px">📦 <span>${linked.length} inventory item${linked.length>1?'s':''} linked</span></div>`:''}
-      <div class="card-actions">
-        <button class="btn btn-sm btn-ghost" onclick="window.editSupplier('${s.id}')">✏️ Edit</button>
-        <button class="btn btn-sm btn-red" onclick="window.deleteSupplier('${s.id}')">🗑 Delete</button>
+const spendFor = s => invoices.filter(i=>i.supplier_id===s.id).reduce((a,i)=>a+Number(i.amount||0),0)
+const paidFor  = s => invoices.filter(i=>i.supplier_id===s.id).reduce((a,i)=>a+Number(i.paid_amount||0),0)
+const outFor   = s => invoices.filter(i=>i.supplier_id===s.id && i.status!=='paid' && i.status!=='cancelled').reduce((a,i)=>a+(Number(i.amount||0)-Number(i.paid_amount||0)),0)
+const itemsFor = s => items.filter(it => (it.preferred_supplier_id||it.supplier_id) === s.id)
+const lotsFor  = s => lots.filter(l => l.supplier_id === s.id)
+const stockValFor = s => lotsFor(s).reduce((a,l)=>a+Number(l.available_qty||0)*Number(l.unit_cost||0),0)
+
+function renderKpis(){
+  const y0 = new Date(); y0.setMonth(y0.getMonth()-11); y0.setDate(1)
+  const in12 = invoices.filter(i => new Date(i.issue_date) >= y0)
+  const tot  = in12.reduce((a,i)=>a+Number(i.amount||0),0)
+  const paid = in12.reduce((a,i)=>a+Number(i.paid_amount||0),0)
+  const out  = invoices.filter(i=>i.status!=='paid'&&i.status!=='cancelled').reduce((a,i)=>a+(Number(i.amount||0)-Number(i.paid_amount||0)),0)
+  const active = suppliers.filter(s => s.is_active !== false).length
+  $('kSup').textContent = active.toLocaleString(); $('kSupSub').textContent = `${suppliers.length} total`
+  $('kSpend').textContent = short(tot); $('kSpendSub').textContent = `${in12.length} invoices in 12 mo`
+  $('kPaid').textContent  = short(paid); $('kPaidSub').textContent = tot ? `${(paid/tot*100).toFixed(0)}% collected` : '—'
+  $('kOut').textContent   = short(out); $('kOutSub').textContent = `across ${suppliers.filter(s=>outFor(s)>0).length} supplier(s)`
+}
+
+function renderBars(){
+  const y0 = new Date(); y0.setMonth(y0.getMonth()-11); y0.setDate(1)
+  const spendMap = {}
+  invoices.filter(i => new Date(i.issue_date) >= y0).forEach(i => {
+    const s = suppliers.find(s => s.id === i.supplier_id); if (!s) return
+    spendMap[s.id] = spendMap[s.id] || { name: s.name, v: 0 }
+    spendMap[s.id].v += Number(i.amount||0)
+  })
+  const top = Object.entries(spendMap).sort((a,b)=>b[1].v-a[1].v).slice(0,7)
+  const maxSp = Math.max(1, ...top.map(([,o])=>o.v))
+  $('topSpend').innerHTML = top.length ? top.map(([sid,o])=>`
+    <div class="bar-row" onclick="window.openDetail('${sid}')" title="Open ${esc(o.name)}">
+      <div class="bar-lbl"><span style="width:8px;height:8px;border-radius:2px;background:linear-gradient(135deg,#3b5fe2,#7c3aed);display:inline-block"></span><span class="name">${esc(o.name)}</span></div>
+      <span class="bar-val">${short(o.v)}</span>
+      <div class="bar-track"><div class="bar-fill" style="width:${(o.v/maxSp*100).toFixed(1)}%"></div></div>
+    </div>`).join('') : '<div style="color:var(--dim);font-size:13px">No invoices yet — click 🎲 Seed demo invoices.</div>'
+
+  const stockMap = {}
+  suppliers.forEach(s => { const v = stockValFor(s); if (v > 0) stockMap[s.id] = { name: s.name, v } })
+  const topSt = Object.entries(stockMap).sort((a,b)=>b[1].v-a[1].v).slice(0,7)
+  const maxSt = Math.max(1, ...topSt.map(([,o])=>o.v))
+  $('topStock').innerHTML = topSt.length ? topSt.map(([sid,o])=>`
+    <div class="bar-row" onclick="window.openDetail('${sid}')" title="Open ${esc(o.name)}">
+      <div class="bar-lbl"><span style="width:8px;height:8px;border-radius:2px;background:linear-gradient(135deg,#16a34a,#0d9488);display:inline-block"></span><span class="name">${esc(o.name)}</span></div>
+      <span class="bar-val">${short(o.v)}</span>
+      <div class="bar-track"><div class="bar-fill" style="width:${(o.v/maxSt*100).toFixed(1)}%;background:linear-gradient(90deg,#16a34a,#0d9488)"></div></div>
+    </div>`).join('') : '<div style="color:var(--dim);font-size:13px">No stock lots linked to suppliers yet.</div>'
+}
+
+function renderGrid(){
+  const q = $('q').value.trim().toLowerCase()
+  const st = $('fStat').value
+  const sort = $('fSort').value
+
+  let list = suppliers.filter(s => {
+    if (st === 'active'   && s.is_active === false) return false
+    if (st === 'inactive' && s.is_active !== false) return false
+    if (!q) return true
+    return `${s.name||''} ${s.country||''} ${s.contact_name||''} ${s.email||''}`.toLowerCase().includes(q)
+  })
+  const scoreMap = {}
+  list.forEach(s => scoreMap[s.id] = { spend: spendFor(s), out: outFor(s), items: itemsFor(s).length })
+  list.sort((a,b) => {
+    if (sort==='spend')       return scoreMap[b.id].spend - scoreMap[a.id].spend
+    if (sort==='outstanding') return scoreMap[b.id].out   - scoreMap[a.id].out
+    if (sort==='items')       return scoreMap[b.id].items - scoreMap[a.id].items
+    return (a.name||'').localeCompare(b.name||'')
+  })
+
+  if (!list.length) { $('grid').innerHTML = '<div style="color:var(--dim);font-size:13px;padding:12px">No suppliers match.</div>'; return }
+  $('grid').innerHTML = list.map(s => {
+    const sp = spendFor(s), out = outFor(s), stockV = stockValFor(s), its = itemsFor(s)
+    const active = s.is_active !== false
+    return `<div class="sc" onclick="window.openDetail('${s.id}')" title="Open ${esc(s.name)}">
+      <div class="sc-hdr">
+        <div>
+          <div class="sc-name">${esc(s.name||'—')}</div>
+          <div class="sc-country">${esc(s.country||'no country')}</div>
+        </div>
+        <span class="sc-badge ${active?'ok':'no'}">${active?'Active':'Inactive'}</span>
+      </div>
+      <div class="sc-metrics">
+        <div class="sc-metric info"><div class="l">Spend (12mo)</div><div class="v">${short(sp)}</div></div>
+        <div class="sc-metric ${out>0?'warn':'good'}"><div class="l">Outstanding</div><div class="v">${short(out)}</div></div>
+        <div class="sc-metric"><div class="l">Items linked</div><div class="v">${its.length}</div></div>
+        <div class="sc-metric good"><div class="l">Stock value</div><div class="v">${short(stockV)}</div></div>
+      </div>
+      <div class="sc-contact">
+        ${s.contact_name ? `👤 ${esc(s.contact_name)}<br/>`:''}
+        ${s.email        ? `✉️ ${esc(s.email)}<br/>`:''}
+        ${s.phone        ? `📞 ${esc(s.phone)}`:''}
+      </div>
+      <div class="sc-actions" onclick="event.stopPropagation()">
+        <button class="btn b-gho b-sm" onclick="window.editSupplier('${s.id}')">✏️ Edit</button>
+        <button class="btn b-gho b-sm" onclick="window.openDetail('${s.id}')">📊 Details</button>
       </div>
     </div>`
   }).join('')
 }
 
-// Supplier documents (certifications, contracts) with expiry badges +
-// optional PDF/image attachment served via signed URL.
-async function loadSupDocs(supId){
-  const wrap=document.getElementById('supDocList'); wrap.innerHTML='⏳'
-  const{data,error}=await sb.from('supplier_documents').select('*').eq('supplier_id',supId).order('expires_at',{ascending:true,nullsFirst:false})
-  if(error){ wrap.innerHTML='<div style="color:#dc2626">Could not load: '+error.message+'</div>'; return }
-  if(!data||!data.length){ wrap.innerHTML='<div style="color:#94a3b8">No documents yet.</div>'; return }
-  const today=new Date().toISOString().slice(0,10)
-  const soon=new Date(Date.now()+30*86400000).toISOString().slice(0,10)
-  wrap.innerHTML=data.map(d=>{
-    const status = !d.expires_at ? '' : (d.expires_at<today ? '<span style="background:#fee2e2;color:#b91c1c;padding:1px 7px;border-radius:999px;font-size:11px;font-weight:700">EXPIRED</span>'
-                              : d.expires_at<soon ? '<span style="background:#fef3c7;color:#92400e;padding:1px 7px;border-radius:999px;font-size:11px;font-weight:700">SOON</span>'
-                              : '<span style="background:#dcfce7;color:#166534;padding:1px 7px;border-radius:999px;font-size:11px;font-weight:700">VALID</span>')
-    const file = d.attachment_url
-      ? `<a href="#" data-att="${d.attachment_url.replace(/"/g,'&quot;')}" onclick="openSupDoc(event,this)" title="Open attachment" style="font-size:11px;color:#3b5fe2;font-weight:700;text-decoration:none">📎 PDF</a>`
-      : '<span style="font-size:11px;color:#cbd5e1">no file</span>'
-    return `<div style="display:flex;gap:8px;align-items:center;padding:6px 8px;border:1px solid #e2e8f0;border-radius:8px;margin-bottom:6px;background:#fff">
-      <span style="background:#f1f5f9;color:#475569;padding:1px 7px;border-radius:6px;font-size:11px;font-weight:700">${d.kind}</span>
-      <strong style="flex:1;font-size:13px">${(d.title||'—')}</strong>
-      <span style="font-size:11px;color:#64748b">${d.reference_no||''}</span>
-      <span style="font-size:11px;color:#0f172a">${d.expires_at?'exp '+d.expires_at:''}</span>
-      ${status}
-      ${file}
-      <button class="btn btn-sm btn-ghost" type="button" onclick="deleteSupDoc('${d.id}','${supId}','${(d.attachment_url||'').replace(/'/g,"\\'")}')" title="Delete">🗑</button>
-    </div>`
-  }).join('')
-}
+// ── Detail modal ──
+window.openDetail = (id) => {
+  const s = suppliers.find(x => x.id === id); if (!s) return
+  const sInv = invoices.filter(i => i.supplier_id === id).sort((a,b) => new Date(b.issue_date) - new Date(a.issue_date))
+  const sItems = itemsFor(s)
+  const sLots  = lotsFor(s)
+  const tot = sInv.reduce((a,i)=>a+Number(i.amount||0),0)
+  const pd  = sInv.reduce((a,i)=>a+Number(i.paid_amount||0),0)
+  const out = sInv.filter(i=>i.status!=='paid'&&i.status!=='cancelled').reduce((a,i)=>a+(Number(i.amount||0)-Number(i.paid_amount||0)),0)
+  const stockV = sLots.reduce((a,l)=>a+Number(l.available_qty||0)*Number(l.unit_cost||0),0)
 
-let _sdPicked=null
-window.onPickSupDoc=()=>{
-  const f=document.getElementById('sdFile').files[0]
-  _sdPicked=f||null
-  document.getElementById('sdFileName').textContent=f?`${f.name} (${Math.round(f.size/1024)} KB)`:'No file selected'
-}
+  $('dName').textContent = s.name || '—'
+  $('dSub').textContent = [s.country, s.contact_name, s.email, s.phone].filter(Boolean).join(' · ') || '—'
+  $('dInv').textContent = short(tot); $('dInvSub').textContent = `${sInv.length} invoice(s)`
+  $('dPaid').textContent = short(pd); $('dPaidSub').textContent = tot ? `${(pd/tot*100).toFixed(0)}% paid` : '—'
+  $('dOut').textContent = short(out); $('dOutSub').textContent = `${sInv.filter(i=>i.status==='overdue').length} overdue`
+  $('dStock').textContent = short(stockV); $('dStockSub').textContent = `${sLots.length} lot(s), ${sItems.length} item(s)`
 
-window.openSupDoc=async(ev,el)=>{
-  ev.preventDefault()
-  const path=el.getAttribute('data-att'); if(!path) return
-  const{data,error}=await sb.storage.from('supplier-docs').createSignedUrl(path,300)
-  if(error||!data?.signedUrl){ alert('Could not open: '+(error?.message||'no URL')); return }
-  window.open(data.signedUrl,'_blank','noopener')
-}
+  $('dInvTbl').innerHTML = sInv.length ? sInv.map(i => {
+    const bal = Number(i.amount||0)-Number(i.paid_amount||0)
+    return `<tr data-clickable onclick="location.href='invoices.html'">
+      <td class="mono" style="font-weight:700">${esc(i.invoice_no||'—')}</td>
+      <td class="mono">${fdate(i.issue_date)}</td>
+      <td class="mono">${fdate(i.due_date)}</td>
+      <td class="num">€${money(i.amount)}</td>
+      <td class="num" style="color:${i.paid_amount>0?'var(--green)':'var(--dim)'}">€${money(i.paid_amount)}</td>
+      <td class="num" style="color:${bal>0?'var(--amber)':'var(--dim)'}">€${money(bal)}</td>
+      <td>${statusBadge(i.status)}</td>
+    </tr>`
+  }).join('') : '<tr class="empty"><td colspan="7">No invoices for this supplier — click 🎲 Seed demo invoices at the top.</td></tr>'
 
-window.addSupDoc=async()=>{
-  // If the supplier hasn't been created yet, save it first so the
-  // document has a supplier id to attach to — no "save first" round trip.
-  if(!editId){
-    const id=await persistSupplier()
-    if(!id)return
-    load()
+  const itemStockMap = {}
+  sLots.forEach(l => { itemStockMap[l.item_id] = (itemStockMap[l.item_id]||0) + Number(l.available_qty||0) })
+  $('dItemsTbl').innerHTML = sItems.length ? sItems.map(it => {
+    const name = it.item_name || it.name || '—'
+    const cat  = it.category_name || it.category || '—'
+    const unit = it.unit_of_measure || it.unit || ''
+    const onHand = itemStockMap[it.id] || 0
+    const min = Number(it.min_qty || it.min_stock || 0)
+    const cls = onHand <= 0 ? 'b-out' : (min && onHand <= min ? 'b-low' : 'b-lot')
+    return `<tr data-clickable onclick="location.href='inventory.html'">
+      <td><strong>${esc(name)}</strong></td>
+      <td>${esc(cat)}</td>
+      <td class="mono">${esc(unit)}</td>
+      <td class="num"><span class="bdg ${cls}">${onHand} ${esc(unit)}</span></td>
+      <td class="num">${min || '—'}</td>
+      <td>${it.auto_requisition_enabled ? '<span class="bdg b-paid">On</span>' : '<span class="bdg b-cancel">Off</span>'}</td>
+    </tr>`
+  }).join('') : '<tr class="empty"><td colspan="6">No inventory items linked to this supplier yet.</td></tr>'
+
+  const itemNameMap = Object.fromEntries(items.map(i => [i.id, i.item_name||i.name||'—']))
+  $('dLotsTbl').innerHTML = sLots.length ? sLots.map(l => {
+    const val = Number(l.available_qty||0)*Number(l.unit_cost||0)
+    const st = lotStatus(l)
+    return `<tr data-clickable onclick="location.href='inventory.html'">
+      <td class="mono" style="font-weight:700">${esc(l.lot_no||l.lot_number||'—')}</td>
+      <td>${esc(itemNameMap[l.item_id]||'—')}</td>
+      <td class="num"><span class="bdg ${st.cls}">${l.available_qty||0}</span></td>
+      <td class="num">€${money(l.unit_cost)}</td>
+      <td class="num">€${money(val)}</td>
+      <td class="mono">${fdate(l.purchase_date||l.received_at)}</td>
+      <td class="mono">${fdate(l.expiry_date)}</td>
+    </tr>`
+  }).join('') : '<tr class="empty"><td colspan="7">No stock lots for this supplier yet.</td></tr>'
+
+  document.querySelectorAll('#mDet .tb').forEach(b => b.classList.toggle('on', b.dataset.t==='inv'))
+  document.querySelectorAll('#mDet .tp').forEach(p => p.classList.toggle('on', p.id==='tp-inv'))
+  $('mDet').classList.add('on')
+}
+document.querySelectorAll('#mDet .tb').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('#mDet .tb').forEach(x => x.classList.remove('on'))
+  document.querySelectorAll('#mDet .tp').forEach(x => x.classList.remove('on'))
+  b.classList.add('on'); $('tp-'+b.dataset.t).classList.add('on')
+}))
+$('mDet').addEventListener('click', e => { if (e.target===$('mDet')) $('mDet').classList.remove('on') })
+
+// ── Add / Edit supplier ──
+let editId = null
+$('btnAdd').addEventListener('click', () => {
+  editId = null; $('moTitle').textContent = 'Add Supplier'
+  ;['sName','sCountry','sContact','sPhone','sEmail','sCc','sAddress','sNotes'].forEach(id => $(id).value = '')
+  $('btnDel').style.display = 'none'; $('mErr').textContent = ''
+  $('mSupplier').classList.add('on')
+})
+window.editSupplier = (id) => {
+  const s = suppliers.find(x => x.id === id); if (!s) return
+  editId = id; $('moTitle').textContent = 'Edit Supplier — ' + (s.name||'')
+  $('sName').value = s.name || ''; $('sCountry').value = s.country || ''
+  $('sContact').value = s.contact_name || ''; $('sPhone').value = s.phone || ''
+  $('sEmail').value = s.email || ''; $('sCc').value = s.cc_emails || ''
+  $('sAddress').value = s.address || ''; $('sNotes').value = s.notes || ''
+  $('btnDel').style.display = ''; $('mErr').textContent = ''
+  $('mSupplier').classList.add('on')
+}
+$('btnC').addEventListener('click', () => $('mSupplier').classList.remove('on'))
+$('mSupplier').addEventListener('click', e => { if (e.target===$('mSupplier')) $('mSupplier').classList.remove('on') })
+$('btnSv').addEventListener('click', async () => {
+  const name = $('sName').value.trim(); if (!name) { $('mErr').textContent = 'Name is required'; return }
+  const payload = {
+    name, country: $('sCountry').value.trim()||null,
+    contact_name: $('sContact').value.trim()||null, phone: $('sPhone').value.trim()||null,
+    email: $('sEmail').value.trim()||null, cc_emails: $('sCc').value.trim()||null,
+    address: $('sAddress').value.trim()||null, notes: $('sNotes').value.trim()||null,
+    is_active: true, updated_at: new Date().toISOString(),
   }
-  const row = {
-    supplier_id: editId,
-    kind: document.getElementById('sdKind').value,
-    title: document.getElementById('sdTitle').value.trim()||null,
-    reference_no: document.getElementById('sdRef').value.trim()||null,
-    expires_at: document.getElementById('sdExp').value||null,
-    attachment_url: null,
-  }
-  if(!row.title && !row.reference_no && !_sdPicked){ alert('Add a title, a reference number, or attach a file.'); return }
-  if(_sdPicked){
-    if(_sdPicked.size > 20*1024*1024){ alert('File too large (max 20 MB).'); return }
-    const ext=(_sdPicked.name.split('.').pop()||'bin').toLowerCase().replace(/[^a-z0-9]/g,'')
-    const path=`${editId}/${Date.now()}-${Math.random().toString(36).slice(2,8)}.${ext}`
-    const{error:upErr}=await sb.storage.from('supplier-docs').upload(path,_sdPicked,{contentType:_sdPicked.type||'application/octet-stream',upsert:false})
-    if(upErr){ alert('Upload failed: '+upErr.message); return }
-    row.attachment_url=path
-  }
-  const{error}=await sb.from('supplier_documents').insert([row])
-  if(error){
-    if(row.attachment_url){ try{ await sb.storage.from('supplier-docs').remove([row.attachment_url]) }catch{} }
-    alert('Could not save: '+error.message); return
-  }
-  ;['sdTitle','sdRef','sdExp'].forEach(id=>document.getElementById(id).value='')
-  document.getElementById('sdFile').value=''
-  document.getElementById('sdFileName').textContent='No file selected'
-  _sdPicked=null
-  loadSupDocs(editId)
-}
+  const { error } = editId
+    ? await sb.from('suppliers').update(payload).eq('id', editId)
+    : await sb.from('suppliers').insert([payload])
+  if (error) { $('mErr').textContent = error.message; return }
+  $('mSupplier').classList.remove('on'); notify(editId ? 'Supplier updated' : 'Supplier added'); load()
+})
+$('btnDel').addEventListener('click', async () => {
+  if (!editId) return
+  if (!confirm('Delete this supplier? Linked invoices and inventory items will lose the reference.')) return
+  await sb.from('inventory_items').update({ preferred_supplier_id: null }).eq('preferred_supplier_id', editId)
+  const { error } = await sb.from('suppliers').delete().eq('id', editId)
+  if (error) { $('mErr').textContent = error.message; return }
+  $('mSupplier').classList.remove('on'); notify('Supplier deleted'); load()
+})
 
-window.deleteSupDoc=async(id,supId,attPath)=>{
-  if(!confirm('Delete this document?')) return
-  const{error}=await sb.from('supplier_documents').delete().eq('id',id)
-  if(error){ alert('Could not delete: '+error.message); return }
-  if(attPath){ try{ await sb.storage.from('supplier-docs').remove([attPath]) }catch{} }
-  loadSupDocs(supId)
-}
+// ── Filters ──
+;['q','fStat','fSort'].forEach(id => $(id).addEventListener('input', renderGrid))
+;['fStat','fSort'].forEach(id => $(id).addEventListener('change', renderGrid))
 
-window.openAdd=()=>{
-  editId=null
-  document.getElementById('moTitle').textContent='Add Supplier'
-  ;['sName','sCountry','sContact','sPhone','sEmail','sCc','sAddress','sNotes'].forEach(id=>document.getElementById(id).value='')
-  document.getElementById('invLinkSection').style.display='none'
-  document.getElementById('supDocSection').style.display='block'
-  document.getElementById('supDocList').innerHTML='<div style="font-size:12px;color:#94a3b8">Documents are saved with the supplier when you add them.</div>'
-  const _f=document.getElementById('sdFile'); if(_f) _f.value=''
-  const _fn=document.getElementById('sdFileName'); if(_fn) _fn.textContent='No file selected'
-  _sdPicked=null
-  document.getElementById('mSupplier').classList.add('on')
-}
-
-window.editSupplier=async(id)=>{
-  const s=all.find(x=>x.id===id);if(!s)return
-  editId=id
-  document.getElementById('moTitle').textContent='Edit Supplier'
-  document.getElementById('sName').value=s.name||''
-  document.getElementById('sCountry').value=s.country||''
-  document.getElementById('sContact').value=s.contact_name||''
-  document.getElementById('sPhone').value=s.phone||''
-  document.getElementById('sEmail').value=s.email||''
-  document.getElementById('sCc').value=s.cc_emails||''
-  document.getElementById('sAddress').value=s.address||''
-  document.getElementById('sNotes').value=s.notes||''
-  // Documents (certifications + contracts)
-  document.getElementById('supDocSection').style.display='block'
-  const _f=document.getElementById('sdFile'); if(_f) _f.value=''
-  const _fn=document.getElementById('sdFileName'); if(_fn) _fn.textContent='No file selected'
-  _sdPicked=null
-  loadSupDocs(id)
-  // Load linked inventory items
-  const{data:items}=await sb.from('inventory_items').select('id,name').eq('preferred_supplier_id',id)
-  const sec=document.getElementById('invLinkSection')
-  const lnk=document.getElementById('invLinks')
-  if(items&&items.length){
-    sec.style.display='block'
-    lnk.innerHTML=items.map(i=>`<div class="inv-link">📦 ${i.name}</div>`).join('')
-  } else {
-    sec.style.display='none'
-  }
-  document.getElementById('mSupplier').classList.add('on')
-}
-
-// Insert (or update) the supplier from the form. Returns its id, or null
-// on error. On a fresh insert it flips the modal into edit mode so the
-// documents section becomes usable. Shared by saveSupplier + addSupDoc.
-async function persistSupplier(){
-  const name=document.getElementById('sName').value.trim()
-  if(!name){alert('Supplier name is required');return null}
-  const payload={
-    name, country:document.getElementById('sCountry').value.trim()||null,
-    contact_name:document.getElementById('sContact').value.trim()||null,
-    phone:document.getElementById('sPhone').value.trim()||null,
-    email:document.getElementById('sEmail').value.trim()||null,
-    cc_emails:document.getElementById('sCc').value.trim()||null,
-    address:document.getElementById('sAddress').value.trim()||null,
-    notes:document.getElementById('sNotes').value.trim()||null,
-    is_active:true
-  }
-  if(editId){
-    const{error}=await sb.from('suppliers').update(payload).eq('id',editId)
-    if(error){alert('Save failed: '+error.message);return null}
-    return editId
-  }
-  const{data:ins,error}=await sb.from('suppliers').insert([payload]).select('id').single()
-  if(error){alert('Save failed: '+error.message);return null}
-  editId=ins.id
-  document.getElementById('moTitle').textContent='Edit Supplier'
-  document.getElementById('supDocSection').style.display='block'
-  return ins.id
-}
-
-window.saveSupplier=async()=>{
-  const wasNew=!editId
-  const id=await persistSupplier()
-  if(!id)return
-  load() // refresh grid behind the modal
-  if(wasNew){
-    loadSupDocs(id)
-    alert('Supplier saved. You can now add certificates and documents below, or press Cancel to finish.')
-  } else {
-    closeModal()
-  }
-}
-
-window.deleteSupplier=async(id)=>{
-  if(!confirm('Delete this supplier?'))return
-  // Remove from inventory items first
-  await sb.from('inventory_items').update({preferred_supplier_id:null}).eq('preferred_supplier_id',id)
-  await sb.from('suppliers').delete().eq('id',id)
-  load()
-}
-
-window.closeModal=()=>document.getElementById('mSupplier').classList.remove('on')
-document.getElementById('mSupplier').addEventListener('click',e=>{if(e.target===document.getElementById('mSupplier'))closeModal()})
+// ── Seed dummy invoices per supplier ──
+$('btnSeed').addEventListener('click', async () => {
+  if (!suppliers.length) { notify('Add at least one supplier first', 'err'); return }
+  if (!confirm(`Add 3 demo invoices per supplier (${suppliers.length * 3} rows total)?`)) return
+  const now = new Date()
+  const rows = []
+  suppliers.forEach((s, si) => {
+    for (let k = 0; k < 3; k++) {
+      const d = new Date(now); d.setDate(d.getDate() - (30 + si*7 + k*11))
+      const amt = Math.round((300 + Math.random()*5000) * 100) / 100
+      const status = k === 0 ? 'unpaid' : k === 1 ? 'partial' : 'paid'
+      const paid  = status === 'paid' ? amt : status === 'partial' ? Math.round(amt * 0.4 * 100)/100 : 0
+      rows.push({
+        invoice_no: `INV-DEMO-${d.toISOString().slice(0,7).replace('-','')}-${si}${k}`,
+        supplier_id: s.id, supplier_name: s.name,
+        issue_date: d.toISOString().slice(0,10),
+        due_date: new Date(d.getTime()+30*86400000).toISOString().slice(0,10),
+        amount: amt, currency: 'EUR', status, paid_amount: paid, notes: 'Demo invoice',
+      })
+    }
+  })
+  const { error } = await sb.from('invoices').insert(rows)
+  if (error) { notify('Seed failed: '+error.message, 'err'); return }
+  notify(`Seeded ${rows.length} demo invoices`); load()
+})
 
 load()
 </script>
-<!-- CW_HELP mount (single source of truth, see lang.js) -->
-<div id="helpPanelMount"></div>
-<script>
-(function(){
-  function mountHelp(){
-    if(typeof CW_HELP==="undefined"||typeof CW_HELP.buildPanel!=="function"){setTimeout(mountHelp,50);return}
-    document.getElementById("helpPanelMount").innerHTML=CW_HELP.buildPanel("suppliers","🏭","Fournisseurs","Suppliers")
-    CW_HELP.init("suppliers","🏭","Fournisseurs","Suppliers")
-  }
-  document.addEventListener("DOMContentLoaded",mountHelp)
-})();
-</script>
+
 </body>
 </html>

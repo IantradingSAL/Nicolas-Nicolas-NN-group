@@ -53,6 +53,15 @@ body{font-family:var(--f);background:var(--bg);color:var(--txt);min-height:100vh
 /* KPI tiles — 6 across on wide screens */
 .kpig{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px;margin-bottom:20px}
 .kpi{background:var(--card);border-radius:14px;box-shadow:var(--sh);padding:16px;position:relative;overflow:hidden}
+
+.kpi{cursor:pointer;transition:transform .15s,box-shadow .15s;text-decoration:none;color:inherit;display:block}
+.kpi:hover{transform:translateY(-2px);box-shadow:0 4px 14px rgba(15,23,42,.10),0 1px 3px rgba(15,23,42,.10)}
+.kpi-more{position:absolute;top:12px;right:12px;font-size:14px;color:var(--dim);opacity:0;transition:opacity .15s}
+.kpi:hover .kpi-more{opacity:1}
+tbody tr[data-clickable]{cursor:pointer;transition:background .15s}
+tbody tr[data-clickable]:hover{background:#eef2ff}
+.bar-row[data-clickable]{cursor:pointer;padding:6px 8px;border-radius:8px;transition:background .15s}
+.bar-row[data-clickable]:hover{background:var(--bg)}
 .kpi::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--blue)}
 .kpi.k-p::before{background:var(--purple)}
 .kpi.k-g::before{background:var(--green)}
@@ -173,36 +182,24 @@ tbody tr:hover{background:#fafbfd}
 
     <!-- KPI row -->
     <div class="kpig">
-      <div class="kpi">
-        <div class="kpi-row"><div class="kpi-lbl">Revenue (12 mo)</div><div class="kpi-ico">💶</div></div>
-        <div class="kpi-val" id="kRev">—</div>
+      <a class="kpi" href="invoices.html" title="View all invoices"><div class="kpi-more">→</div><div class="kpi-row"><div class="kpi-lbl">Revenue (12 mo)</div><div class="kpi-ico">💶</div></div><div class="kpi-val" id="kRev">—</div>
         <div class="kpi-sub" id="kRevSub">Loading…</div>
-      </div>
-      <div class="kpi k-g">
-        <div class="kpi-row"><div class="kpi-lbl">Paid (30 d)</div><div class="kpi-ico">✅</div></div>
-        <div class="kpi-val" id="kPaid">—</div>
+      </a>
+      <a class="kpi k-g" href="invoices.html#status=paid" title="View paid invoices"><div class="kpi-more">→</div><div class="kpi-row"><div class="kpi-lbl">Paid (30 d)</div><div class="kpi-ico">✅</div></div><div class="kpi-val" id="kPaid">—</div>
         <span class="kpi-delta up" id="kPaidDelta">—</span>
       </div>
-      <div class="kpi k-a">
-        <div class="kpi-row"><div class="kpi-lbl">Outstanding</div><div class="kpi-ico">⏳</div></div>
-        <div class="kpi-val" id="kOut">—</div>
+      <a class="kpi k-a" href="invoices.html#status=unpaid" title="View outstanding invoices"><div class="kpi-more">→</a><div class="kpi-row"><div class="kpi-lbl">Outstanding</div><div class="kpi-ico">⏳</div></div><div class="kpi-val" id="kOut">—</div>
         <div class="kpi-sub" id="kOutSub">across open invoices</div>
-      </div>
-      <div class="kpi k-r">
-        <div class="kpi-row"><div class="kpi-lbl">Overdue</div><div class="kpi-ico">⚠️</div></div>
-        <div class="kpi-val" id="kOvr">—</div>
+      </a>
+      <a class="kpi k-r" href="invoices.html#status=overdue" title="View overdue invoices"><div class="kpi-more">→</div><div class="kpi-row"><div class="kpi-lbl">Overdue</div><div class="kpi-ico">⚠️</div></div><div class="kpi-val" id="kOvr">—</div>
         <div class="kpi-sub" id="kOvrSub">need chasing</div>
-      </div>
-      <div class="kpi k-p">
-        <div class="kpi-row"><div class="kpi-lbl">Suppliers</div><div class="kpi-ico">🏭</div></div>
-        <div class="kpi-val" id="kSup">—</div>
+      </a>
+      <a class="kpi k-p" href="suppliers.html" title="Open suppliers"><div class="kpi-more">→</div><div class="kpi-row"><div class="kpi-lbl">Suppliers</div><div class="kpi-ico">🏭</div></div><div class="kpi-val" id="kSup">—</div>
         <div class="kpi-sub" id="kSupSub">active partners</div>
-      </div>
-      <div class="kpi k-t">
-        <div class="kpi-row"><div class="kpi-lbl">Employees</div><div class="kpi-ico">👥</div></div>
-        <div class="kpi-val" id="kEmp">—</div>
+      </a>
+      <a class="kpi k-t" href="employees.html" title="Open employees"><div class="kpi-more">→</div><div class="kpi-row"><div class="kpi-lbl">Employees</div><div class="kpi-ico">👥</div></div><div class="kpi-val" id="kEmp">—</div>
         <div class="kpi-sub" id="kEmpSub">team members</div>
-      </div>
+      </a>
     </div>
 
     <!-- Revenue chart + status donut -->
@@ -429,7 +426,7 @@ async function load() {
 
   // Recent invoices
   const recent = invoices.slice(0, 10)
-  $('invTbl').innerHTML = recent.length ? recent.map(i => `<tr>
+  $('invTbl').innerHTML = recent.length ? recent.map(i => `<tr data-clickable onclick="location.href='invoices.html'" title="Open Invoices">
     <td class="mono" style="font-weight:700">${esc(i.invoice_no || '—')}</td>
     <td>${esc(i.supplier_name || '—')}</td>
     <td class="mono">${fdate(i.issue_date)}</td>
@@ -445,7 +442,7 @@ async function load() {
   const maxSpend = Math.max(1, ...top.map(t=>t[1]))
   $('topSup').innerHTML = top.length ? top.map(([n,v]) => `
     <div>
-      <div class="bar-row">
+      <div class="bar-row" data-clickable onclick="location.href='suppliers.html'" title="Open Suppliers">
         <div class="bar-lbl"><span style="width:8px;height:8px;border-radius:2px;background:linear-gradient(135deg,#3b5fe2,#7c3aed);display:inline-block"></span><span class="name">${esc(n)}</span></div>
         <span class="bar-val">${money(v)}</span>
       </div>
