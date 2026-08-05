@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Nicolas Nicolas Group — Invoices</title>
+<link rel="icon" type="image/svg+xml" href="nn-logo.svg"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet"/>
+<script type="module" src="auth_guard.js"></script>
+<script>const PAGE_KEY='invoices'</script>
+<style>
+:root{
+  --bg:#f5f7fb;--card:#fff;--bdr:#e6ebf2;--bdr-2:#d4dbe6;--txt:#0f172a;--mu:#64748b;--dim:#94a3b8;
+  --blue:#3b5fe2;--b50:#eef2ff;--b100:#e0e7ff;
+  --green:#16a34a;--g50:#f0fdf4;--g100:#dcfce7;
+  --amber:#d97706;--a50:#fffbeb;--a100:#fef3c7;
+  --red:#dc2626;--r50:#fef2f2;--r100:#fee2e2;
+  --purple:#7c3aed;--p50:#f5f3ff;--p100:#ede9fe;
+  --teal:#0d9488;--t50:#f0fdfa;--t100:#ccfbf1;
+  --f:'DM Sans',sans-serif;--mono:'JetBrains Mono',monospace;
+  --sh:0 1px 2px rgba(15,23,42,.04),0 1px 3px rgba(15,23,42,.06);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--f);background:var(--bg);color:var(--txt);min-height:100vh}
+
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:240px;background:var(--card);border-right:1px solid var(--bdr);display:flex;flex-direction:column;z-index:100;overflow-y:auto}
+.sb-brand{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:16px 18px;border-bottom:1px solid var(--bdr)}
+.sb-logo{display:block;height:56px;max-width:100%}
+.sb-tag{font-size:10px;color:var(--mu);font-weight:700;letter-spacing:1.5px;text-transform:uppercase}
+.sb-nav{flex:1;padding:10px}
+.sb-s{font-size:10px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.8px;padding:14px 8px 6px}
+.nl{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:9px;font-size:13px;font-weight:500;color:var(--mu);text-decoration:none;transition:all .15s}
+.nl:hover{background:var(--bg);color:var(--txt)}
+.nl.on{background:var(--b50);color:var(--blue);font-weight:600}
+.nl .ic{font-size:16px;width:20px;text-align:center}
+.sb-foot{padding:12px 10px;border-top:1px solid var(--bdr)}
+
+.wrap{margin-left:240px;min-height:100vh}
+.topbar{background:var(--card);border-bottom:1px solid var(--bdr);padding:14px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;flex-wrap:wrap;gap:12px}
+.tt{font-size:20px;font-weight:800;letter-spacing:-.3px}
+.body{padding:22px 28px 100px}
+
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;font-size:13px;font-weight:600;border:none;border-radius:9px;cursor:pointer;font-family:var(--f);transition:all .15s;text-decoration:none}
+.b-pri{background:var(--blue);color:#fff}.b-pri:hover{background:#2e4fc7}
+.b-gho{background:var(--card);border:1px solid var(--bdr-2);color:var(--txt)}.b-gho:hover{border-color:var(--txt)}
+.b-grn{background:var(--green);color:#fff}.b-grn:hover{background:#15803d}
+.b-red{background:var(--red);color:#fff}
+.b-sm{padding:5px 11px;font-size:12px}
+
+.kpig{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+.kpi{background:var(--card);border-radius:14px;box-shadow:var(--sh);padding:16px 18px}
+.kpi-lbl{font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.kpi-val{font-size:22px;font-weight:800;font-family:var(--mono);letter-spacing:-.5px}
+.kpi-sub{font-size:11px;color:var(--dim);margin-top:4px}
+
+.card{background:var(--card);border-radius:14px;box-shadow:var(--sh);padding:20px}
+.chd{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;gap:12px;flex-wrap:wrap}
+.ct{font-size:15px;font-weight:800;letter-spacing:-.2px}
+.cs{font-size:12px;color:var(--mu);margin-top:2px}
+
+.tbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.si{padding:8px 13px;border:1.5px solid var(--bdr);border-radius:9px;font-family:var(--f);font-size:13px;outline:none;min-width:220px}
+.si:focus{border-color:var(--blue)}
+.fsel{padding:8px 11px;border:1.5px solid var(--bdr);border-radius:9px;font-family:var(--f);font-size:13px;outline:none;cursor:pointer}
+
+.tw{overflow-x:auto;border-radius:10px;border:1px solid var(--bdr)}
+table{width:100%;border-collapse:collapse}
+thead th{padding:9px 12px;font-size:10.5px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.5px;background:#f8fafc;border-bottom:1px solid var(--bdr);text-align:left;white-space:nowrap}
+tbody td{padding:11px 12px;font-size:13px;border-bottom:1px solid var(--bdr);vertical-align:middle}
+tbody tr:last-child td{border:none}
+tbody tr:hover{background:#fafbfd}
+.mono{font-family:var(--mono);font-size:12px}
+.num{font-family:var(--mono);font-weight:700;text-align:right}
+.empty td{text-align:center;padding:32px!important;color:var(--dim)!important}
+
+.bdg{display:inline-flex;padding:3px 10px;border-radius:999px;font-size:10.5px;font-weight:700;letter-spacing:.2px}
+.b-paid{background:var(--g100);color:#15803d}
+.b-unpaid{background:var(--b100);color:#1e40af}
+.b-partial{background:var(--a100);color:#92400e}
+.b-overdue{background:var(--r100);color:#991b1b}
+.b-cancel{background:#f1f5f9;color:var(--mu)}
+
+/* Modal */
+.mov{position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:500;display:none;align-items:center;justify-content:center;padding:20px;overflow-y:auto}
+.mov.on{display:flex}
+.mo{background:var(--card);border-radius:16px;padding:26px;width:100%;max-width:520px;box-shadow:0 20px 60px rgba(15,23,42,.2);max-height:90vh;overflow-y:auto}
+.mot{font-size:18px;font-weight:800;margin-bottom:2px}
+.mos{font-size:12px;color:var(--mu);margin-bottom:16px}
+.fl{display:block;font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px}
+.fi{width:100%;padding:9px 12px;border:1.5px solid var(--bdr);border-radius:9px;font-family:var(--f);font-size:13px;background:#fff;outline:none}
+.fi:focus{border-color:var(--blue)}
+.fg2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.moa{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
+.mer{color:var(--red);font-size:12px;margin-top:8px;min-height:14px}
+
+.notif{position:fixed;bottom:24px;right:24px;padding:12px 18px;border-radius:10px;font-size:13px;font-weight:600;z-index:9999;display:none;box-shadow:0 4px 16px rgba(0,0,0,.2);color:#fff}
+.notif.on{display:flex}.notif.ok{background:#15803d}.notif.err{background:var(--red)}
+
+@media(max-width:900px){.sidebar{display:none}.wrap{margin-left:0}.kpig{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sb-brand">
+    <a href="index.html" style="display:block;width:100%;text-decoration:none">
+      <img class="sb-logo" src="nn-logo.svg" alt="Nicolas Nicolas Group"/>
+    </a>
+    <div class="sb-tag">Operations Console</div>
+  </div>
+  <nav class="sb-nav">
+    <div class="sb-s">Console</div>
+    <a href="index.html"     class="nl"><span class="ic">🏠</span>Dashboard</a>
+    <a href="inventory.html" class="nl"><span class="ic">📦</span>Inventory</a>
+    <a href="suppliers.html" class="nl"><span class="ic">🏭</span>Suppliers</a>
+    <a href="invoices.html"  class="nl on"><span class="ic">🧾</span>Invoices</a>
+    <div class="sb-s">People</div>
+    <a href="employees.html" class="nl"><span class="ic">👥</span>Employees</a>
+    <a href="roles.html"     class="nl"><span class="ic">🛡️</span>Roles</a>
+    <div class="sb-s">System</div>
+    <a href="audit_log.html" class="nl"><span class="ic">📜</span>Audit Log</a>
+  </nav>
+  <div class="sb-foot">
+    <a href="#" class="nl" onclick="window.signOut();return false;" style="color:#dc2626"><span class="ic">🚪</span>Sign out</a>
+  </div>
+</aside>
+
+<div class="wrap">
+  <div class="topbar">
+    <div>
+      <div class="tt">🧾 Invoices</div>
+      <div style="font-size:12px;color:var(--mu);margin-top:3px">Track supplier invoices and record payments.</div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn b-gho" id="btnCsv">⬇ CSV</button>
+      <button class="btn b-pri" id="btnNew">+ New Invoice</button>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <div class="kpig">
+      <div class="kpi"><div class="kpi-lbl">Total invoiced</div><div class="kpi-val" id="kTotal">—</div><div class="kpi-sub" id="kTotalSub">across all invoices</div></div>
+      <div class="kpi"><div class="kpi-lbl">Paid</div><div class="kpi-val" id="kPaid" style="color:var(--green)">—</div><div class="kpi-sub" id="kPaidSub">—</div></div>
+      <div class="kpi"><div class="kpi-lbl">Outstanding</div><div class="kpi-val" id="kOpen" style="color:var(--amber)">—</div><div class="kpi-sub" id="kOpenSub">to be paid</div></div>
+      <div class="kpi"><div class="kpi-lbl">Overdue</div><div class="kpi-val" id="kOvr" style="color:var(--red)">—</div><div class="kpi-sub" id="kOvrSub">need chasing</div></div>
+    </div>
+
+    <div class="card">
+      <div class="chd">
+        <div><div class="ct">All invoices</div><div class="cs">Click a row to view or record a payment.</div></div>
+      </div>
+      <div class="tbar">
+        <input class="si" id="q" placeholder="🔍 Search invoice #, supplier, notes…"/>
+        <select class="fsel" id="fSt">
+          <option value="">All statuses</option>
+          <option value="unpaid">Unpaid</option>
+          <option value="partial">Partial</option>
+          <option value="paid">Paid</option>
+          <option value="overdue">Overdue</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+        <select class="fsel" id="fSup"><option value="">All suppliers</option></select>
+      </div>
+      <div class="tw"><table>
+        <thead>
+          <tr>
+            <th>Invoice #</th><th>Supplier</th><th>Issued</th><th>Due</th>
+            <th class="num">Amount</th><th class="num">Paid</th><th class="num">Balance</th>
+            <th>Status</th><th></th>
+          </tr>
+        </thead>
+        <tbody id="tb"><tr class="empty"><td colspan="9">Loading…</td></tr></tbody>
+      </table></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- New / Edit invoice modal -->
+<div class="mov" id="mInv">
+  <div class="mo">
+    <div class="mot" id="moT">New Invoice</div>
+    <div class="mos">Record a supplier invoice.</div>
+    <input type="hidden" id="editId"/>
+    <div style="display:grid;gap:12px">
+      <div class="fg2">
+        <div><label class="fl">Invoice # *</label><input class="fi" id="fNo" placeholder="INV-2026-001"/></div>
+        <div><label class="fl">Supplier *</label><select class="fi" id="fSupSel"><option value="">— select —</option></select></div>
+      </div>
+      <div class="fg2">
+        <div><label class="fl">Issue date</label><input class="fi" id="fIss" type="date"/></div>
+        <div><label class="fl">Due date</label><input class="fi" id="fDue" type="date"/></div>
+      </div>
+      <div class="fg2">
+        <div><label class="fl">Amount *</label><input class="fi" id="fAmt" type="number" step="0.01" min="0"/></div>
+        <div><label class="fl">Currency</label>
+          <select class="fi" id="fCur"><option value="EUR">EUR €</option><option value="USD">USD $</option><option value="GBP">GBP £</option></select>
+        </div>
+      </div>
+      <div class="fg2">
+        <div><label class="fl">Status</label>
+          <select class="fi" id="fSt2">
+            <option value="unpaid">Unpaid</option>
+            <option value="partial">Partial</option>
+            <option value="paid">Paid</option>
+            <option value="overdue">Overdue</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+        </div>
+        <div><label class="fl">Paid amount</label><input class="fi" id="fPd" type="number" step="0.01" min="0" placeholder="0.00"/></div>
+      </div>
+      <div><label class="fl">Notes</label><textarea class="fi" id="fNt" rows="2" style="resize:vertical"></textarea></div>
+    </div>
+    <div class="moa">
+      <button class="btn b-gho" id="btnDel" style="margin-right:auto;display:none">🗑 Delete</button>
+      <button class="btn b-gho" id="btnC">Cancel</button>
+      <button class="btn b-grn" id="btnPay" style="display:none">💰 Record Payment</button>
+      <button class="btn b-pri" id="btnSv">💾 Save</button>
+    </div>
+    <div class="mer" id="mErr"></div>
+  </div>
+</div>
+
+<!-- Payment modal -->
+<div class="mov" id="mPay">
+  <div class="mo">
+    <div class="mot">Record payment</div>
+    <div class="mos" id="mPaySub">—</div>
+    <div style="display:grid;gap:12px">
+      <div class="fg2">
+        <div><label class="fl">Amount *</label><input class="fi" id="pAmt" type="number" step="0.01" min="0.01"/></div>
+        <div><label class="fl">Paid on</label><input class="fi" id="pDate" type="date"/></div>
+      </div>
+      <div class="fg2">
+        <div><label class="fl">Method</label>
+          <select class="fi" id="pMethod">
+            <option value="bank_transfer">Bank transfer</option>
+            <option value="cash">Cash</option>
+            <option value="card">Card</option>
+            <option value="cheque">Cheque</option>
+          </select>
+        </div>
+        <div><label class="fl">Reference</label><input class="fi" id="pRef" placeholder="Transaction ref"/></div>
+      </div>
+      <div><label class="fl">Notes</label><textarea class="fi" id="pNt" rows="2" style="resize:vertical"></textarea></div>
+    </div>
+    <div class="moa">
+      <button class="btn b-gho" id="pC">Cancel</button>
+      <button class="btn b-grn" id="pSv">💰 Record</button>
+    </div>
+    <div class="mer" id="pErr"></div>
+  </div>
+</div>
+
+<div class="notif" id="notif"></div>
+
+<script type="module">
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import { SUPABASE_CONFIG } from './config.js'
+const sb = createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey)
+
+const $ = id => document.getElementById(id)
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))
+const money = n => Number(n||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})
+const fdate = v => v ? new Date(v).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}) : '—'
+const CURSYM = { EUR:'€', USD:'$', GBP:'£' }
+function notify(msg, type='ok') {
+  const n = $('notif'); n.textContent = (type==='ok'?'✅ ':'❌ ') + msg
+  n.className = 'notif on ' + type; setTimeout(()=>n.classList.remove('on'), 3500)
+}
+function statusBadge(s) {
+  const c = { paid:'b-paid', unpaid:'b-unpaid', partial:'b-partial', overdue:'b-overdue', cancelled:'b-cancel' }[s] || 'b-cancel'
+  return `<span class="bdg ${c}">${s || '—'}</span>`
+}
+
+let all = [], suppliers = [], editId = null
+
+async function load() {
+  const [invR, supR] = await Promise.all([
+    sb.from('invoices').select('*').order('issue_date', { ascending: false }),
+    sb.from('suppliers').select('id,name').order('name'),
+  ])
+  if (invR.error) { $('tb').innerHTML = `<tr class="empty"><td colspan="9" style="color:var(--red)">Load failed: ${esc(invR.error.message)}</td></tr>`; return }
+  all = invR.data || []
+  suppliers = supR.data || []
+
+  // Fill supplier filter + modal select
+  const sopts = '<option value="">All suppliers</option>' + suppliers.map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join('')
+  $('fSup').innerHTML = sopts
+  $('fSupSel').innerHTML = '<option value="">— select —</option>' + suppliers.map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join('')
+
+  // KPIs
+  const tot = all.reduce((a,i)=>a+Number(i.amount||0),0)
+  const paid = all.reduce((a,i)=>a+Number(i.paid_amount||0),0)
+  const open = all.filter(i=>i.status!=='paid'&&i.status!=='cancelled')
+  const opsum = open.reduce((a,i)=>a+(Number(i.amount||0)-Number(i.paid_amount||0)),0)
+  const ovr = all.filter(i=>i.status==='overdue')
+  const ovsum = ovr.reduce((a,i)=>a+(Number(i.amount||0)-Number(i.paid_amount||0)),0)
+  $('kTotal').textContent = '€' + money(tot); $('kTotalSub').textContent = `${all.length} invoices`
+  $('kPaid').textContent  = '€' + money(paid); $('kPaidSub').textContent  = `${((paid/(tot||1))*100).toFixed(0)}% collected`
+  $('kOpen').textContent  = '€' + money(opsum); $('kOpenSub').textContent = `${open.length} open`
+  $('kOvr').textContent   = '€' + money(ovsum); $('kOvrSub').textContent  = `${ovr.length} past due`
+
+  render()
+}
+
+function render() {
+  const q = $('q').value.trim().toLowerCase()
+  const fS = $('fSt').value
+  const fSup = $('fSup').value
+  const rows = all.filter(i => {
+    if (fS && i.status !== fS) return false
+    if (fSup && i.supplier_id !== fSup) return false
+    if (!q) return true
+    const hay = `${i.invoice_no||''} ${i.supplier_name||''} ${i.notes||''}`.toLowerCase()
+    return hay.includes(q)
+  })
+  if (!rows.length) { $('tb').innerHTML = '<tr class="empty"><td colspan="9">No invoices match your filters.</td></tr>'; return }
+  $('tb').innerHTML = rows.map(i => {
+    const bal = Number(i.amount||0) - Number(i.paid_amount||0)
+    const cur = CURSYM[i.currency] || i.currency || ''
+    return `<tr onclick="window.editInv('${i.id}')" style="cursor:pointer">
+      <td class="mono" style="font-weight:700">${esc(i.invoice_no||'—')}</td>
+      <td>${esc(i.supplier_name||'—')}</td>
+      <td class="mono">${fdate(i.issue_date)}</td>
+      <td class="mono">${fdate(i.due_date)}</td>
+      <td class="num">${cur}${money(i.amount)}</td>
+      <td class="num" style="color:${Number(i.paid_amount||0)>0?'var(--green)':'var(--dim)'}">${cur}${money(i.paid_amount)}</td>
+      <td class="num" style="color:${bal>0?'var(--amber)':'var(--dim)'}">${cur}${money(bal)}</td>
+      <td>${statusBadge(i.status)}</td>
+      <td onclick="event.stopPropagation()">${i.status!=='paid'&&i.status!=='cancelled'?`<button class="btn b-grn b-sm" onclick="window.openPay('${i.id}')">💰 Pay</button>`:''}</td>
+    </tr>`
+  }).join('')
+}
+
+// ── Modal ──
+$('btnNew').addEventListener('click', () => {
+  editId = null
+  $('moT').textContent = 'New Invoice'
+  ;['fNo','fAmt','fPd','fNt'].forEach(id => $(id).value = '')
+  $('fSupSel').value = ''; $('fCur').value = 'EUR'; $('fSt2').value = 'unpaid'
+  $('fIss').value = new Date().toISOString().slice(0,10)
+  const due = new Date(); due.setDate(due.getDate()+30); $('fDue').value = due.toISOString().slice(0,10)
+  $('btnDel').style.display = 'none'; $('btnPay').style.display = 'none'
+  $('mErr').textContent = ''; $('mInv').classList.add('on')
+})
+
+window.editInv = (id) => {
+  const inv = all.find(x => x.id === id); if (!inv) return
+  editId = id
+  $('moT').textContent = 'Edit Invoice — ' + (inv.invoice_no || '')
+  $('fNo').value = inv.invoice_no || ''
+  $('fSupSel').value = inv.supplier_id || ''
+  $('fIss').value = inv.issue_date ? inv.issue_date.slice(0,10) : ''
+  $('fDue').value = inv.due_date ? inv.due_date.slice(0,10) : ''
+  $('fAmt').value = inv.amount ?? ''
+  $('fCur').value = inv.currency || 'EUR'
+  $('fSt2').value = inv.status || 'unpaid'
+  $('fPd').value = inv.paid_amount ?? 0
+  $('fNt').value = inv.notes || ''
+  $('btnDel').style.display = ''
+  $('btnPay').style.display = (inv.status==='paid'||inv.status==='cancelled') ? 'none' : ''
+  $('mErr').textContent = ''; $('mInv').classList.add('on')
+}
+
+$('btnC').addEventListener('click', () => $('mInv').classList.remove('on'))
+$('mInv').addEventListener('click', e => { if (e.target === $('mInv')) $('mInv').classList.remove('on') })
+
+$('btnSv').addEventListener('click', async () => {
+  const no = $('fNo').value.trim(); if (!no) { $('mErr').textContent = 'Invoice number required'; return }
+  const supId = $('fSupSel').value; if (!supId) { $('mErr').textContent = 'Supplier required'; return }
+  const amt = Number($('fAmt').value); if (!amt || amt <= 0) { $('mErr').textContent = 'Amount must be > 0'; return }
+  const sup = suppliers.find(s => s.id === supId)
+  const payload = {
+    invoice_no: no, supplier_id: supId, supplier_name: sup?.name || null,
+    issue_date: $('fIss').value || null, due_date: $('fDue').value || null,
+    amount: amt, currency: $('fCur').value, status: $('fSt2').value,
+    paid_amount: Number($('fPd').value || 0), notes: $('fNt').value.trim() || null,
+    updated_at: new Date().toISOString(),
+  }
+  const { error } = editId
+    ? await sb.from('invoices').update(payload).eq('id', editId)
+    : await sb.from('invoices').insert([payload])
+  if (error) { $('mErr').textContent = error.message; return }
+  $('mInv').classList.remove('on'); notify(editId ? 'Invoice updated' : 'Invoice created'); load()
+})
+
+$('btnDel').addEventListener('click', async () => {
+  if (!editId) return
+  if (!confirm('Delete this invoice? All linked payments will be removed.')) return
+  const { error } = await sb.from('invoices').delete().eq('id', editId)
+  if (error) { $('mErr').textContent = error.message; return }
+  $('mInv').classList.remove('on'); notify('Invoice deleted'); load()
+})
+
+// ── Payment ──
+let payTarget = null
+$('btnPay').addEventListener('click', () => {
+  const inv = all.find(x => x.id === editId); if (!inv) return
+  $('mInv').classList.remove('on')
+  window.openPay(inv.id)
+})
+
+window.openPay = (id) => {
+  const inv = all.find(x => x.id === id); if (!inv) return
+  payTarget = inv
+  const bal = Number(inv.amount||0) - Number(inv.paid_amount||0)
+  $('mPaySub').textContent = `Invoice ${inv.invoice_no} · ${inv.supplier_name || '—'} · balance ${CURSYM[inv.currency]||''}${money(bal)}`
+  $('pAmt').value = bal.toFixed(2)
+  $('pDate').value = new Date().toISOString().slice(0,10)
+  $('pMethod').value = 'bank_transfer'
+  $('pRef').value = ''; $('pNt').value = ''; $('pErr').textContent = ''
+  $('mPay').classList.add('on')
+}
+$('pC').addEventListener('click', () => $('mPay').classList.remove('on'))
+$('mPay').addEventListener('click', e => { if (e.target === $('mPay')) $('mPay').classList.remove('on') })
+
+$('pSv').addEventListener('click', async () => {
+  if (!payTarget) return
+  const amt = Number($('pAmt').value); if (!amt || amt <= 0) { $('pErr').textContent = 'Amount must be > 0'; return }
+  const bal = Number(payTarget.amount||0) - Number(payTarget.paid_amount||0)
+  if (amt > bal + 0.01) { $('pErr').textContent = `Amount exceeds balance (${money(bal)})`; return }
+  const { error: pe } = await sb.from('payments').insert([{
+    invoice_id: payTarget.id, amount: amt,
+    paid_at: new Date($('pDate').value || Date.now()).toISOString(),
+    method: $('pMethod').value, reference: $('pRef').value.trim() || null, notes: $('pNt').value.trim() || null,
+  }])
+  if (pe) { $('pErr').textContent = pe.message; return }
+  const newPaid = Number(payTarget.paid_amount||0) + amt
+  const newStatus = newPaid + 0.01 >= Number(payTarget.amount) ? 'paid' : 'partial'
+  const { error: ue } = await sb.from('invoices').update({
+    paid_amount: newPaid, status: newStatus, updated_at: new Date().toISOString()
+  }).eq('id', payTarget.id)
+  if (ue) { $('pErr').textContent = ue.message; return }
+  $('mPay').classList.remove('on'); notify(`Payment recorded — ${newStatus}`); load()
+})
+
+// Filters + CSV
+;['q','fSt','fSup'].forEach(id => $(id).addEventListener('input', render))
+;['fSt','fSup'].forEach(id => $(id).addEventListener('change', render))
+$('btnCsv').addEventListener('click', () => {
+  const rows = [['Invoice #','Supplier','Issued','Due','Amount','Currency','Paid','Balance','Status','Notes']]
+  all.forEach(i => rows.push([i.invoice_no, i.supplier_name||'', i.issue_date||'', i.due_date||'', i.amount, i.currency||'EUR', i.paid_amount, Number(i.amount||0)-Number(i.paid_amount||0), i.status, (i.notes||'').replace(/\n/g,' ')]))
+  const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n')
+  const a = document.createElement('a'); a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv)
+  a.download = `invoices_${new Date().toISOString().slice(0,10)}.csv`; a.click()
+})
+
+load()
+</script>
+
+</body>
+</html>
